@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joy Blob - เพื่อนตัวน้อยดูแลและบำบัดใจ</title>
+  <!-- Google Fonts: Prompt for Thai, Inter for English/Numbers -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Vanilla CSS Link -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Fullscreen Cosmic Background -->
+  <div class="stars-bg"></div>
+
+  <!-- Mobile Screen Emulator -->
+  <div class="phone-frame">
+    <div class="phone-notch"></div>
+    
+    <!-- App Wrapper -->
+    <div class="app-container">
+      
+      <!-- Top Header Bar -->
+      <header class="app-header">
+        <div class="header-top">
+          <div class="profile-info" id="profileBtn">
+            <div class="avatar-circle">
+              <!-- Animated SVG Avatar inside -->
+              <svg viewBox="0 0 100 100" class="mini-blob">
+                <circle cx="50" cy="50" r="45" fill="url(#blobGrad)" />
+                <ellipse cx="40" cy="45" rx="6" ry="8" fill="#ffffff" />
+                <ellipse cx="60" cy="45" rx="6" ry="8" fill="#ffffff" />
+                <circle cx="38" cy="43" r="2" fill="#000" />
+                <circle cx="58" cy="43" r="2" fill="#000" />
+                <path d="M 45 60 Q 50 65 55 60" stroke="#ff7e79" stroke-width="3" stroke-linecap="round" fill="none" />
+                <ellipse cx="32" cy="52" rx="6" ry="3" fill="#ff7da7" opacity="0.6" />
+                <ellipse cx="68" cy="52" rx="6" ry="3" fill="#ff7da7" opacity="0.6" />
+              </svg>
+            </div>
+            <div class="name-lvl">
+              <div class="char-name" id="topCharName">Joy Blob <span class="edit-icon">✏️</span></div>
+              <div class="lvl-badge">Lv. <span id="charLvl">0</span></div>
+            </div>
+          </div>
+          
+          <div class="exp-container">
+            <div class="exp-text">EXP <span id="charExp">0</span>/<span id="charExpMax">100</span></div>
+            <div class="exp-progress-bar">
+              <div class="exp-progress-fill" id="expFill" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <button class="settings-btn" id="settingsBtn">
+            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </button>
+        </div>
+
+        <!-- Status Counters (HP, Energy, Gold, Gems) -->
+        <div class="stats-row">
+          <div class="status-pill status-hp">
+            <span class="stat-icon">❤️</span>
+            <span class="stat-val" id="valHp">20/50</span>
+            <button class="add-stat-btn" id="headerHpAddBtn">+</button>
+          </div>
+          <div class="status-pill status-energy">
+            <span class="stat-icon">⚡</span>
+            <span class="stat-val" id="valEnergy">20/50</span>
+            <button class="add-stat-btn" id="headerEnergyAddBtn">+</button>
+          </div>
+          <div class="status-pill status-coins">
+            <span class="stat-icon">🪙</span>
+            <span class="stat-val" id="valCoins">0</span>
+            <button class="add-stat-btn" id="headerCoinsAddBtn">+</button>
+          </div>
+          <div class="status-pill status-gems">
+            <span class="stat-icon">💎</span>
+            <span class="stat-val" id="valGems">0</span>
+            <button class="add-stat-btn" id="headerGemsAddBtn">+</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Contents Area (Swapped dynamically) -->
+      <main class="app-main-content">
+
+        <!-- 1. HOME VIEW -->
+        <section id="view-home" class="view-panel active">
+          <!-- Room Background Layer -->
+          <div class="room-background" id="roomBg">
+            <div class="window-stars"></div>
+          </div>
+
+          <!-- Talk Bubble -->
+          <div class="speech-bubble-container">
+            <div class="speech-bubble">
+              <p id="petBubbleText">วันนี้เหนื่อยมั้ย? อย่าลืมพักผ่อนและดูแลตัวเองด้วยนะ! ✨</p>
+            </div>
+          </div>
+
+          <!-- Interactive Pet Area -->
+          <div class="pet-display-area" id="petInteractZone">
+            
+            <!-- Room Action Spots: Bed, Table, Bath, Bench (Generated dynamically in JS) -->
+            <div class="room-action-spots" id="roomActionSpots"></div>
+            
+            <!-- Cozy Bed Overlay (Visible only in bedroom) -->
+            <div class="room-bed-overlay" id="bedroomBed">
+              <svg viewBox="0 0 160 100" class="room-bed-svg" style="width: 100%; height: 100%;">
+                <!-- Wooden Headboard -->
+                <rect x="5" y="15" width="10" height="70" rx="3" fill="#8d5b4c"/>
+                <!-- Wooden side rails -->
+                <rect x="15" y="45" width="140" height="30" rx="4" fill="#a06a5a"/>
+                <!-- Mattress -->
+                <rect x="15" y="40" width="135" height="25" rx="3" fill="#ffffff"/>
+                <!-- Cozy blue quilt -->
+                <path d="M 45 40 L 148 40 Q 150 40 150 42 L 150 68 Q 150 70 148 70 L 45 70 Z" fill="#7ba3ff"/>
+                <!-- Cozy blanket fold -->
+                <path d="M 45 40 L 55 40 L 55 70 L 45 70 Z" fill="#5c8dff"/>
+                <!-- Pillow -->
+                <rect x="20" y="44" width="22" height="20" rx="5" fill="#f1f5f9" transform="rotate(-5, 20, 44)"/>
+              </svg>
+            </div>
+
+            <!-- Cozy Bath Overlay (Visible only in bathroom) -->
+            <div class="room-bath-overlay" id="bathroomBath">
+              <svg viewBox="0 0 160 100" class="room-bath-svg" style="width: 100%; height: 100%;">
+                <!-- Bath tub body -->
+                <ellipse cx="80" cy="65" rx="70" ry="25" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+                <rect x="15" y="45" width="130" height="25" fill="#f8fafc"/>
+                <!-- Rim -->
+                <ellipse cx="80" cy="45" rx="66" ry="12" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/>
+                <ellipse cx="80" cy="45" rx="60" ry="8" fill="#38bdf8" opacity="0.4"/>
+                <!-- Faucet -->
+                <path d="M 140 25 Q 140 15 135 15 L 130 15 L 130 20" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <!-- Custom Dynamic Joy Blob SVG -->
+            <div class="pet-avatar-wrapper pos-carpet" id="petWrapper">
+              <!-- Floating Pet Status Indicators (HP & Energy) -->
+              <div class="pet-floating-hud" id="petFloatingHud">
+                <div class="hud-bar hud-hp">
+                  <span class="hud-icon">❤️</span>
+                  <div class="hud-progress"><div class="hud-fill" id="hudHpFill" style="width: 40%;"></div></div>
+                  <span class="hud-val" id="hudHpText">20/50</span>
+                </div>
+                <div class="hud-bar hud-energy">
+                  <span class="hud-icon">⚡</span>
+                  <div class="hud-progress"><div class="hud-fill" id="hudEnergyFill" style="width: 40%;"></div></div>
+                  <span class="hud-val" id="hudEnergyText">20/50</span>
+                </div>
+              </div>
+
+              <!-- Svg container that will rotate when sleeping -->
+              <div class="pet-svg-container" id="petSvgContainer" style="width: 100%; height: 100%;">
+                <!-- SVG definitions for styling -->
+                <svg viewBox="0 0 200 200" id="mainJoyBlob" class="joy-blob-svg">
+                <defs>
+                  <radialGradient id="blobGrad" cx="45%" cy="40%" r="55%">
+                    <stop offset="0%" stop-color="#b6f0ff" />
+                    <stop offset="60%" stop-color="#55c6ff" />
+                    <stop offset="100%" stop-color="#2a7bff" />
+                  </radialGradient>
+                  <radialGradient id="blushGrad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#ff6b9d" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#ff6b9d" stop-opacity="0"/>
+                  </radialGradient>
+                  <filter id="shadowFilter" x="-10%" y="-10%" width="120%" height="120%">
+                    <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#0b132b" flood-opacity="0.5" />
+                  </filter>
+                </defs>
+
+                <!-- Blob Shadow (Removed) -->
+
+                <!-- Wings (Stage 3 & 4 Evolution) -->
+                <g id="evo-wings" style="display: none;">
+                  <!-- Left Wing -->
+                  <path d="M 45 100 C 15 80, 5 110, 25 130 C 5 125, 0 140, 20 150 C 10 155, 15 170, 45 155 Z" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2.5" opacity="0.9" />
+                  <!-- Right Wing -->
+                  <path d="M 155 100 C 185 80, 195 110, 175 130 C 195 125, 200 140, 180 150 C 190 155, 185 170, 155 155 Z" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2.5" opacity="0.9" />
+                </g>
+
+                <!-- Egg Shape for Level 0 (Hatching at Level 1) -->
+                <g id="evo-egg" style="display: none;">
+                  <!-- Egg body shell -->
+                  <path d="M 100 35 
+                           C 55 35, 45 110, 45 140 
+                           C 45 175, 70 175, 100 175 
+                           C 130 175, 155 175, 155 140 
+                           C 155 110, 145 35, 100 35 Z" 
+                        fill="#fef08a" stroke="#eab308" stroke-width="5" filter="url(#shadowFilter)" />
+                  <!-- Decorative Egg spots -->
+                  <circle cx="75" cy="110" r="10" fill="#fde047" opacity="0.75" />
+                  <circle cx="125" cy="130" r="12" fill="#fde047" opacity="0.75" />
+                  <circle cx="95" cy="150" r="7" fill="#fde047" opacity="0.75" />
+                  <!-- Shell highlights -->
+                  <ellipse cx="92" cy="65" rx="15" ry="7" fill="#ffffff" opacity="0.3" transform="rotate(-30, 92, 65)" />
+                </g>
+
+                <!-- Wrapper for Hatched Blob Body -->
+                <g id="blobMainBodyGroup">
+                  <!-- Blob Body Shape -->
+                  <path id="blobBody" d="M 40 130 
+                           C 20 100, 30 50, 70 40 
+                           C 90 35, 110 35, 130 40 
+                           C 170 50, 180 100, 160 130 
+                           C 145 155, 55 155, 40 130 Z" 
+                        fill="url(#blobGrad)" filter="url(#shadowFilter)" />
+
+                  <!-- Star details on head (Stage 2, 3, 4) -->
+                  <path id="evo-stars" d="M 60 25 L 62 29 L 67 29 L 63 32 L 65 37 L 60 34 L 55 37 L 57 32 L 53 29 L 58 29 Z" fill="#fff" opacity="0.8" transform="scale(0.8) translate(30, 20)" style="display: none;"/>
+                  <path id="evo-stars-sub" d="M 140 30 L 141 32 L 144 32 L 142 34 L 143 37 L 140 35 L 137 37 L 138 34 L 136 32 L 139 32 Z" fill="#fff" opacity="0.8" transform="scale(0.6) translate(80, 20)" style="display: none;"/>
+
+                  <!-- Halo (Stage 4 Evolution) -->
+                  <g id="evo-halo" style="display: none;">
+                    <ellipse cx="100" cy="20" rx="35" ry="8" fill="none" stroke="#fbbf24" stroke-width="3" opacity="0.9" />
+                    <ellipse cx="100" cy="20" rx="30" ry="6" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.9" />
+                  </g>
+
+                  <!-- Accessories (Wizard Hat - hidden by default, shown dynamically) -->
+                  <g id="acc-wizard-hat" class="accessory-g" style="display: none;">
+                    <path d="M 100 10 L 135 65 L 65 65 Z" fill="#4d3b8c" stroke="#6d5ba9" stroke-width="2" />
+                    <ellipse cx="100" cy="65" rx="45" ry="8" fill="#3b2a75" />
+                    <path d="M 85 64 Q 100 66 115 64" stroke="#fbbf24" stroke-width="5" fill="none" />
+                    <!-- Yellow star on hat tip -->
+                    <polygon points="100,2 102,7 107,7 103,10 105,15 100,12 95,15 97,10 93,7 98,7" fill="#fbbf24" />
+                  </g>
+
+                  <!-- Accessories (Fashion Glasses - hidden by default) -->
+                  <g id="acc-glasses" class="accessory-g" style="display: none;">
+                    <!-- Left Glass -->
+                    <circle cx="70" cy="100" r="18" fill="none" stroke="#f472b6" stroke-width="4" opacity="0.9" />
+                    <circle cx="70" cy="100" r="14" fill="#00ffff" opacity="0.2" />
+                    <!-- Right Glass -->
+                    <circle cx="130" cy="100" r="18" fill="none" stroke="#f472b6" stroke-width="4" opacity="0.9" />
+                    <circle cx="130" cy="100" r="14" fill="#00ffff" opacity="0.2" />
+                    <!-- Bridge & Temples -->
+                    <path d="M 88 100 Q 100 105 112 100" fill="none" stroke="#f472b6" stroke-width="4" />
+                    <path d="M 52 100 Q 42 95 38 98" fill="none" stroke="#f472b6" stroke-width="4" />
+                    <path d="M 148 100 Q 158 95 162 98" fill="none" stroke="#f472b6" stroke-width="4" />
+                  </g>
+
+                  <!-- Accessories (Crown - hidden by default) -->
+                  <g id="acc-crown" class="accessory-g" style="display: none;">
+                    <path d="M 70 50 L 75 30 L 90 42 L 100 25 L 110 42 L 125 30 L 130 50 Z" fill="#fbbf24" stroke="#d97706" stroke-width="2" />
+                    <circle cx="75" cy="30" r="3" fill="#ef4444" />
+                    <circle cx="100" cy="25" r="3" fill="#3b82f6" />
+                    <circle cx="125" cy="30" r="3" fill="#ef4444" />
+                    <rect x="85" y="44" width="30" height="4" fill="#d97706" />
+                  </g>
+
+                  <!-- Eyes (Idle expression) -->
+                  <g id="eyesGroup">
+                    <!-- Left Eye -->
+                    <ellipse id="eyeLeft" cx="72" cy="102" rx="10" ry="14" fill="#1e1e24" />
+                    <circle id="pupilLeft" cx="69" cy="98" r="4" fill="#ffffff" />
+                    <circle id="pupilSubLeft" cx="74" cy="104" r="1.5" fill="#ffffff" />
+
+                    <!-- Right Eye -->
+                    <ellipse id="eyeRight" cx="128" cy="102" rx="10" ry="14" fill="#1e1e24" />
+                    <circle id="pupilRight" cx="125" cy="98" r="4" fill="#ffffff" />
+                    <circle id="pupilSubRight" cx="130" cy="104" r="1.5" fill="#ffffff" />
+                  </g>
+
+                  <!-- Sleeping/Closed Eyes (Visible when sleeping) -->
+                  <g id="sleepingEyesGroup" style="display: none;">
+                    <!-- Left closed eye arc -->
+                    <path d="M 62 105 Q 72 113 82 105" stroke="#1e1e24" stroke-width="4.5" stroke-linecap="round" fill="none" />
+                    <!-- Right closed eye arc -->
+                    <path d="M 118 105 Q 128 113 138 105" stroke="#1e1e24" stroke-width="4.5" stroke-linecap="round" fill="none" />
+                  </g>
+
+                  <!-- Blush Cheeks -->
+                  <ellipse cx="53" cy="115" rx="12" ry="6" fill="url(#blushGrad)" />
+                  <ellipse cx="147" cy="115" rx="12" ry="6" fill="url(#blushGrad)" />
+
+                  <!-- Mouth -->
+                  <path id="mouth" d="M 92 118 Q 100 126 108 118" stroke="#1e1e24" stroke-width="4.5" stroke-linecap="round" fill="none" />
+                </g>
+              </svg>
+              </div>
+            </div>
+            
+            <!-- Rest / Bath / Eat Overlays -->
+            <div id="restStatusZzz" class="pet-status-effect" style="display: none;">
+              <span>Z</span><span>z</span><span>z</span>
+            </div>
+            <div id="bathStatusBubbles" class="pet-status-effect-bubbles" style="display: none;">
+              <span class="bubble-p">🫧</span><span class="bubble-p">🧼</span><span class="bubble-p">🫧</span>
+            </div>
+            <div id="eatStatusFood" class="pet-status-effect-food" style="display: none;">
+              <span class="food-p">🥞</span>
+            </div>
+          </div>
+
+          <!-- Quick Actions Panel in Home -->
+          <div class="home-quick-actions">
+            <button class="action-btn" id="openBagBtn">
+              <div class="action-icon">🎒</div>
+              <span>กระเป๋า</span>
+            </button>
+            <button class="action-btn" id="openHouseBtn">
+              <div class="action-icon">🏠</div>
+              <span>บ้าน</span>
+            </button>
+            <button class="action-btn" id="quickFeedBtn">
+              <div class="action-icon">🍰</div>
+              <span>ให้อาหาร</span>
+            </button>
+            <button class="action-btn" id="openDressBtn">
+              <div class="action-icon">👕</div>
+              <span>แต่งตัว</span>
+            </button>
+          </div>
+        </section>
+
+
+        <!-- 2. STRESS TEST VIEW (แบบทดสอบ + คุยกับ AI) -->
+        <section id="view-test" class="view-panel">
+          <!-- View Sub-tabs -->
+          <div class="sub-tab-bar">
+            <button class="sub-tab-btn active" id="subTabTestBtn">แบบทดสอบ</button>
+            <button class="sub-tab-btn" id="subTabChatBtn">คุยกับ AI</button>
+          </div>
+
+          <!-- SUBPAGE A: Stress assessment questionnaire -->
+          <div id="subpage-test-qa" class="subpage-content active">
+            <!-- Test Intro -->
+            <div class="card test-intro-card" id="testIntroSec">
+              <h3 class="card-title">แบบประเมินความเครียด (30 ข้อ)</h3>
+              <p class="card-desc">แบบประเมินนี้ช่วยวิเคราะห์ระดับความเครียดของคุณเพื่อรับคำแนะนำที่เหมาะสม กรุณาตอบตามความเป็นจริงล่าสุดเพื่อช่วยให้ Joy Blob เติบโต</p>
+              <div class="stress-levels-legend">
+                <span>0 = น้อยที่สุดหรือไม่เคยเลย</span>
+                <span>1 = น้อย</span>
+                <span>2 = ปานกลาง</span>
+                <span>3 = มาก</span>
+                <span>4 = มากที่สุด</span>
+              </div>
+              <button class="primary-btn start-test-btn" id="startTestBtn">เริ่มทำแบบประเมิน</button>
+            </div>
+
+            <!-- Quiz Play Box -->
+            <div class="card quiz-card" id="quizPlaySec" style="display: none;">
+              <div class="quiz-header">
+                <span class="quiz-progress" id="quizProgressText">ข้อที่ 1 / 30</span>
+                <div class="progress-track">
+                  <div class="progress-bar-fill" id="quizProgressFill" style="width: 3.33%;"></div>
+                </div>
+              </div>
+              
+              <div class="quiz-question-box">
+                <h4 id="currentQuestionText">รู้สึกว่าตนเองมีเรื่องต้องรับผิดชอบมากเกินไป</h4>
+              </div>
+              
+              <div class="quiz-options">
+                <button class="option-row" data-score="0">
+                  <span class="option-num">0</span>
+                  <span class="option-lbl">น้อยที่สุดหรือไม่เคยเลย</span>
+                </button>
+                <button class="option-row" data-score="1">
+                  <span class="option-num">1</span>
+                  <span class="option-lbl">น้อย</span>
+                </button>
+                <button class="option-row" data-score="2">
+                  <span class="option-num">2</span>
+                  <span class="option-lbl">ปานกลาง</span>
+                </button>
+                <button class="option-row" data-score="3">
+                  <span class="option-num">3</span>
+                  <span class="option-lbl">มาก</span>
+                </button>
+                <button class="option-row" data-score="4">
+                  <span class="option-num">4</span>
+                  <span class="option-lbl">มากที่สุด</span>
+                </button>
+              </div>
+
+              <div class="quiz-nav-btns">
+                <button class="secondary-btn" id="prevQuestBtn" disabled>ก่อนหน้า</button>
+                <button class="primary-btn" id="nextQuestBtn" style="display: none;">ถัดไป</button>
+              </div>
+            </div>
+
+            <!-- Quiz Results Box -->
+            <div class="card results-card" id="quizResultSec" style="display: none;">
+              <div class="results-badge" id="stressBadge">เครียดปานกลาง</div>
+              <div class="results-score">คะแนนรวม: <strong id="stressScoreVal">45</strong> / 120</div>
+              <div class="results-detail">
+                <p id="stressFeedbackText">สภาวะความเครียดของคุณอยู่ในระดับปานกลาง แนะนำให้จัดเวลาพักผ่อนและทำกิจกรรมผ่อนคลายจิตใจ</p>
+              </div>
+              <div class="results-reward-box">
+                <div class="reward-title">🎁 รางวัลจากการประเมินสำเร็จ!</div>
+                <div class="reward-items">
+                  <span class="r-item">🪙 +150 Coins</span>
+                  <span class="r-item">💎 +5 Gems</span>
+                  <span class="r-item">⭐ +50 EXP</span>
+                </div>
+              </div>
+              <button class="primary-btn" id="finishTestBtn">ตกลง</button>
+            </div>
+            
+            <!-- History section -->
+            <div class="test-history-box" id="testHistorySec">
+              <h4>ประวัติการประเมินล่าสุด</h4>
+              <div class="history-list" id="testHistoryList">
+                <div class="empty-state">ยังไม่มีประวัติการประเมิน</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBPAGE B: AI Chat Box -->
+          <div id="subpage-test-chat" class="subpage-content">
+            <div class="ai-chat-header">
+              <div class="ai-avatar">
+                <span class="ai-glow"></span>
+                🤖
+              </div>
+              <div class="ai-status">
+                <div class="ai-title">Joy AI</div>
+                <div class="ai-subtitle">เพื่อนคุยและรับฟังส่วนตัว 🟢 ออนไลน์</div>
+              </div>
+            </div>
+
+            <div class="chat-messages-container" id="chatMsgContainer">
+              <div class="msg-bubble incoming">
+                <div class="msg-content">สวัสดีจ้า ฉัน Joy AI ยินดีที่ได้คุยกับคุณนะ! วันนี้คุณมีเรื่องกังวลใจ เครียด หรืออยากระบายอะไรไหม? พิมพ์บอกฉันได้เสมอนะ 💙</div>
+                <div class="msg-time">เมื่อสักครู่</div>
+              </div>
+            </div>
+
+            <form class="chat-input-bar" id="chatForm">
+              <input type="text" id="chatInput" placeholder="พิมพ์คุยกับ Joy AI..." autocomplete="off">
+              <button type="submit" class="chat-send-btn">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              </button>
+            </form>
+          </div>
+        </section>
+
+
+        <!-- 3. DIARY VIEW -->
+        <section id="view-diary" class="view-panel">
+          <div class="card diary-card">
+            <div class="diary-header">
+              <h3 class="diary-title">3. ไดอารี่</h3>
+              <div class="diary-date" id="diaryCurrentDate">25 มิถุนายน 2569</div>
+            </div>
+
+            <!-- Week Calendar Row -->
+            <div class="week-calendar" id="calendarRow">
+              <!-- Calendar dates generated dynamically -->
+            </div>
+
+            <!-- Mood Selector Grid (12 items) -->
+            <div class="mood-selector-container">
+              <label class="section-sub-title">เลือกอารมณ์ของคุณวันนี้</label>
+              <div class="mood-emojis-grid">
+                <button class="mood-emoji-btn" data-mood="Happy" data-thai="มีความสุข">
+                  <span class="emoji-face">😄</span>
+                  <span class="emoji-name">Happy</span>
+                </button>
+                <button class="mood-emoji-btn" data-mood="Sad" data-thai="เศร้า">
+                  <span class="emoji-face">😢</span>
+                  <span class="emoji-name">Sad</span>
+                </button>
+                <button class="mood-emoji-btn" data-mood="Angry" data-thai="โกรธ">
+                  <span class="emoji-face">😡</span>
+                  <span class="emoji-name">Angry</span>
+                </button>
+                <button class="mood-emoji-btn" data-mood="Relax" data-thai="ผ่อนคลาย">
+                  <span class="emoji-face">😌</span>
+                  <span class="emoji-name">Relax</span>
+                </button>
+                <button class="mood-emoji-btn" data-mood="Bored" data-thai="เบื่อ">
+                  <span class="emoji-face">😑</span>
+                  <span class="emoji-name">Bored</span>
+                </button>
+                <button class="mood-emoji-btn" data-mood="Tired" data-thai="เหนื่อย">
+                  <span class="emoji-face">😫</span>
+                  <span class="emoji-name">Tired</span>
+                </button>
+                <button class="mood-emoji-btn" data-mood="Anxious" data-thai="กังวล">
+                  <span class="emoji-face">😟</span>
+                  <span class="emoji-name">Anxious</span>
+                </button>
+                <button class="mood-emoji-btn" data-mood="Lonely" data-thai="เหงา">
+                  <span class="emoji-face">😔</span>
+                  <span class="emoji-name">Lonely</span>
+                </button>
+                <button class="mood-emoji-btn" data-mood="Frustrated" data-thai="หงุดหงิด">
+                  <span class="emoji-face">😤</span>
+                  <span class="emoji-name">Frustrated</span>
+                </button>
+                <button class="mood-emoji-btn" data-mood="Upset" data-thai="เสียใจ">
+                  <span class="emoji-face">😭</span>
+                  <span class="emoji-name">Upset</span>
+                </button>
+                <button class="mood-emoji-btn" data-mood="Stressed" data-thai="เครียด">
+                  <span class="emoji-face">😰</span>
+                  <span class="emoji-name">Stressed</span>
+                </button>
+                <button class="mood-emoji-btn" data-mood="Calm" data-thai="สงบ">
+                  <span class="emoji-face">😇</span>
+                  <span class="emoji-name">Calm</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Notes Editor -->
+            <div class="diary-note-editor">
+              <label for="diaryTextInput" class="section-sub-title">เขียนบันทึกของคุณวันนี้</label>
+              <textarea id="diaryTextInput" rows="4" placeholder="เขียนบันทึกของคุณ ขอบคุณตัวเอง หรือระบายสิ่งที่เกิดขึ้นในวันนี้..."></textarea>
+              <button class="primary-btn" id="saveDiaryBtn" style="margin-top: 12px; width: 100%;">บันทึกไดอารี่</button>
+            </div>
+          </div>
+
+          <!-- Diary History List -->
+          <div class="diary-history-container">
+            <h4 class="history-title">ประวัติการบันทึกย้อนหลัง</h4>
+            <div class="diary-history-list" id="diaryHistoryList">
+              <div class="empty-state">ยังไม่มีบันทึกไดอารี่</div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 4. QUEST VIEW (เควสดูแลตัวเองตามอารมณ์) -->
+        <section id="view-quest" class="view-panel">
+          <div class="card quest-card-main">
+            <div class="quest-main-header">
+              <h3 class="quest-title">4. เควสบำบัดอารมณ์</h3>
+              <div class="quest-count" id="questCountBadge">เควสประจำวัน (0/5)</div>
+            </div>
+            
+            <!-- Dynamic Subtitle based on Mood -->
+            <div class="quest-subtext" id="questSubtextText">บันทึกอารมณ์ของคุณวันนี้เพื่อรับเควสเยียวยาจิตใจที่ตรงจุด!</div>
+
+            <!-- Quests Checklist (Generated Dynamically) -->
+            <div class="quest-list-items" id="questContainer">
+              <div class="empty-state" style="padding: 30px 10px;">กรุณาบันทึกอารมณ์ในหน้า "ไดอารี่" ก่อน เพื่อเปิดระบบเควสบำบัดใจประจำวันนะคะ 📔</div>
+            </div>
+
+            <!-- Grand Quest Reward Card -->
+            <div class="grand-reward-box">
+              <div class="gr-left">
+                <div class="gr-title">รางวัลพิเศษเมื่อทำเควสอารมณ์ครบ</div>
+                <div class="gr-gems">💎 10 Gems</div>
+              </div>
+              <button class="primary-btn claim-grand-btn" id="claimGrandBtn" disabled>รับรางวัล</button>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 5. MINI GAME VIEW -->
+        <section id="view-game" class="view-panel">
+          <div class="card game-intro-card" id="gameIntroSec">
+            <h3 class="card-title">6. มินิเกม</h3>
+            <p class="card-desc">หาเหรียญทองได้ไม่จำกัด! (รับ EXP จากเกมวันนี้: <strong id="dailyGameExpVal">0</strong>/30)</p>
+            
+            <div class="games-menu-list">
+              <!-- Game Card 1 -->
+              <div class="game-item-card">
+                <div class="game-item-img">🧩</div>
+                <div class="game-item-info">
+                  <div class="game-item-title">ความจำทดสอบ (จับคู่ภาพ)</div>
+                  <div class="game-item-desc" >ฝึกสมองจับคู่ของกินแสนอร่อย หาเหรียญทองได้ไม่จำกัด</div>
+                </div>
+                <button class="primary-btn play-game-btn" id="playMemoryGameBtn">เล่นเลย</button>
+              </div>
+
+              <!-- Sort Game Card in Menu -->
+              <div class="game-item-card" id="gameItemSortCard">
+                <div class="game-item-img">🍬</div>
+                <div class="game-item-info">
+                  <div class="game-item-title">เรียงอารมณ์ (ระบายความเครียด)</div>
+                  <div class="game-item-desc" id="sortGameDescText">จัดอารมณ์ให้ตรงกลุ่มเป้าหมาย หาเหรียญทองได้ไม่จำกัด</div>
+                </div>
+                <button class="primary-btn play-game-btn" id="playSortGameBtn">เล่นเลย</button>
+              </div>
+
+              <!-- Shooter Game Card in Menu -->
+              <div class="game-item-card" id="gameItemShooterCard">
+                <div class="game-item-img">🎯</div>
+                <div class="game-item-info">
+                  <div class="game-item-title">ยิงอารมณ์บับเบิ้ล (Bubble Shooter)</div>
+                  <div class="game-item-desc" id="shooterGameDescText">ยิงหน้าอารมณ์สีสันสดใส จับคู่ 3 ลูกเพื่อสลายความเครียด</div>
+                </div>
+                <button class="primary-btn play-game-btn" id="playShooterGameBtn">เล่นเลย</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Memory Game Play Panel -->
+          <div class="card memory-game-card" id="memoryGamePlaySec" style="display: none;">
+            <div class="game-play-header">
+              <button class="back-arrow-btn" id="closeGameBtn">← กลับ</button>
+              <div class="game-timer">เวลา: <span id="gameTimerSec">00</span> วินาที</div>
+              <div class="game-moves">คู่: <span id="gameMatchesCount">0</span>/6</div>
+            </div>
+            
+            <!-- Cards Grid (4x3 = 12 Cards) -->
+            <div class="memory-grid" id="memoryGrid">
+              <!-- JS will spawn cards here -->
+            </div>
+            
+            <!-- Win panel Overlay in Game Card -->
+            <div class="game-win-overlay" id="gameWinOverlay" style="display: none;">
+              <div class="win-content">
+                <div class="win-emoji">🏆</div>
+                <div class="win-title">ชนะแล้ว!</div>
+                <div class="win-time-txt">คุณจับคู่เสร็จสิ้นใน <span id="winTimeVal">30</span> วินาที</div>
+                <div class="win-rewards">
+                  <span>🪙 +50 Coins</span>
+                  <span>⭐ +20 EXP</span>
+                </div>
+                <button class="primary-btn" id="backToGameMenuBtn">รับรางวัลและตกลง</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sort Game Play Panel -->
+          <div class="card sort-game-card" id="sortGamePlaySec" style="display: none;">
+            <div class="game-play-header">
+              <button class="back-arrow-btn" id="closeSortGameBtn">← กลับ</button>
+              <div class="game-timer">เวลาเหลือ: <span id="sortGameTimerSec">15</span> วินาที</div>
+              <div class="game-moves">ความถูกต้อง: <span id="sortGameScoreCount">0</span>/10</div>
+            </div>
+            
+            <div class="sort-game-body">
+              <div class="sort-target-box">
+                <div class="sort-target-label">กดเลือกกลุ่มอารมณ์ให้ตรงกับไอคอนด้านล่าง:</div>
+                <div class="sort-current-bubble" id="sortCurrentBubble">😡</div>
+              </div>
+              
+              <div class="sort-options-row">
+                <button class="sort-btn-choice angry" data-category="Angry">โกรธ 😡</button>
+                <button class="sort-btn-choice sad" data-category="Sad">เศร้า 😢</button>
+                <button class="sort-btn-choice happy" data-category="Happy">มีความสุข 😄</button>
+                <button class="sort-btn-choice calm" data-category="Calm">สงบ 😌</button>
+                <button class="sort-btn-choice scared" data-category="Scared">กลัว 😱</button>
+                <button class="sort-btn-choice surprised" data-category="Surprised">ตกใจ 🤯</button>
+              </div>
+            </div>
+            
+            <!-- Win/Lose Overlay for Sort Game -->
+            <div class="game-win-overlay" id="sortGameWinOverlay" style="display: none;">
+              <div class="win-content">
+                <div class="win-emoji" id="sortGameWinEmoji">🏆</div>
+                <div class="win-title" id="sortGameWinTitle">ชนะแล้ว!</div>
+                <div class="win-time-txt" id="sortGameWinDesc">คุณแยกแยะอารมณ์สำเร็จ!</div>
+                <div class="win-rewards">
+                  <span>🪙 +60 Coins</span>
+                  <span>⭐ +25 EXP</span>
+                </div>
+                <button class="primary-btn" id="backToSortGameMenuBtn">ตกลง</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shooter Game Play Panel -->
+          <div class="card shooter-game-card" id="shooterGamePlaySec" style="display: none;">
+            <div class="game-play-header">
+              <button class="back-arrow-btn" id="closeShooterGameBtn">← กลับ</button>
+              <div class="game-timer" style="display: none;">เวลา: <span id="shooterGameTimerSec">0</span> วินาที</div>
+              <div class="game-moves">คะแนน: <span id="shooterGameScoreCount">0</span></div>
+            </div>
+            
+            <div class="shooter-game-body" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 10px; position: relative;">
+              <canvas id="shooterCanvas" width="300" height="350" style="background: rgba(0, 0, 0, 0.4); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 12px; cursor: crosshair; display: block; max-width: 100%;"></canvas>
+              <div style="font-size: 10px; color: #94a3b8; margin-top: 8px; text-align: center;">💡 แตะที่หน้าจอเพื่อเล็งและยิงจับคู่อารมณ์สีเดียวกัน!</div>
+            </div>
+            
+            <!-- Win/Lose Overlay for Shooter Game -->
+            <div class="game-win-overlay" id="shooterGameWinOverlay" style="display: none;">
+              <div class="win-content">
+                <div class="win-emoji" id="shooterGameWinEmoji">🏆</div>
+                <div class="win-title" id="shooterGameWinTitle">ชนะแล้ว!</div>
+                <div class="win-time-txt" id="shooterGameWinDesc">คุณยิงอารมณ์บับเบิ้ลสำเร็จ!</div>
+                <div class="win-rewards">
+                  <span>🪙 +70 Coins</span>
+                  <span>⭐ +30 EXP</span>
+                </div>
+                <button class="primary-btn" id="backToShooterGameMenuBtn">ตกลง</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 6. SHOP VIEW -->
+        <section id="view-shop" class="view-panel">
+          <div class="card shop-card">
+            <div class="shop-header-row">
+              <h3 class="shop-title">5. ร้านค้า</h3>
+              <div class="shop-money-info">
+                <span>🪙 <span id="shopCoinsVal">0</span></span>
+                <span>💎 <span id="shopGemsVal">0</span></span>
+              </div>
+            </div>
+
+            <!-- Shop category sub-tabs -->
+            <div class="shop-categories">
+              <button class="shop-cat-btn active" data-cat="food">อาหาร</button>
+              <button class="shop-cat-btn" data-cat="drink">เครื่องดื่ม</button>
+              <button class="shop-cat-btn" data-cat="furniture">เฟอร์นิเจอร์</button>
+              <button class="shop-cat-btn" data-cat="clothes">เสื้อผ้า</button>
+            </div>
+
+            <!-- Shop Items Grid -->
+            <div class="shop-items-grid" id="shopItemsGrid">
+              <!-- Dynamically populated from JS -->
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Tab Navigation Bar (6 Tabs) -->
+      <nav class="app-bottom-nav">
+        <!-- 1. HOME TAB -->
+        <button class="nav-tab active" data-tab="home">
+          <div class="nav-icon">🏠</div>
+          <span class="nav-label">โฮม</span>
+        </button>
+
+        <!-- 2. STRESS TEST TAB -->
+        <button class="nav-tab" data-tab="test">
+          <div class="nav-icon">📋</div>
+          <span class="nav-label">ทดสอบ</span>
+        </button>
+
+        <!-- 3. DIARY TAB -->
+        <button class="nav-tab" data-tab="diary">
+          <div class="nav-icon">📔</div>
+          <span class="nav-label">ไดอารี่</span>
+        </button>
+
+        <!-- 4. QUEST TAB -->
+        <button class="nav-tab" data-tab="quest">
+          <div class="nav-icon">🎯</div>
+          <span class="nav-label">เควส</span>
+        </button>
+
+        <!-- 5. MINI GAME TAB -->
+        <button class="nav-tab" data-tab="game">
+          <div class="nav-icon">🎮</div>
+          <span class="nav-label">มินิเกม</span>
+        </button>
+
+        <!-- 6. SHOP TAB -->
+        <button class="nav-tab" data-tab="shop">
+          <div class="nav-icon">🛍️</div>
+          <span class="nav-label">ร้านค้า</span>
+        </button>
+      </nav>
+
+    </div><!-- End App Wrapper -->
+
+
+    <!-- ==============================================
+         MODALS & OVERLAYS
+         ============================================== -->
+
+    <!-- Modal A: Inventory Bag (กระเป๋า) -->
+    <div class="modal-overlay" id="modalBag">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h4 class="modal-title">🎒 กระเป๋าใส่ของ</h4>
+          <button class="close-modal-btn" onclick="closeModal('modalBag')">×</button>
+        </div>
+        <div class="modal-tabs">
+          <button class="modal-tab-btn active" id="modalTabBagFood">อาหาร</button>
+          <button class="modal-tab-btn" id="modalTabBagDrink">เครื่องดื่ม</button>
+          <button class="modal-tab-btn" id="modalTabBagFurniture">เฟอร์นิเจอร์</button>
+          <button class="modal-tab-btn" id="modalTabBagClothes">เสื้อผ้า</button>
+        </div>
+        <div class="modal-body">
+          <div class="inventory-grid" id="bagInventoryGrid">
+            <!-- Dynamically populated from JS -->
+          </div>
+          
+          <!-- Selected item panel -->
+          <div class="selected-item-action-panel" id="selectedItemPanel" style="display: none;">
+            <div class="item-action-detail">
+              <span class="action-item-icon" id="actionItemIcon">🍰</span>
+              <div class="action-item-text">
+                <div class="action-item-name" id="actionItemName">สตรอว์เบอร์รี่เค้ก</div>
+                <div class="action-item-desc" id="actionItemDesc">ฟื้นฟู HP +20 | Energy +10</div>
+              </div>
+            </div>
+            <button class="primary-btn feed-use-btn" id="useInventoryItemBtn">ใช้งานไอเท็ม</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal B: Room Changer (บ้าน) -->
+    <div class="modal-overlay" id="modalHouse">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h4 class="modal-title">🏠 เลือกห้องเลี้ยง Joy Blob</h4>
+          <button class="close-modal-btn" onclick="closeModal('modalHouse')">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="rooms-selection-grid">
+            <button class="room-select-option active" data-room="bedroom" data-min-lvl="10">
+              <div class="room-preview-emoji">🛏️</div>
+              <div class="room-select-name">ห้องนอน (นอนเตียง)</div>
+              <span class="room-active-lbl">ใช้งานอยู่</span>
+            </button>
+            <button class="room-select-option" data-room="dining" data-min-lvl="999">
+              <div class="room-preview-emoji">🍲</div>
+              <div class="room-select-name">ห้องอาหาร (กินข้าว)</div>
+              <span class="room-active-lbl">ใช้งานอยู่</span>
+            </button>
+            <button class="room-select-option" data-room="bathroom" data-min-lvl="999">
+              <div class="room-preview-emoji">🛁</div>
+              <div class="room-select-name">ห้องอาบน้ำ (แช่อ่าง)</div>
+              <span class="room-active-lbl">ใช้งานอยู่</span>
+            </button>
+            <button class="room-select-option" data-room="garden" data-min-lvl="999">
+              <div class="room-preview-emoji">🌳</div>
+              <div class="room-select-name">สวนหย่อม (นั่งเล่น)</div>
+              <span class="room-active-lbl">ใช้งานอยู่</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal C: Dressing Room (แต่งตัว) -->
+    <div class="modal-overlay" id="modalDress">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h4 class="modal-title">🎀 ห้องแต่งตัว Joy Blob</h4>
+          <button class="close-modal-btn" onclick="closeModal('modalDress')">×</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-desc">เลือกของแต่งตัวที่มีในครอบครอง (ซื้อเครื่องประดับใหม่ได้ใน ร้านค้า)</p>
+          
+          <div class="closet-grid" id="closetGrid">
+            <!-- Populated dynamically -->
+          </div>
+          
+          <button class="primary-btn" onclick="closeModal('modalDress')" style="margin-top: 15px; width: 100%;">ตกลง</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal D: Profile & RPG Stats Detail -->
+    <div class="modal-overlay" id="modalProfile">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h4 class="modal-title">📊 โปรไฟล์ & สเตตัส Joy Blob</h4>
+          <button class="close-modal-btn" onclick="closeModal('modalProfile')">×</button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="profile-header">
+            <svg viewBox="0 0 100 100" class="profile-blob-large">
+              <circle cx="50" cy="50" r="45" fill="url(#blobGrad)" />
+              <ellipse cx="40" cy="45" rx="6" ry="8" fill="#ffffff" />
+              <ellipse cx="60" cy="45" rx="6" ry="8" fill="#ffffff" />
+              <circle cx="38" cy="43" r="2" fill="#000" />
+              <circle cx="58" cy="43" r="2" fill="#000" />
+              <path d="M 45 60 Q 50 65 55 60" stroke="#ff7e79" stroke-width="3" stroke-linecap="round" fill="none" />
+              <ellipse cx="32" cy="52" rx="6" ry="3" fill="#ff7da7" opacity="0.6" />
+              <ellipse cx="68" cy="52" rx="6" ry="3" fill="#ff7da7" opacity="0.6" />
+            </svg>
+            <h3 class="profile-title" id="profileNameText">Joy Blob</h3>
+            <span class="badge" id="profileLvlText">Level 0</span>
+            <div class="evo-tier-txt" id="profileEvoTier" style="font-size:12px; color:#a855f7; font-weight:bold; margin-top:4px;">ร่าง: Baby Blob</div>
+          </div>
+
+          <!-- Active RPG Equip Stats Bonuses Display -->
+          <div class="equip-stats-summary-card">
+            <div class="ess-title">🛡️ พลังสวมใส่อุปกรณ์ในตัว:</div>
+            <div class="ess-grid">
+              <div class="ess-item">💥 โบนัส EXP: <span id="rpgBonusAtk">+0%</span></div>
+              <div class="ess-item">💰 โบนัสเงินทอง: <span id="rpgBonusCoin">+0%</span></div>
+              <div class="ess-item">❤️ พลังชีวิตสูงสุด: <span id="rpgBonusMaxHp">+0</span></div>
+              <div class="ess-item">⚡ พลังงานสูงสุด: <span id="rpgBonusMaxEnergy">+0</span></div>
+            </div>
+          </div>
+
+          <div class="stats-grid-details">
+            <div class="stat-detail-item">
+              <div class="detail-val" id="statDaysTotal">1 วัน</div>
+              <div class="detail-label">วันเลี้ยงทั้งหมด</div>
+            </div>
+            <div class="stat-detail-item">
+              <div class="detail-val" id="statTestsTaken">0 ครั้ง</div>
+              <div class="detail-label">ทำประเมินความเครียด</div>
+            </div>
+            <div class="stat-detail-item">
+              <div class="detail-val" id="statAvgStress">-</div>
+              <div class="detail-label">สถิติคะแนนเฉลี่ย</div>
+            </div>
+            <div class="stat-detail-item">
+              <div class="detail-val" id="statQuestsDone">0 เควส</div>
+              <div class="detail-label">ทำเควสสำเร็จ</div>
+            </div>
+          </div>
+
+          <!-- Achievement Badges Card -->
+          <div class="achievement-badges-card" style="margin-top: 16px; margin-bottom: 16px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 12px;">
+            <div class="ess-title" style="text-align: left; font-weight: bold; margin-bottom: 8px; font-size: 14px; color: #a855f7; display: flex; align-items: center; gap: 4px;">🏆 เหรียญตราเกียรติยศ (ปลดล็อกตามเลเวล):</div>
+            <div class="badges-grid" id="profileBadgesGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+              <!-- Badges will be rendered dynamically by JavaScript -->
+            </div>
+          </div>
+          
+          <div class="rename-box">
+            <label for="changeNameInput">ตั้งชื่อใหม่ให้เพื่อนตัวน้อย:</label>
+            <div class="rename-inputs">
+              <input type="text" id="changeNameInput" placeholder="ตั้งชื่อให้ Joy Blob...">
+              <button class="primary-btn" id="saveNameBtn">บันทึก</button>
+            </div>
+          </div>
+          
+          <div class="reset-box" style="margin-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 16px;">
+            <button class="secondary-btn" id="resetProgressBtn" style="width: 100%; border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.05);">⚠️ รีเซ็ตข้อมูลทั้งหมด (เริ่มใหม่)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal E: Level Up Celebration -->
+    <div class="modal-overlay" id="modalLevelUp" style="z-index: 150;">
+      <div class="modal-card level-up-card">
+        <div class="level-up-body">
+          <div class="level-up-sparkles">✨🌸🌟🌸✨</div>
+          <div class="level-up-emoji-container">
+            <span class="level-up-emoji bounce-anim">🎉🐣🎉</span>
+          </div>
+          <h2 class="level-up-title-text">LEVEL UP!</h2>
+          <p class="level-up-subtitle">เย้! Joy Blob ของคุณเติบโตขึ้นแล้วนะค๊า ✨</p>
+          <div class="level-up-badge-box">
+            <span class="lvl-txt">Lv. <span id="levelUpBadgeVal">1</span></span>
+          </div>
+          <div class="level-up-unlocks-box">
+            <div class="lu-unlock-title">สิ่งที่ปลดล็อกใหม่:</div>
+            <div class="lu-unlock-items" id="levelUpRewardsList">
+              <!-- Dynamically populated -->
+              <div>🔓 ปลดล็อกแชทกับ Joy AI 🤖</div>
+            </div>
+          </div>
+          <button class="primary-btn level-up-ok-btn" onclick="closeModal('modalLevelUp')">เติบโตต่อไปด้วยกัน 💖</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- End Phone Frame -->
+
+  <!-- JavaScript Injection -->
+  <script src="app.js?v=3.7"></script>
+</body>
+</html>

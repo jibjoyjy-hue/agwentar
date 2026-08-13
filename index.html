@@ -1,0 +1,1280 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gwentar - เพื่อนตัวน้อยดูแลและบำบัดใจ</title>
+  <!-- Google Fonts: Prompt for Thai, Inter for English/Numbers -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Link to stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Desktop Preview Layout -->
+  <div class="preview-layout">
+
+    <!-- Mobile Screen Emulator -->
+    <div class="phone-frame">
+      <div class="phone-notch"></div>
+      
+      <!-- App Wrapper -->
+      <div class="app-container">
+        
+        <!-- Standard Header (Shown on screens that require it) -->
+        <header class="app-header" id="appHeader">
+          <div class="header-top">
+            <div class="profile-info" id="headerProfile">
+              <div class="avatar-circle" id="headerPetAvatar">
+                <!-- Selected Pet Emoji will show here -->
+                🔵
+              </div>
+              <div class="name-lvl">
+                <span class="char-name" id="headerCharName">Gwentar</span>
+                <span class="lvl-badge">Lv. 8</span>
+              </div>
+            </div>
+            
+            <div class="header-actions">
+              <button class="gift-noti-btn" onclick="nav('screen-23')">🎁</button>
+              <button class="gear-settings-btn" onclick="nav('screen-22')">⚙️</button>
+            </div>
+          </div>
+          
+          <!-- Status Counters -->
+          <div class="stats-row">
+            <div class="status-pill hp-pill" id="pillHp">
+              <div class="status-hp-bg"></div>
+              <span class="stat-icon">❤️</span>
+              <span class="stat-val">46/50</span>
+              <button class="add-stat-btn">+</button>
+            </div>
+            <div class="status-pill energy-pill" id="pillEnergy">
+              <div class="status-energy-bg"></div>
+              <span class="stat-icon">⚡</span>
+              <span class="stat-val">42/50</span>
+              <button class="add-stat-btn">+</button>
+            </div>
+            <div class="status-pill coin-pill" id="pillCoins">
+              <span class="stat-icon">🪙</span>
+              <span class="stat-val" id="coinCounter">12,450</span>
+              <button class="add-stat-btn">+</button>
+            </div>
+            <div class="status-pill gem-pill" id="pillGems">
+              <span class="stat-icon">💎</span>
+              <span class="stat-val" id="gemCounter">230</span>
+              <button class="add-stat-btn">+</button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Content Swappable Area -->
+        <main class="app-main-content">
+
+          <!-- ==========================================
+               SCREEN 1: หน้าโฮม (Home)
+               ========================================== -->
+          <section class="screen" id="screen-1">
+            <div class="home-pet-section">
+              <!-- Speech Bubble -->
+              <div class="speech-bubble" id="petBubble">
+                ปะป๊ามะม๊ากลับมาแว้วหรอคะ! หนูคิดถึงปะป๊ามะม๊าที่สุดเยยย 💖
+              </div>
+              
+              <!-- Character Display -->
+              <div class="pet-character-area" id="petHomeTap">
+
+
+                <div class="carpet-ellipse" id="homeCarpet" style="left: 50%; top: 60%; transform: translate(-50%, -50%);"></div>
+                <!-- Dynamic Pet Render -->
+                <div class="dynamic-pet-display" data-state="idle" id="petHomeContainer" style="left: 50%; top: 60%;"></div>
+              </div>
+
+              <!-- Posture Selector Buttons -->
+              <div class="posture-selector-row" style="display: flex; gap: 8px; justify-content: center; margin: 10px 0; z-index: 10;">
+                <button class="posture-btn" data-posture="standing" onclick="setPetPosture('standing')" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 20px; color: #fff; padding: 5px 12px; font-size: 11px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 4px; transition: all 0.2s;">🧍 ยืน</button>
+                <button class="posture-btn" data-posture="sitting" onclick="setPetPosture('sitting')" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 20px; color: #fff; padding: 5px 12px; font-size: 11px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 4px; transition: all 0.2s;">🧎 นั่ง</button>
+                <button class="posture-btn active" data-posture="idle" onclick="setPetPosture('idle')" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 20px; color: #fff; padding: 5px 12px; font-size: 11px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 4px; transition: all 0.2s;">💃 ดุ๊กดิ๊ก</button>
+
+              </div>
+
+              
+              <!-- 3 Actions Circles -->
+              <div class="home-4-actions" style="justify-content: center; gap: 24px;">
+                <button class="home-action-btn" id="btnBag">
+                  <div class="action-circle-icon">🎒</div>
+                  <span>กระเป๋า</span>
+                </button>
+                <button class="home-action-btn" id="btnHouse">
+                  <div class="action-circle-icon">🏠</div>
+                  <span>บ้าน</span>
+                </button>
+                <button class="home-action-btn" id="btnCheckIn" onclick="doDailyCheckIn()">
+                  <div class="action-circle-icon">📅</div>
+                  <span>เช็คอิน</span>
+                </button>
+              </div>
+              
+
+            </div>
+          </section>
+
+          <!-- ==========================================
+               SCREEN 2: เลือกตัวเลี้ยง (Select Pet)
+               ========================================== -->
+          <section class="screen" id="screen-2">
+            <div class="screen-header">
+              <div class="screen-title">เลือกสัตว์เลี้ยง</div>
+              <button class="screen-close-btn" onclick="nav('screen-1')">✕</button>
+            </div>
+            <p style="font-size: 11px; color: var(--text-secondary); margin-bottom: 12px; text-align: center;">เลือกเพื่อนที่จะร่วมเดินทางดูแลใจไปกับคุณ</p>
+            
+            <div class="select-pet-grid" id="petSelectGrid">
+              <!-- Dynamically populated by app.js -->
+            </div>
+            
+            <button class="btn-gradient" style="width:100%" id="confirmPetBtn">ยืนยันเลือกน้อง</button>
+          </section>
+
+          <!-- ==========================================
+               SCREEN 3: โปรไฟล์ & ความสัมพันธ์ (Profile & Bond)
+               ========================================== -->
+          <section class="screen" id="screen-3">
+            <div class="screen-header">
+              <button class="screen-back-btn" onclick="nav('screen-1')">←</button>
+              <div class="screen-title">ข้อมูลสัตว์เลี้ยง</div>
+              <div style="width: 28px;"></div>
+            </div>
+
+            <!-- Profile Info Content Tab -->
+            <div id="profileTabInfo" style="display: block;">
+              <div class="card info-avatar-section">
+                <!-- Info Avatar Container -->
+                <div class="large-pet-avatar" id="infoPetAvatar">🔵</div>
+                <div class="info-char-name">
+                  <span id="infoPetName">Blob</span> <span style="cursor:pointer;" id="editPetNameBtn">✏️</span>
+                </div>
+                <span style="font-size: 11px; color: var(--text-muted);">เลเวล 8</span>
+              </div>
+
+              <div class="gender-selector">
+                <div class="gender-pill active male" id="malePill">♂ ชาย</div>
+                <div class="gender-pill female" id="femalePill">♀ หญิง</div>
+              </div>
+
+              <!-- Stats Bars -->
+              <div class="card info-stat-bar-group">
+                <div class="info-stat-row">
+                  <div class="info-stat-label">
+                    <span>ความสุข</span>
+                    <span>45/50</span>
+                  </div>
+                  <div class="info-bar-container">
+                    <div class="info-bar-fill hp" style="width: 90%;"></div>
+                  </div>
+                </div>
+                <div class="info-stat-row">
+                  <div class="info-stat-label">
+                    <span>พลังงาน</span>
+                    <span>42/50</span>
+                  </div>
+                  <div class="info-bar-container">
+                    <div class="info-bar-fill energy" style="width: 84%;"></div>
+                  </div>
+                </div>
+                <div class="info-stat-row">
+                  <div class="info-stat-label">
+                    <span>เลเวล 8</span>
+                    <span>EXP 100/200</span>
+                  </div>
+                  <div class="info-bar-container">
+                    <div class="info-bar-fill exp" style="width: 50%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card info-details-card">
+                <div class="info-detail-line">
+                  <span class="info-detail-key">นิสัย</span>
+                  <span class="info-detail-val">ขี้อ้อน, รักสงบ, รักธรรมชาติ</span>
+                </div>
+                <div class="info-detail-line">
+                  <span class="info-detail-key">วันเกิด</span>
+                  <span class="info-detail-val">15 ธันวาคม</span>
+                </div>
+                <div class="info-detail-line">
+                  <span class="info-detail-key">ของที่ชอบ</span>
+                  <span class="info-detail-val">ขนม, ของเล่นบางชนิด, ดอกไม้</span>
+                </div>
+              </div>
+              <button id="btnViewOtherPets" class="btn-gradient" style="width: 100%; margin-top: 10px;" onclick="nav('screen-2')">ดูตัวละครอื่น</button>
+            </div>
+          </section>
+
+          <!-- ==========================================
+               SCREEN 4: บ้านของน้อง (Pet Map)
+               ========================================== -->
+          <section class="screen" id="screen-4">
+            <div class="screen-header">
+              <button class="screen-back-btn" onclick="nav('screen-1')">←</button>
+              <div class="screen-title">บ้านของน้อง</div>
+              <div style="width: 28px;"></div>
+            </div>
+            
+            <div class="house-map-container">
+              <!-- Floating Room Bubbles with Image Thumbnails -->
+              <div class="map-room-bubble node-bedroom" onclick="nav('screen-5')">
+                <img src="assets/bedroom.png" class="bubble-thumbnail" alt="ห้องนอน">
+                <span>ห้องนอน <small id="bedroomLockBadge" style="font-size:9px; color:#f87171; font-weight:800; display:block;">🔒 Lv.1</small></span>
+              </div>
+              <div class="map-room-bubble node-dining" onclick="nav('screen-6')">
+                <img src="assets/dining.png" class="bubble-thumbnail" alt="ห้องอาหาร">
+                <span>ห้องอาหาร <small id="diningLockBadge" style="font-size:9px; color:#f87171; font-weight:800; display:block;">🔒 Lv.15</small></span>
+              </div>
+              <div class="map-room-bubble node-living" onclick="nav('screen-1')">
+                <img src="assets/livingroom.png" class="bubble-thumbnail" alt="ห้องนั่งเล่น">
+                <span>ห้องนั่งเล่น <small id="livingLockBadge" style="font-size:9px; color:#f87171; font-weight:800; display:block;">🔒 Lv.3</small></span>
+              </div>
+              <div class="map-room-bubble node-bathroom" onclick="nav('screen-7')">
+                <img src="assets/bathroom.png" class="bubble-thumbnail" alt="ห้องน้ำ">
+                <span>ห้องน้ำ <small id="bathroomLockBadge" style="font-size:9px; color:#f87171; font-weight:800; display:block;">🔒 Lv.2</small></span>
+              </div>
+              <div class="map-room-bubble node-garden" onclick="nav('screen-8')">
+                <img src="assets/garden.png" class="bubble-thumbnail" alt="สวน">
+                <span>สวน <small id="gardenLockBadge" style="font-size:9px; color:#f87171; font-weight:800; display:block;">🔒 Lv.25</small></span>
+              </div>
+              <div class="map-room-bubble node-activity" onclick="nav('screen-10')">
+                <img src="assets/toyroom.png" class="bubble-thumbnail" alt="ห้องกิจกรรม">
+                <span>ห้องกิจกรรม <small id="activityLockBadge" style="font-size:9px; color:#f87171; font-weight:800; display:block;">🔒 Lv.10</small></span>
+              </div>
+              <div class="map-room-bubble node-dressing" onclick="nav('screen-9')">
+                <img src="assets/bright_dressup.png" class="bubble-thumbnail" alt="ห้องแต่งตัว">
+                <span>ห้องแต่งตัว <small id="dressingLockBadge" style="font-size:9px; color:#f87171; font-weight:800; display:block;">🔒 Lv.8</small></span>
+              </div>
+
+              <!-- Pet standing on the path -->
+              <div class="map-pet-standing" id="mapPetStanding">🔵</div>
+            </div>
+          </section>
+
+          <!-- ==========================================
+               SCREEN 5: ห้องนอน (Bedroom)
+               ========================================== -->
+          <section class="screen" id="screen-5">
+            <div class="screen-header">
+              <button class="screen-back-btn" onclick="nav('screen-4')">←</button>
+              <div class="screen-title">ห้องนอน</div>
+              <button class="screen-close-btn" onclick="nav('screen-1')">✕</button>
+            </div>
+            
+            <div class="room-info-bar">
+              <div class="room-info-stats">
+                <span>💖 ความสุข +10</span>
+                <span>⚡ พลังงาน +20</span>
+              </div>
+              <div class="room-timer">02:30:00</div>
+            </div>
+            
+            <div class="room-visual-area">
+              <!-- Hotspots -->
+              <div class="room-hotspot" style="left: 20%; top: 55%;" onclick="setPetPostureDirect('petSleepContainer', 'sleeping', 20, 55)"></div>
+              <div class="room-hotspot" style="left: 80%; top: 50%;" onclick="setPetPostureDirect('petSleepContainer', 'sitting', 80, 50)"></div>
+              <div class="room-hotspot" style="left: 55%; top: 75%;" onclick="setPetPostureDirect('petSleepContainer', 'standing', 55, 75)"></div>
+              
+              <div class="sleep-particles">Zzz</div>
+              <!-- Dynamic Pet sleeping inside bed -->
+              <div class="dynamic-pet-display" data-state="sleeping" id="petSleepContainer" style="left: 20%; top: 55%;"></div>
+            </div>
+            
+            <div class="room-action-options">
+              <button class="room-act-btn active" onclick="triggerBedAction('นอน')">นอน</button>
+              <button class="room-act-btn" onclick="triggerBedAction('อ่านหนังสือ')">อ่านหนังสือ</button>
+              <button class="room-act-btn" onclick="triggerBedAction('ฟังเพลง')">ฟังเพลง</button>
+            </div>
+
+
+          </section>
+
+          <!-- ==========================================
+               SCREEN 6: ห้องอาหาร (Dining Room)
+               ========================================== -->
+          <section class="screen" id="screen-6" style="position: relative;">
+            <div class="screen-header" style="z-index: 10;">
+              <button class="screen-back-btn" onclick="nav('screen-4')">←</button>
+              <div class="screen-title">ห้องอาหาร</div>
+              <button class="screen-close-btn" onclick="nav('screen-1')">✕</button>
+            </div>
+            
+            <div class="room-info-bar" style="z-index: 10; margin-bottom: 0;">
+              <div class="room-info-stats">
+                <span>💖 ความสุข +10</span>
+                <span>⚡ พลังงาน +15</span>
+              </div>
+            </div>
+            
+            <div class="pet-character-area" id="petEatArea" style="height: 320px; width: 100%; position: relative; overflow: visible; flex-grow: 1;">
+              <!-- Dynamic Pet eating at table -->
+              <div class="dynamic-pet-display" data-state="eating" id="petEatContainer" style="left: 50%; top: 62%;"></div>
+              <div class="room-scene-table" style="left: 50%; transform: translateX(-50%);"></div>
+            </div>
+            
+            <!-- Food Selector Tray from Bag -->
+            <div class="dining-food-tray" id="diningFoodTray" style="width: 100%; z-index: 10; margin-bottom: 15px; padding: 0 10px;">
+              <!-- Dynamically rendered by app.js -->
+            </div>
+          </section>
+
+          <!-- ==========================================
+               SCREEN 7: ห้องน้ำ (Bathroom)
+               ========================================== -->
+          <section class="screen" id="screen-7">
+            <div class="screen-header">
+              <button class="screen-back-btn" onclick="nav('screen-4')">←</button>
+              <div class="screen-title">ห้องน้ำ</div>
+              <button class="screen-close-btn" onclick="nav('screen-1')">✕</button>
+            </div>
+            
+            <div class="room-info-bar">
+              <div class="room-info-stats">
+                <span>💖 ความสุข +8</span>
+                <span>⚡ พลังงาน +10</span>
+              </div>
+            </div>
+            
+            <div class="room-visual-area">
+              <!-- Hotspots -->
+              <div class="room-hotspot" style="left: 35%; top: 55%;" onclick="setPetPostureDirect('petBathContainer', 'bathing', 35, 55)"></div>
+              <div class="room-hotspot" style="left: 80%; top: 45%;" onclick="setPetPostureDirect('petBathContainer', 'standing', 80, 45)"></div>
+              
+              <!-- Dynamic Pet inside bubble bath tub -->
+              <div class="dynamic-pet-display" data-state="bathing" id="petBathContainer" style="left: 35%; top: 55%;"></div>
+            </div>
+            
+            <div class="room-action-options" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 10px;">
+              <button class="room-act-btn active" onclick="triggerCleanAction('อาบน้ำ')">อาบน้ำ</button>
+              <button class="room-act-btn" onclick="triggerCleanAction('ถูสบู่')">ถูสบู่</button>
+              <button class="room-act-btn" onclick="triggerCleanAction('ทำความสะอาด')">ทำความสะอาด</button>
+            </div>
+            
+            <h3 style="font-size: 11px; margin-bottom: 6px; font-weight: 700; color: var(--text-primary);">อุปกรณ์</h3>
+            <div class="furniture-scroll-list">
+              <div class="furniture-card" onclick="triggerCleanAction('สบู่')">
+                <span class="furn-icon">🧼</span>
+                <span>สบู่</span>
+              </div>
+              <div class="furniture-card" onclick="triggerCleanAction('ถูสบู่')">
+                <span class="furn-icon">🧽</span>
+                <span>ถูสบู่</span>
+              </div>
+              <div class="furniture-card" onclick="triggerCleanAction('แชมพู')">
+                <span class="furn-icon">🧴</span>
+                <span>แชมพู</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- ==========================================
+               SCREEN 8: สวน (Garden)
+               ========================================== -->
+          <section class="screen" id="screen-8">
+            <div class="screen-header">
+              <button class="screen-back-btn" onclick="nav('screen-4')">←</button>
+              <div class="screen-title">สวน</div>
+              <button class="screen-close-btn" onclick="nav('screen-1')">✕</button>
+            </div>
+            
+            <div class="room-visual-area" style="height: 280px;">
+              <!-- Hotspots -->
+              <div class="room-hotspot" style="left: 50%; top: 45%;" onclick="setPetPostureDirect('petGardenContainer', 'sitting', 50, 45)"></div>
+              <div class="room-hotspot" style="left: 25%; top: 75%;" onclick="setPetPostureDirect('petGardenContainer', 'standing', 25, 75)"></div>
+              
+              <!-- Dynamic Pet standing next to fountain -->
+              <div class="dynamic-pet-display" data-state="garden" id="petGardenContainer" style="left: 25%; top: 75%;"></div>
+            </div>
+
+            <!-- Garden Planting Plots Container -->
+            <div class="garden-farm-container" style="width: 100%; z-index: 10; margin: 5px 0 10px 0; padding: 0 10px;">
+              <div style="font-size: 11px; font-weight: 700; color: #fff; text-align: center; margin-bottom: 5px; text-shadow: 0 1px 4px rgba(0,0,0,0.5);">🌱 แปลงปลูกผักของน้อง:</div>
+              <div class="farm-plots-grid" id="farmPlotsGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%;">
+                <!-- Dynamic Plots rendered by app.js -->
+              </div>
+            </div>
+
+            <div class="room-action-options" style="margin-bottom: 15px; z-index: 10;">
+              <button class="room-act-btn active" onclick="triggerGardenAction('รดน้ำต้นไม้')">🪴 รดน้ำต้นไม้</button>
+              <button class="room-act-btn" onclick="triggerGardenAction('ปลูกผัก')">🌱 เลือกปลูกผัก</button>
+              <button class="room-act-btn" onclick="triggerGardenAction('เดินเล่น')">🍃 เดินเล่น</button>
+            </div>
+
+            <!-- Active Game Overlay: Garden Farm Mini-Game inside Screen 8 Garden -->
+            <div id="gardenFarmGameArea" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, #14532d 0%, #166534 60%, #064e3b 100%); z-index: 55; flex-direction: column; align-items: center; justify-content: space-between; padding: 15px; border-radius: 20px; overflow: hidden; color: #ffffff;">
+              
+              <!-- Header Bar -->
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); padding: 8px 12px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); margin-bottom: 6px;">
+                <button class="screen-back-btn" style="margin: 0; padding: 3px 10px; font-size: 12px; color: #ffffff; background: rgba(255,255,255,0.2); border: none; border-radius: 10px; cursor: pointer; font-weight: 700;" onclick="closeGardenFarmGame()">← กลับสวน</button>
+                <div style="font-size: 13px; font-weight: 800; color: #fef08a;">🌾 ฟาร์มปลูกผักหรรษา</div>
+                <div style="font-size: 11px; font-weight: 800; color: #facc15; background: rgba(0,0,0,0.35); padding: 3px 8px; border-radius: 12px;">🪙 <span id="farmCoinsVal">0</span></div>
+              </div>
+
+              <!-- Farm Plot Beds Grid (ทุ่งนาและแปลงผักเกษตรกรรม) -->
+              <div style="width: 100%; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative;">
+                
+                <div style="font-size: 11px; font-weight: 700; color: #bbf7d0; margin-bottom: 6px; text-shadow: 0 1px 3px rgba(0,0,0,0.6);">🌱 แตะแปลงดินเพื่อเลือกเมล็ดพันธุ์ / รดน้ำ / เก็บเกี่ยวผัก</div>
+                
+                <div id="fullFarmPlotsGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; max-width: 310px; margin-bottom: 8px;">
+                  <!-- Plots generated dynamically by app.js -->
+                </div>
+
+                <!-- Quick Action Tools (รดน้ำรวม / เก็บเกี่ยวรวม) -->
+                <div style="display: flex; gap: 8px; width: 100%; max-width: 310px;">
+                  <button onclick="waterAllFarmPlots()" style="flex: 1; padding: 7px 0; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #fff; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                    💧 รดน้ำเร่งโต (-5s)
+                  </button>
+                  <button onclick="harvestAllFarmPlots()" style="flex: 1; padding: 7px 0; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); color: #fff; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                    🧺 เก็บเกี่ยวทั้งหมด
+                  </button>
+                </div>
+
+              </div>
+
+              <!-- Bottom Seed Selection Bar (แถบเลือกเมล็ดพันธุ์ด้านล่าง) -->
+              <div style="width: 100%; background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 16px; padding: 6px 8px; margin-top: 4px;">
+                <div style="font-size: 10px; font-weight: 700; color: #fde68a; margin-bottom: 4px; text-align: center;">🌾 เมล็ดพันธุ์ผัก (แตะเลือกเพื่อปลูก):</div>
+                <div id="seedSelectionBar" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; padding-bottom: 2px;">
+                  <!-- Seed Cards rendered dynamically -->
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ==========================================
+               SCREEN 9: ห้องแต่งตัว (Dressing Room)
+               ========================================== -->
+          <section class="screen" id="screen-9">
+            <div class="screen-header">
+              <button class="screen-back-btn" onclick="nav('screen-4')">←</button>
+              <div class="screen-title">ห้องแต่งตัว</div>
+              <button class="btn-gradient" style="padding: 4px 10px; font-size: 11px;" onclick="saveDressingChanges()">บันทึก</button>
+            </div>
+            
+            <div class="room-visual-area">
+              <!-- Hotspots -->
+              <div class="room-hotspot" style="left: 25%; top: 45%;" onclick="setPetPostureDirect('petDressingContainer', 'standing', 25, 45)"></div>
+              <div class="room-hotspot" style="left: 70%; top: 50%;" onclick="setPetPostureDirect('petDressingContainer', 'sitting', 70, 50)"></div>
+              
+              <!-- Dynamic Pet dressing preview -->
+              <div class="dynamic-pet-display" data-state="dressing" id="petDressingContainer" style="left: 50%; top: 45%;"></div>
+            </div>
+            
+            <!-- Scale slider for accessories -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; margin: 8px 15px 0 15px; border: 1px solid rgba(255, 255, 255, 0.1);">
+              <span style="font-size: 10px; font-weight: 700; color: var(--text-primary); margin-right: 8px; white-space: nowrap;">ขนาดเครื่องประดับ:</span>
+              <input type="range" min="0.5" max="2.0" step="0.05" id="apparelScaleSlider" style="flex-grow: 1;" oninput="updateApparelScale(this.value)">
+              <span id="apparelScaleVal" style="font-size: 10px; font-weight: 700; color: #38bdf8; width: 35px; text-align: right; margin-left: 8px;">1.00x</span>
+            </div>
+            
+            <div class="dressing-tabs" style="display: flex; gap: 8px; overflow-x: auto; padding: 10px 15px 5px 15px; margin: 0; white-space: nowrap; -webkit-overflow-scrolling: touch;">
+              <div class="dressing-tab active" onclick="filterDressingRoom('all', this)">ทั้งหมด</div>
+              <div class="dressing-tab" onclick="filterDressingRoom('hat', this)">หมวก</div>
+              <div class="dressing-tab" onclick="filterDressingRoom('glasses', this)">แว่นตา</div>
+              <div class="dressing-tab" onclick="filterDressingRoom('wings', this)">ปีก</div>
+              <div class="dressing-tab" onclick="filterDressingRoom('outfit', this)">ชุดเซ็ต</div>
+            </div>
+            
+            <div class="dressing-grid">
+              <!-- Dynamically populated by renderDressingRoom() -->
+            </div>
+          </section>
+
+          <!-- ==========================================
+               SCREEN 10: ห้องกิจกรรม (Activity Room)
+               ========================================== -->
+          <section class="screen" id="screen-10">
+            <div class="screen-header">
+              <button class="screen-back-btn" onclick="nav('screen-4')">←</button>
+              <div class="screen-title">ห้องกิจกรรม</div>
+              <button class="screen-close-btn" onclick="nav('screen-1')">✕</button>
+            </div>
+            
+            <div class="room-info-bar">
+              <div class="room-info-stats">
+                <span>💖 ความสุข +15</span>
+                <span>⚡ พลังงาน -10</span>
+              </div>
+            </div>
+            
+            <div class="room-visual-area">
+              <!-- Hotspots -->
+              <div class="room-hotspot" style="left: 25%; top: 45%;" onclick="setPetPostureDirect('petActivityContainer', 'playing', 25, 45)"></div>
+              <div class="room-hotspot" style="left: 75%; top: 55%;" onclick="setPetPostureDirect('petActivityContainer', 'sitting', 75, 55)"></div>
+              
+              <!-- Dynamic Pet playing with instruments -->
+              <div class="dynamic-pet-display" data-state="playing" id="petActivityContainer" style="left: 25%; top: 45%;"></div>
+            </div>
+            
+            <div class="room-action-options" style="grid-template-columns: repeat(2, 1fr); gap: 8px;">
+              <button class="room-act-btn active" onclick="openHealingMusic()">🎹 เล่นเปียโน/ฟังเพลง</button>
+              <button class="room-act-btn" onclick="startColoringGame()">🎨 วาดรูป/ระบายสี</button>
+              <button class="room-act-btn" onclick="nav('screen-15')">⚽ มินิเกมฮีลใจ</button>
+            </div>
+          </section>
+
+          <!-- Screens 25, 26, and 27 (Keyboard, Slime, Duck) have been removed -->
+
+          <!-- ==========================================
+               SCREEN 11: กดทดสอบอารมณ์ + AI
+               ========================================== -->
+          <section class="screen" id="screen-11">
+            <div class="screen-header">
+              <button class="screen-back-btn" onclick="nav('screen-1')">←</button>
+              <div class="screen-title">ทดสอบอารมณ์ + AI</div>
+              <div style="width: 28px;"></div>
+            </div>
+            
+            <div class="mood-ai-tabs">
+              <div class="mood-ai-tab active" id="tabMoodTest">แบบทดสอบอารมณ์</div>
+              <div class="mood-ai-tab" id="tabJoyAi">Gwentar AI</div>
+            </div>
+            
+            <!-- Tab Contents 1: Mood Test -->
+            <div class="mood-test-content" id="moodTestView">
+              <!-- Question Mode -->
+              <div id="moodQuestionContainer" style="display: flex; flex-direction: column; gap: 15px; width: 100%;">
+                <div class="card mood-question-box">
+                  <div class="mood-q-num" id="qNum">ข้อ 1/10</div>
+                  <div class="mood-q-text" id="qText">ตื่นนอนวันนี้ คุณรู้สึกอย่างไร?</div>
+                </div>
+                
+                <div class="mood-choices-list" id="qChoices">
+                  <!-- Choices will be rendered dynamically by JavaScript -->
+                </div>
+                
+                <button class="btn-gradient" style="width: 100%;" id="btnNextQuestion">ต่อไป</button>
+              </div>
+
+              <!-- Results Mode -->
+              <div id="moodTestResultView" style="display: none; flex-direction: column; gap: 15px; width: 100%;">
+                <div class="card result-header-card" style="text-align: center; background: linear-gradient(135deg, #818cf8, #f472b6); color: white; padding: 16px; border-radius: 20px;">
+                  <h3 style="margin: 0 0 5px 0; font-size: 16px;">วิเคราะห์อารมณ์ของคุณวันนี้</h3>
+                  <p style="font-size: 11px; opacity: 0.9; margin: 0;">คำแนะนำเพื่อหัวใจที่แข็งแรงจาก Gwentar</p>
+                </div>
+                
+                <div class="card result-detail-card" style="padding: 16px; border-radius: 20px;">
+                  <h4 id="resultMoodTitle" style="margin: 0 0 8px 0; font-size: 14px; color: var(--primary);">😊 วิเคราะห์อารมณ์</h4>
+                  <p id="resultMoodDesc" style="font-size: 12px; line-height: 1.6; color: var(--text-secondary); margin: 0;">
+                    คำอธิบายผสมผสานอารมณ์ของคุณ...
+                  </p>
+                </div>
+
+                <div class="card" style="padding: 16px; border-radius: 20px;">
+                  <h4 style="margin: 0 0 10px 0; font-size: 13px;">คะแนนอารมณ์ของคุณ</h4>
+                  <div id="resultMoodScores" style="display: flex; flex-direction: column; gap: 8px;">
+                    <!-- dynamically rendered bars -->
+                  </div>
+                </div>
+
+                <button class="btn-gradient" style="width: 100%;" id="btnRestartMoodTest">ทำแบบทดสอบอีกครั้ง</button>
+              </div>
+            </div>
+            
+            <!-- Tab Contents 2: AI Chatbot -->
+            <div class="ai-chat-content" id="aiChatView" style="display: none;">
+              <div class="chat-messages-container" id="chatContainer">
+                <div class="chat-bubble bot">
+                  สวัสดีค่ะ เราพร้อมรับฟังและให้กำลังใจคุณเสมอนะ 💙
+                </div>
+              </div>
+              <div class="chat-input-bar">
+                <button class="chat-send-btn" id="chatMicBtn" style="background: transparent; font-size: 16px; margin-right: 4px; padding: 0 4px; cursor: pointer; border: none; outline: none; transition: transform 0.2s;" onclick="toggleMicRecording()">🎙️</button>
+                <input type="text" class="chat-text-input" placeholder="พิมพ์ข้อความ..." id="chatInput">
+                <button class="chat-send-btn" id="chatSendBtn">➤</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ==========================================
+               SCREEN 12: ไดอารี่ (Diary)
+               ========================================== -->
+          <section class="screen" id="screen-12">
+            <div class="screen-header">
+              <button class="screen-back-btn" onclick="nav('screen-1')">←</button>
+              <div class="screen-title">ไดอารี่</div>
+              <div style="width: 28px;"></div>
+            </div>
+            
+            <div class="calendar-widget">
+              <div class="calendar-header">
+                <button class="calendar-arrow" onclick="changeCalendarMonth(-1)">◀</button>
+                <span id="calendarMonthYear">กรกฎาคม 2569</span>
+                <button class="calendar-arrow" onclick="changeCalendarMonth(1)">▶</button>
+              </div>
+              
+              <div class="calendar-days-row">
+                <span>อา</span><span>จ</span><span>อ</span><span>พ</span><span>พฤ</span><span>ศ</span><span>ส</span>
+              </div>
+              
+              <div class="calendar-grid" id="calendarGrid">
+                <!-- Dynamically populated by app.js -->
+              </div>
+            </div>
+
+            <div class="diary-moods-row">
+              <button class="diary-mood-btn active" data-mood="Happy" onclick="selectDiaryMood('Happy')">
+                <span class="diary-mood-emoji">😊</span>
+                <span class="diary-mood-name">มีความสุข</span>
+              </button>
+              <button class="diary-mood-btn" data-mood="Calm" onclick="selectDiaryMood('Calm')">
+                <span class="diary-mood-emoji">😌</span>
+                <span class="diary-mood-name">สงบ</span>
+              </button>
+              <button class="diary-mood-btn" data-mood="Shocked" onclick="selectDiaryMood('Shocked')">
+                <span class="diary-mood-emoji">😳</span>
+                <span class="diary-mood-name">ตกใจ</span>
+              </button>
+              <button class="diary-mood-btn" data-mood="Frustrated" onclick="selectDiaryMood('Frustrated')">
+                <span class="diary-mood-emoji">😒</span>
+                <span class="diary-mood-name">หงุดหงิด</span>
+              </button>
+              <button class="diary-mood-btn" data-mood="Angry" onclick="selectDiaryMood('Angry')">
+                <span class="diary-mood-emoji">😡</span>
+                <span class="diary-mood-name">โกรธ</span>
+              </button>
+              <button class="diary-mood-btn" data-mood="Tired" onclick="selectDiaryMood('Tired')">
+                <span class="diary-mood-emoji">🥱</span>
+                <span class="diary-mood-name">เหนื่อย</span>
+              </button>
+              <button class="diary-mood-btn" data-mood="Sad" onclick="selectDiaryMood('Sad')">
+                <span class="diary-mood-emoji">😢</span>
+                <span class="diary-mood-name">เศร้า</span>
+              </button>
+              <button class="diary-mood-btn" data-mood="Restless" onclick="selectDiaryMood('Restless')">
+                <span class="diary-mood-emoji">🌀</span>
+                <span class="diary-mood-name">ว้าวุ่น</span>
+              </button>
+              <button class="diary-mood-btn" data-mood="Discouraged" onclick="selectDiaryMood('Discouraged')">
+                <span class="diary-mood-emoji">😔</span>
+                <span class="diary-mood-name">ท้อ</span>
+              </button>
+            </div>
+            
+            <div class="diary-prompt-card" style="display: flex; flex-direction: column; gap: 8px; cursor: default; padding: 12px 16px; margin-top: 10px;">
+              <span class="diary-prompt-text" id="diaryPromptText" style="font-size: 11px; font-weight: 700; color: var(--text-primary);">เรื่องราวดีๆ ที่ทำให้คุณยิ้มได้ในวันนี้...</span>
+              <textarea id="diaryJournalInput" placeholder="พิมพ์บันทึกความรู้สึกของคุณตรงนี้..." style="width: 100%; height: 60px; border-radius: 8px; border: 1px solid var(--border-color); padding: 8px; font-size: 11px; resize: none; background: #ffffff; color: #000000; font-family: inherit;"></textarea>
+              <button class="btn-gradient" id="btnSaveDiary" onclick="saveDiaryEntry()" style="width: 120px; padding: 6px 0; font-size: 11px; border-radius: 20px; align-self: flex-end; margin-top: 5px; cursor: pointer;">บันทึกอารมณ์ ✍️</button>
+            </div>
+            
+            <div id="moodAnalyticsContainer" style="margin-top: 10px;"></div>
+
+            <div class="vent-visual-footer" style="margin-top: 15px;">
+              <div class="vent-star-particles" id="starCanvas"></div>
+              <div class="vent-pet-gazing" id="ventPetAvatar"></div>
+            </div>
+          </section>
+
+          <!-- ==========================================
+               SCREEN 24: ดนตรีบำบัด (Healing Music)
+               ========================================== -->
+          <section class="screen" id="screen-24" style="align-items: center; padding: 15px;">
+            <div class="screen-header" style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+              <button class="screen-back-btn" onclick="nav('screen-12')">←</button>
+              <div class="screen-title" style="font-size: 16px; font-weight: 700; color: var(--text-primary);">🎵 ดนตรีบำบัด</div>
+              <button class="btn-secondary" style="font-size: 10px; padding: 4px 8px; border-radius: 6px;" onclick="stopAllHealingSounds()">ปิดทั้งหมด</button>
+            </div>
+            
+            <div style="font-size: 11px; color: var(--text-secondary); text-align: center; margin-bottom: 12px; font-weight: 500;">
+              เปิดผสมหลายเสียงรวมกันเพื่อสร้างเสียงบำบัด (White Noise) ในแบบที่คุณชอบได้เลยนะคะ 🧘✨
+            </div>
+            
+            <!-- Sound Controls Grid -->
+            <div id="healingSoundsGrid" style="width: 100%; display: flex; flex-direction: column; gap: 10px; padding-bottom: 20px;">
+              <!-- Sound cards generated dynamically by JS -->
+            </div>
+          </section>
+
+          <!-- ==========================================
+               SCREEN 14: เควส (Quests)
+               ========================================== -->
+          <section class="screen" id="screen-14">
+            <div class="screen-header">
+              <div class="screen-title">เควส</div>
+              <div style="width: 28px;"></div>
+            </div>
+            
+
+            
+            <div class="quest-list" id="questListContainer">
+              <!-- Dynamically rendered by app.js -->
+            </div>
+            
+            <div class="quest-bonus-row">
+              <div class="quest-bonus-left">
+                <span>🎁 ทำครบรับ 5.00</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span style="font-size:11px; font-weight:700; color:#38bdf8;">+10 💎</span>
+                <button class="quest-claim-btn" id="btnClaimBonusQuest">รับ</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ==========================================
+               SCREEN 15: มินิเกม (Mini Games)
+               ========================================== -->
+          <section class="screen" id="screen-15" style="position: relative;">
+            <div class="screen-header">
+              <button class="screen-back-btn" onclick="nav('screen-1')">←</button>
+              <div class="screen-title">มินิเกม</div>
+              <div style="width: 28px;"></div>
+            </div>
+            
+
+
+
+            <div class="game-item-card" onclick="startFoodMatchGame()">
+              <div class="game-details">
+                <span class="game-name">🃏 เปิดไพ่รูปอาหาร (Food Memory Match)</span>
+                <span class="game-highscore" id="foodMatchUnlockBadge">🔒 ปลดล็อกที่ Lv.7</span>
+              </div>
+              <span style="font-size:18px;">▶</span>
+            </div>
+            
+            <div class="game-item-card" onclick="startColoringGame()">
+              <div class="game-details">
+                <span class="game-name">🎨 สมุดระบายสี (Coloring Book)</span>
+                <span class="game-highscore" id="coloringUnlockBadge">🔒 ปลดล็อกที่ Lv.10</span>
+              </div>
+              <span style="font-size:18px;">▶</span>
+            </div>
+
+            <div class="game-item-card" onclick="startBallShooterGame()">
+              <div class="game-details">
+                <span class="game-name">😠 ยิงอารมณ์บับเบิ้ล (Bubble Shooter)</span>
+                <span class="game-highscore" id="shooterUnlockBadge">🔒 ปลดล็อกที่ Lv.15</span>
+              </div>
+              <span style="font-size:18px;">▶</span>
+            </div>
+
+
+            <!-- Active Game Overlay: Food Memory Match -->
+            <div id="foodMatchGameArea" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; z-index: 50; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; border-radius: 20px; overflow: hidden;">
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: #ffffff; padding: 5px 10px 0 10px; margin-bottom: 10px;">
+                <button class="screen-back-btn" style="margin: 0; padding: 2px 6px; font-size: 13px; color: #ffffff; background: transparent; border: none; cursor: pointer; font-weight: 700;" onclick="stopFoodMatchGame()">← กลับ</button>
+                <div style="font-size: 13px; color: #facc15;">จับคู่สำเร็จ: <span id="foodMatchPairsVal">0</span> / 4</div>
+              </div>
+              
+              <div id="foodMatchGrid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; flex-grow: 1; align-content: center; justify-items: center; margin: 10px 0;">
+                <!-- Cards generated dynamically -->
+              </div>
+              
+              <div style="font-size: 10px; text-align: center; color: #94a3b8; margin-top: 10px; font-weight: 700;">💡 คลิกเปิดไพ่สองใบเพื่อจับคู่ภาพอาหารที่เหมือนกัน!</div>
+            </div>
+
+            <!-- Active Game Overlay: Ball Shooter -->
+            <div id="ballShooterGameArea" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #0d0e1a; z-index: 50; flex-direction: column; align-items: center; justify-content: space-between; padding: 15px 15px calc(var(--nav-height) + 15px) 15px; border-radius: 20px; overflow: hidden;">
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: #ffffff; padding: 5px 10px 0 10px;">
+                <button class="screen-back-btn" style="margin: 0; padding: 2px 6px; font-size: 13px; color: #ffffff; background: transparent; border: none; cursor: pointer; font-weight: 700;" onclick="stopBallShooterGame(false)">← กลับ</button>
+                <div style="font-size: 13px;">คะแนน: <span id="shooterScoreVal">0</span></div>
+              </div>
+              <canvas id="shooterCanvas" style="width: 100%; flex-grow: 1; background: #090a0f; border-radius: 16px; margin: 10px 0; border: 1px solid rgba(255, 255, 255, 0.05); touch-action: none;"></canvas>
+              <div style="font-size: 11px; text-align: center; color: #94a3b8; margin-bottom: 10px; font-weight: 700;">💡 แตะที่หน้าจอเพื่อเล็งและยิงจับคู่อารมณ์สีเดียวกัน!</div>
+            </div>
+
+            <!-- Active Game Overlay: Coloring Book -->
+            <div id="coloringGameArea" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 50; flex-direction: column; align-items: center; justify-content: space-between; padding: 15px; border-radius: 20px; overflow: hidden;">
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <button class="screen-back-btn" style="margin: 0; padding: 2px 6px; font-size: 14px;" onclick="closeColoringBook()">←</button>
+                  <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">🎨 ระบายสีสมุดภาพ</span>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn-secondary active" style="font-size:11px; padding:2px 8px; border-radius:6px;" id="btnEasyMode" onclick="setColoringMode('easy')">ง่าย</button>
+                  <button class="btn-secondary" style="font-size:11px; padding:2px 8px; border-radius:6px;" id="btnHardMode" onclick="setColoringMode('hard')">ยาก</button>
+                </div>
+              </div>
+
+              <!-- 7 Panel selector grid (horizontal scrollable) -->
+              <div style="width: 100%; display: flex; gap: 4px; margin-bottom: 6px; overflow-x: auto; padding-bottom: 3px;" id="coloringPanelSelector">
+                <button class="btn-secondary active" style="padding: 3px 8px; font-size: 9px; border-radius: 6px; font-weight:700; white-space: nowrap;" onclick="selectColoringPanel(0)">รูปที่ 1</button>
+                <button class="btn-secondary" style="padding: 3px 8px; font-size: 9px; border-radius: 6px; font-weight:700; white-space: nowrap;" onclick="selectColoringPanel(1)">รูปที่ 2</button>
+                <button class="btn-secondary" style="padding: 3px 8px; font-size: 9px; border-radius: 6px; font-weight:700; white-space: nowrap;" onclick="selectColoringPanel(2)">รูปที่ 3</button>
+                <button class="btn-secondary" style="padding: 3px 8px; font-size: 9px; border-radius: 6px; font-weight:700; white-space: nowrap;" onclick="selectColoringPanel(3)">รูปที่ 4</button>
+                <button class="btn-secondary" style="padding: 3px 8px; font-size: 9px; border-radius: 6px; font-weight:700; white-space: nowrap;" onclick="selectColoringPanel(4)">รูปที่ 5</button>
+                <button class="btn-secondary" style="padding: 3px 8px; font-size: 9px; border-radius: 6px; font-weight:700; white-space: nowrap;" onclick="selectColoringPanel(5)">รูปที่ 6</button>
+                <button class="btn-secondary" style="padding: 3px 8px; font-size: 9px; border-radius: 6px; font-weight:700; white-space: nowrap; background: #e0f2fe; border-color: #7dd3fc; color: #0369a1;" onclick="selectColoringPanel(-1)">📝 วาดอิสระ</button>
+              </div>
+              
+              <!-- Coloring Canvas Container -->
+              <div id="coloringContainer" style="position: relative; width: 100%; height: 260px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); background-color: #ffffff; display: flex; align-items: center; justify-content: center; transition: height 0.25s ease;">
+                <!-- Drawing Canvas (Bottom) -->
+                <canvas id="coloringCanvas" style="position: absolute; width: 100%; height: 100%; cursor: crosshair; touch-action: none; z-index: 5; background:#fff;"></canvas>
+                <!-- Outlines Overlay (Top, Blend Multiply, clicks pass through) -->
+                <canvas id="templateCanvas" style="position: absolute; width: 100%; height: 100%; pointer-events: none; mix-blend-mode: multiply; z-index: 10;"></canvas>
+              </div>
+              
+              <!-- Tool Bar -->
+              <div style="width: 100%; display: flex; flex-direction: column; gap: 8px; margin: 6px 0;">
+                <!-- Colors list with gradient picker -->
+                <div style="display: flex; justify-content: space-between; gap: 4px; align-items: center; width: 100%;">
+                  <div style="width: 22px; height: 22px; border-radius: 50%; background: #ef4444; border: 1.5px solid #fff; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15);" onclick="changeDrawColor('#ef4444', this)" class="color-swatch active"></div>
+                  <div style="width: 22px; height: 22px; border-radius: 50%; background: #3b82f6; border: 1.5px solid #fff; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15);" onclick="changeDrawColor('#3b82f6', this)" class="color-swatch"></div>
+                  <div style="width: 22px; height: 22px; border-radius: 50%; background: #f59e0b; border: 1.5px solid #fff; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15);" onclick="changeDrawColor('#f59e0b', this)" class="color-swatch"></div>
+                  <div style="width: 22px; height: 22px; border-radius: 50%; background: #10b981; border: 1.5px solid #fff; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15);" onclick="changeDrawColor('#10b981', this)" class="color-swatch"></div>
+                  <div style="width: 22px; height: 22px; border-radius: 50%; background: #ec4899; border: 1.5px solid #fff; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15);" onclick="changeDrawColor('#ec4899', this)" class="color-swatch"></div>
+                  <!-- Rainbow color picker container -->
+                  <div style="position: relative; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, red, orange, yellow, green, blue, purple); cursor: pointer; border: 1.5px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.15); display: inline-block;" class="color-swatch" id="customRainbowPicker">
+                    <input type="color" id="freeColorPicker" value="#ef4444" style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;" onchange="changeDrawColor(this.value, this.parentNode)">
+                  </div>
+                  <button style="border: none; background: #e2e8f0; font-size: 10px; padding: 3px 8px; border-radius: 6px; cursor: pointer; font-weight:700;" onclick="changeDrawColor('eraser', this)">🧽 ยางลบ</button>
+                </div>
+                <!-- Size slider -->
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 9px; color: var(--text-secondary); width: 65px;">ขนาดหัวแปรง:</span>
+                  <input type="range" min="1" max="25" value="6" style="flex-grow:1;" id="brushSizeSlider" oninput="changeDrawWidth(this.value)">
+                </div>
+              </div>
+              
+              <div style="display: flex; gap: 8px; width: 100%;">
+                <button class="btn-secondary" style="flex:1.2; padding: 6px 0; font-size: 11px;" onclick="clearColoringCanvas()">ล้างภาพ</button>
+                <button class="btn-secondary" style="flex:1.2; padding: 6px 0; font-size: 11px;" id="btnColoringZoom" onclick="toggleColoringZoom()">🔍 ซูม x2</button>
+                <button class="btn-gradient" style="flex:2; padding: 6px 0; font-size: 11px;" onclick="saveColoringBook()">บันทึกความสุข (+50 🪙)</button>
+                <button class="btn-secondary" style="width: 50px; padding: 6px 0; font-size: 11px;" onclick="closeColoringBook()">ออก</button>
+              </div>
+            </div>
+          </section>
+
+
+          <section class="screen" id="screen-16">
+            <div class="shop-tabs">
+              <div class="shop-tab active" data-shoptab="food">อาหาร</div>
+              <div class="shop-tab" data-shoptab="drinks">เครื่องดื่ม</div>
+              <div class="shop-tab" data-shoptab="clothes">เครื่องแต่งกาย</div>
+              <div class="shop-tab" data-shoptab="exchange">แลกเปลี่ยน</div>
+              <div class="shop-tab" data-shoptab="sell">ขายผลผลิต</div>
+            </div>
+            
+            <div class="shop-grid" id="shopItemsGrid">
+              <!-- Grid list items rendered dynamically by JS -->
+            </div>
+          </section>
+
+          <!-- ==========================================
+               SCREEN 17: กระเป๋า (Bag)
+               ========================================== -->
+          <section class="screen" id="screen-17">
+            <div class="screen-header">
+              <button class="screen-back-btn" onclick="nav('screen-1')">←</button>
+              <div class="screen-title">กระเป๋า</div>
+              <div style="width: 28px;"></div>
+            </div>
+            
+            <!-- Mini Pet Display in Bag for Feeding & Dressing -->
+            <div class="bag-pet-header" style="position: relative; height: 110px; width: 100%; display: flex; justify-content: center; align-items: center; margin-bottom: 5px; flex-shrink: 0;">
+              <div class="dynamic-pet-display" data-state="idle" id="petBagContainer" style="left: 50%; top: 50%;"></div>
+            </div>
+            
+            <div class="bag-tabs">
+              <div class="bag-tab active" onclick="renderBagScreen('ทั้งหมด')">ทั้งหมด</div>
+              <div class="bag-tab" onclick="renderBagScreen('อาหาร')">อาหาร</div>
+              <div class="bag-tab" onclick="renderBagScreen('เครื่องดื่ม')">เครื่องดื่ม</div>
+              <div class="bag-tab" onclick="renderBagScreen('เครื่องแต่งกาย')">เครื่องแต่งกาย</div>
+
+            </div>
+            
+            <div class="bag-grid">
+              <!-- Grid list items rendered dynamically by JS -->
+            </div>
+          </section>
+
+
+
+
+
+          <!-- ==========================================
+               SCREEN 22: ตั้งค่า (Settings)
+               ========================================== -->
+          <section class="screen" id="screen-22">
+            <div class="screen-header">
+              <button class="screen-back-btn" onclick="nav('screen-1')">←</button>
+              <div class="screen-title">ตั้งค่า</div>
+              <div style="width: 28px;"></div>
+            </div>
+            
+            <div class="card settings-items-list">
+              <div class="setting-item-row">
+                <span class="setting-label">ชื่อน้อง</span>
+                <input type="text" class="settings-input-edit" value="Gwentar" id="settingsNameInput">
+              </div>
+              
+              <div class="setting-item-row">
+                <span class="setting-label">เสียง</span>
+                <input type="range" class="settings-slider" min="0" max="100" value="80" id="soundSlider">
+              </div>
+              
+              <div class="setting-item-row">
+                <span class="setting-label">ดนตรี</span>
+                <input type="range" class="settings-slider" min="0" max="100" value="60" id="musicSlider">
+              </div>
+              
+              <div class="setting-item-row">
+                <span class="setting-label">ภาษา</span>
+                <select class="settings-select" id="langSelect">
+                  <option value="th">ภาษาไทย</option>
+                  <option value="en">English</option>
+                </select>
+              </div>
+              
+              <div style="margin: 10px 0 15px 0; width: 100%;">
+                <span class="setting-label" style="display: block; margin-bottom: 10px; font-weight: 800; font-size: 13px; color: var(--text-primary);">ธีม (Theme)</span>
+                
+                <!-- Theme Visual Grid Selection -->
+                <div class="theme-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%;">
+                  
+                  <!-- 1. Light -->
+                  <div class="theme-card" data-theme-id="light" onclick="selectAppTheme('light')" style="cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                    <div class="theme-preview preview-light" style="width: 100%; aspect-ratio: 4/5; border-radius: 12px; position: relative; border: 2.5px solid transparent; box-shadow: 0 4px 10px rgba(0,0,0,0.06); transition: all 0.25s; overflow: hidden; background: linear-gradient(135deg, #fffbeb 0%, #ffedd5 50%, #fef3c7 100%);">
+                      <div class="theme-check-icon" style="position: absolute; top: 6px; right: 6px; background: #ff7597; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.6); transition: all 0.2s;">✓</div>
+                      <!-- Soft interior elements representing light theme -->
+                      <div style="position: absolute; width: 60%; height: 30px; background: #ffffff; border-radius: 8px; bottom: 8px; left: 50%; transform: translateX(-50%); border: 1px solid rgba(0,0,0,0.03); opacity: 0.85; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px;">
+                        <div style="width: 70%; height: 4px; background: #db2777; border-radius: 2px; margin-bottom: 3px;"></div>
+                        <div style="width: 50%; height: 3px; background: #fda4af; border-radius: 2.5px;"></div>
+                      </div>
+                    </div>
+                    <span class="theme-card-label" style="font-size: 11px; font-weight: 700; margin-top: 6px; color: var(--text-secondary); transition: color 0.2s;">Light</span>
+                  </div>
+
+                  <!-- 2. Pastel -->
+                  <div class="theme-card" data-theme-id="pastel" onclick="selectAppTheme('pastel')" style="cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                    <div class="theme-preview preview-pastel" style="width: 100%; aspect-ratio: 4/5; border-radius: 12px; position: relative; border: 2.5px solid transparent; box-shadow: 0 4px 10px rgba(0,0,0,0.06); transition: all 0.25s; overflow: hidden; background: linear-gradient(135deg, #fae8ff 0%, #fbcfe8 50%, #fef08a 100%);">
+                      <div class="theme-check-icon" style="position: absolute; top: 6px; right: 6px; background: #ff7597; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.6); transition: all 0.2s;">✓</div>
+                      <!-- Soft interior elements representing pastel theme -->
+                      <div style="position: absolute; width: 60%; height: 30px; background: #ffffff; border-radius: 8px; bottom: 8px; left: 50%; transform: translateX(-50%); border: 1px solid rgba(0,0,0,0.03); opacity: 0.85; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px;">
+                        <div style="width: 70%; height: 4px; background: #7c3aed; border-radius: 2px; margin-bottom: 3px;"></div>
+                        <div style="width: 50%; height: 3px; background: #c084fc; border-radius: 2.5px;"></div>
+                      </div>
+                    </div>
+                    <span class="theme-card-label" style="font-size: 11px; font-weight: 700; margin-top: 6px; color: var(--text-secondary); transition: color 0.2s;">Pastel</span>
+                  </div>
+
+                  <!-- 3. Dark -->
+                  <div class="theme-card" data-theme-id="dark" onclick="selectAppTheme('dark')" style="cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                    <div class="theme-preview preview-dark" style="width: 100%; aspect-ratio: 4/5; border-radius: 12px; position: relative; border: 2.5px solid transparent; box-shadow: 0 4px 10px rgba(0,0,0,0.06); transition: all 0.25s; overflow: hidden; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+                      <div class="theme-check-icon" style="position: absolute; top: 6px; right: 6px; background: #ff7597; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.6); transition: all 0.2s;">✓</div>
+                      <!-- Cozy stars representing dark theme -->
+                      <div style="position: absolute; font-size: 10px; top: 12px; left: 12px; opacity: 0.7;">⭐</div>
+                      <div style="position: absolute; font-size: 12px; top: 22px; right: 14px; opacity: 0.8;">🌙</div>
+                      <div style="position: absolute; width: 60%; height: 30px; background: #1e293b; border-radius: 8px; bottom: 8px; left: 50%; transform: translateX(-50%); border: 1px solid rgba(255,255,255,0.06); opacity: 0.85; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px;">
+                        <div style="width: 70%; height: 4px; background: #ff7597; border-radius: 2px; margin-bottom: 3px;"></div>
+                        <div style="width: 50%; height: 3px; background: #f43f5e; border-radius: 2.5px;"></div>
+                      </div>
+                    </div>
+                    <span class="theme-card-label" style="font-size: 11px; font-weight: 700; margin-top: 6px; color: var(--text-secondary); transition: color 0.2s;">Dark</span>
+                  </div>
+
+                  <!-- 4. Forest -->
+                  <div class="theme-card" data-theme-id="forest" onclick="selectAppTheme('forest')" style="cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                    <div class="theme-preview preview-forest" style="width: 100%; aspect-ratio: 4/5; border-radius: 12px; position: relative; border: 2.5px solid transparent; box-shadow: 0 4px 10px rgba(0,0,0,0.06); transition: all 0.25s; overflow: hidden; background: linear-gradient(135deg, #f0fdf4 0%, #a7f3d0 60%, #22c55e 100%);">
+                      <div class="theme-check-icon" style="position: absolute; top: 6px; right: 6px; background: #ff7597; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.6); transition: all 0.2s;">✓</div>
+                      <!-- Leaf illustration representing forest theme -->
+                      <div style="position: absolute; font-size: 12px; top: 12px; left: 50%; transform: translateX(-50%); opacity: 0.65;">🌿</div>
+                      <div style="position: absolute; width: 60%; height: 30px; background: #ffffff; border-radius: 8px; bottom: 8px; left: 50%; transform: translateX(-50%); border: 1px solid rgba(0,0,0,0.03); opacity: 0.85; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px;">
+                        <div style="width: 70%; height: 4px; background: #16a34a; border-radius: 2px; margin-bottom: 3px;"></div>
+                        <div style="width: 50%; height: 3px; background: #86efac; border-radius: 2.5px;"></div>
+                      </div>
+                    </div>
+                    <span class="theme-card-label" style="font-size: 11px; font-weight: 700; margin-top: 6px; color: var(--text-secondary); transition: color 0.2s;">Forest</span>
+                  </div>
+
+                  <!-- 5. Sky -->
+                  <div class="theme-card" data-theme-id="sky" onclick="selectAppTheme('sky')" style="cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                    <div class="theme-preview preview-sky" style="width: 100%; aspect-ratio: 4/5; border-radius: 12px; position: relative; border: 2.5px solid transparent; box-shadow: 0 4px 10px rgba(0,0,0,0.06); transition: all 0.25s; overflow: hidden; background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 50%, #fae8ff 100%);">
+                      <div class="theme-check-icon" style="position: absolute; top: 6px; right: 6px; background: #ff7597; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.6); transition: all 0.2s;">✓</div>
+                      <!-- Clouds representing sky theme -->
+                      <div style="position: absolute; font-size: 11px; top: 12px; left: 10px; opacity: 0.65;">☁️</div>
+                      <div style="position: absolute; width: 60%; height: 30px; background: #ffffff; border-radius: 8px; bottom: 8px; left: 50%; transform: translateX(-50%); border: 1px solid rgba(0,0,0,0.03); opacity: 0.85; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px;">
+                        <div style="width: 70%; height: 4px; background: #0ea5e9; border-radius: 2px; margin-bottom: 3px;"></div>
+                        <div style="width: 50%; height: 3px; background: #7dd3fc; border-radius: 2.5px;"></div>
+                      </div>
+                    </div>
+                    <span class="theme-card-label" style="font-size: 11px; font-weight: 700; margin-top: 6px; color: var(--text-secondary); transition: color 0.2s;">Sky</span>
+                  </div>
+
+                  <!-- 6. Galaxy -->
+                  <div class="theme-card" data-theme-id="galaxy" onclick="selectAppTheme('galaxy')" style="cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                    <div class="theme-preview preview-galaxy" style="width: 100%; aspect-ratio: 4/5; border-radius: 12px; position: relative; border: 2.5px solid transparent; box-shadow: 0 4px 10px rgba(0,0,0,0.06); transition: all 0.25s; overflow: hidden; background: linear-gradient(135deg, #3b0764 0%, #1e1b4b 60%, #090514 100%);">
+                      <div class="theme-check-icon" style="position: absolute; top: 6px; right: 6px; background: #ff7597; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.6); transition: all 0.2s;">✓</div>
+                      <!-- Cosmic galaxy stars -->
+                      <div style="position: absolute; font-size: 10px; top: 8px; right: 8px; opacity: 0.8;">🛸</div>
+                      <div style="position: absolute; font-size: 8px; top: 22px; left: 10px; opacity: 0.6;">✨</div>
+                      <div style="position: absolute; width: 60%; height: 30px; background: #120e2e; border-radius: 8px; bottom: 8px; left: 50%; transform: translateX(-50%); border: 1px solid rgba(255,255,255,0.06); opacity: 0.85; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px;">
+                        <div style="width: 70%; height: 4px; background: #a855f7; border-radius: 2px; margin-bottom: 3px;"></div>
+                        <div style="width: 50%; height: 3px; background: #818cf8; border-radius: 2.5px;"></div>
+                      </div>
+                    </div>
+                    <span class="theme-card-label" style="font-size: 11px; font-weight: 700; margin-top: 6px; color: var(--text-secondary); transition: color 0.2s;">Galaxy</span>
+                  </div>
+
+                </div>
+              </div>
+              
+              <div style="margin: 15px 0; width: 100%; border-top: 1.5px solid var(--border-color); padding-top: 15px;">
+                <span class="setting-label" style="display: block; margin-bottom: 8px; font-weight: 800; font-size: 13px; color: var(--text-primary);">เสียงดนตรีประกอบ (Background Music) 🎵</span>
+                <select class="settings-select" id="settingsMusicSelect" onchange="changeSettingsMusic(this.value)" style="width: 100%; margin-bottom: 10px;">
+                  <option value="none">❌ ปิดเสียงเพลงประกอบ</option>
+                  <option value="chillrightsmusic-cat-bag-382798.mp3">🐱 Cat Bag - ชิลสบายๆ</option>
+                  <option value="chillrightsmusic-cat-friend-382790.mp3">😺 Cat Friend - อบอุ่นสนุกสนาน</option>
+                  <option value="chillrightsmusic-catch-the-star-382796.mp3">🌟 Catch the Star - ชวนฝันผ่อนคลาย</option>
+                  <option value="chillrightsmusic-dream-cat-382793.mp3">🌙 Dream Cat - เคลิ้มเคลิ้มสบายใจ</option>
+                  <option value="chillrightsmusic-lemon-358300.mp3">🍋 Lemon - สดใสน่ารัก</option>
+                  <option value="chillrightsmusic-pear-358294.mp3">🍐 Pear - หวานๆ นุ่มนวล</option>
+                  <option value="tawipop-together-always-343355.mp3">💖 Together Always - อบอุ่นอบอวล</option>
+                  <option value="patipana-lonely-echoes-252264.mp3">🌌 Lonely Echoes - ค่ำคืนสงบเงียบ</option>
+                </select>
+                <div style="display: flex; gap: 8px; width: 100%;">
+                  <button id="btnPlaySettingsMusic" class="btn-gradient" style="flex:1; padding: 7px 0; font-size: 11px; font-weight:bold;" onclick="toggleSettingsMusic()">▶️ เล่นเพลง</button>
+                  <button id="btnStopSettingsMusic" class="btn-secondary" style="flex:1; padding: 7px 0; font-size: 11px; font-weight:bold;" onclick="stopSettingsMusicTrack()">⏹️ หยุดเพลง</button>
+                </div>
+              </div>
+
+              <div class="setting-item-row">
+                <span class="setting-label">แจ้งเตือน</span>
+                <label class="switch">
+                  <input type="checkbox" checked id="notiToggle">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            
+            <button class="btn-gradient" style="width: 100%; margin-bottom: 12px;" onclick="backupData()">สำรองข้อมูล</button>
+            <button class="btn-danger" style="width: 100%; margin-bottom: 20px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; border: none; padding: 12px; border-radius: 20px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2); transition: all 0.2s;" onclick="resetGameState()">🧹 รีเซ็ตข้อมูลเกมทั้งหมด (เลเวล 0)</button>
+             
+            <div class="settings-version">เวอร์ชัน 1.0.0</div>
+          </section>
+
+          <!-- ==========================================
+               SCREEN 23: เมนูเพิ่มเติม (More Menu)
+               ========================================== -->
+          <section class="screen" id="screen-23">
+            <div class="screen-header">
+              <button class="screen-back-btn" onclick="nav('screen-1')">←</button>
+              <div class="screen-title">เมนูเพิ่มเติม</div>
+              <div style="width: 28px;"></div>
+            </div>
+            
+            <div class="more-menu-items">
+              <div class="menu-item-row" onclick="nav('screen-24')">
+                <span class="menu-item-icon">🎵</span>
+                <span class="menu-item-label" style="font-weight: 700;">เสียงดนตรีบำบัดใจ</span>
+                <span class="menu-item-arrow">▶</span>
+              </div>
+              <div class="menu-item-row" onclick="triggerMenuAction('กล่องจดหมาย')">
+                <span class="menu-item-icon">📬</span>
+                <span class="menu-item-label">กล่องจดหมาย</span>
+                <span class="menu-item-arrow">▶</span>
+              </div>
+              <div class="menu-item-row" onclick="triggerMenuAction('กิจกรรม')">
+                <span class="menu-item-icon">📅</span>
+                <span class="menu-item-label">กิจกรรม</span>
+                <span class="menu-item-arrow">▶</span>
+              </div>
+              <div class="menu-item-row" onclick="triggerMenuAction('เชิญเพื่อน')">
+                <span class="menu-item-icon">👥</span>
+                <span class="menu-item-label">เชิญเพื่อน</span>
+                <span class="menu-item-arrow">▶</span>
+              </div>
+              <div class="menu-item-row" onclick="triggerMenuAction('แลกโค้ด')">
+                <span class="menu-item-icon">🎫</span>
+                <span class="menu-item-label">แลกโค้ด</span>
+                <span class="menu-item-arrow">▶</span>
+              </div>
+              <div class="menu-item-row" onclick="triggerMenuAction('ช่วยเหลือ')">
+                <span class="menu-item-icon">❓</span>
+                <span class="menu-item-label">ช่วยเหลือ</span>
+                <span class="menu-item-arrow">▶</span>
+              </div>
+              <div class="menu-item-row" onclick="triggerMenuAction('เกี่ยวกับเรา')">
+                <span class="menu-item-icon">ℹ️</span>
+                <span class="menu-item-label">เกี่ยวกับเรา</span>
+                <span class="menu-item-arrow">▶</span>
+              </div>
+              <div class="menu-item-row" style="border-color:#fecaca;" onclick="resetGameState()">
+                <span class="menu-item-icon">🧹</span>
+                <span class="menu-item-label" style="color:#ef4444;">รีเซ็ตข้อมูลเกมทั้งหมด</span>
+                <span class="menu-item-arrow" style="color:#f87171;">▶</span>
+              </div>
+            </div>
+          </section>
+
+        </main>
+
+        <!-- Bottom Tab Navigation Bar (Horizontally Scrollable Tabs for All 16 Screens) -->
+        <nav class="app-bottom-nav scrollable-tabs" id="scrollableTabs">
+          <!-- 1. Home -->
+          <button class="nav-tab active" data-tab="screen-1" onclick="nav('screen-1')">
+            <div class="nav-icon">🏠</div>
+            <span class="nav-label">1.โฮม</span>
+          </button>
+          <!-- 2. Pet Info -->
+          <button class="nav-tab" data-tab="screen-3" onclick="nav('screen-3')">
+            <div class="nav-icon">ℹ️</div>
+            <span class="nav-label">2.ข้อมูล</span>
+          </button>
+          <!-- 3. Pet Map -->
+          <button class="nav-tab" data-tab="screen-4" onclick="nav('screen-4')">
+            <div class="nav-icon">🗺️</div>
+            <span class="nav-label">3.บ้าน</span>
+          </button>
+          <!-- 4. Test Mood + AI -->
+          <button class="nav-tab" data-tab="screen-11" onclick="nav('screen-11')">
+            <div class="nav-icon">🧠</div>
+            <span class="nav-label">4.ทดสอบ+AI</span>
+          </button>
+          <!-- 5. Diary -->
+          <button class="nav-tab" data-tab="screen-12" onclick="nav('screen-12')">
+            <div class="nav-icon">📔</div>
+            <span class="nav-label">5.ไดอารี่</span>
+          </button>
+          <!-- 6. Quests -->
+          <button class="nav-tab" data-tab="screen-14" onclick="nav('screen-14')">
+            <div class="nav-icon">🏆</div>
+            <span class="nav-label">6.เควส</span>
+          </button>
+          <!-- 7. Mini Games -->
+          <button class="nav-tab" data-tab="screen-15" onclick="nav('screen-15')">
+            <div class="nav-icon">🎮</div>
+            <span class="nav-label">7.มินิเกม</span>
+          </button>
+          <!-- 8. Shop -->
+          <button class="nav-tab" data-tab="screen-16" onclick="nav('screen-16')">
+            <div class="nav-icon">🏪</div>
+            <span class="nav-label">8.ร้านค้า</span>
+          </button>
+          <!-- 9. Bag -->
+          <button class="nav-tab" data-tab="screen-17" onclick="nav('screen-17')">
+            <div class="nav-icon">🎒</div>
+            <span class="nav-label">9.กระเป๋า</span>
+          </button>
+          <!-- 10. Healing Music -->
+          <button class="nav-tab" data-tab="screen-24" onclick="nav('screen-24')">
+            <div class="nav-icon">🎵</div>
+            <span class="nav-label">10.ดนตรีบำบัด</span>
+          </button>
+          <!-- 11. Settings -->
+          <button class="nav-tab" data-tab="screen-22" onclick="nav('screen-22')">
+            <div class="nav-icon">⚙️</div>
+            <span class="nav-label">11.ตั้งค่า</span>
+          </button>
+
+        </nav>
+
+      </div><!-- End App Wrapper -->
+    </div><!-- End Mobile Screen Emulator -->
+    
+  <!-- Bedtime Storybook Modal (นิทานฮีลใจ & อ่านหนังสือก่อนนอน) -->
+  <div id="bedtimeStoryModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); z-index: 999; align-items: center; justify-content: center; padding: 20px;">
+    <div style="width: 100%; max-width: 340px; background: linear-gradient(135deg, #1e1b4b 0%, #311b92 100%); color: #ffffff; border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.25); box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: flex; flex-direction: column; gap: 12px; position: relative;">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 8px;">
+        <span style="font-size: 13px; font-weight: 700; color: #fef08a;">📖 นิทานและบทความฮีลใจก่อนนอน</span>
+        <button onclick="closeBedtimeStoryModal()" style="background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; padding: 0 4px;">✕</button>
+      </div>
+
+      <!-- Story Page Content Container -->
+      <div id="storyBookContent" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 14px; padding: 16px; border: 1px solid rgba(255, 255, 255, 0.15); min-height: 180px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div id="storyTitleHeader" style="font-size: 13px; font-weight: 700; color: #a78bfa; margin-bottom: 8px;">
+          <!-- Dynamically filled by app.js -->
+        </div>
+        <div id="storyTextBody" style="font-size: 11px; line-height: 1.65; color: #e2e8f0; flex-grow: 1;">
+          <!-- Dynamically filled by app.js -->
+        </div>
+      </div>
+
+      <!-- Story Navigation Controls -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+        <button class="btn-secondary" id="btnPrevStoryPage" onclick="prevStoryPage()" style="padding: 5px 12px; font-size: 10px; border-radius: 14px; background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); cursor: pointer;">◀ หน้าก่อนหน้า</button>
+        <span id="storyPageCounter" style="font-size: 11px; font-weight: 700; color: #fef08a;">1 / 3</span>
+        <button class="btn-gradient" id="btnNextStoryPage" onclick="nextStoryPage()" style="padding: 5px 12px; font-size: 10px; border-radius: 14px; cursor: pointer;">หน้าถัดไป ▶</button>
+      </div>
+
+    </div>
+  <!-- Seed Picker Modal (เลือกเมล็ดพันธุ์ปลูกผัก) -->
+  <div id="seedPickerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); z-index: 999; align-items: center; justify-content: center; padding: 20px;">
+    <div style="width: 100%; max-width: 320px; background: linear-gradient(135deg, #14532d 0%, #064e3b 100%); color: #ffffff; border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.25); box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: flex; flex-direction: column; gap: 12px; position: relative;">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 8px;">
+        <span style="font-size: 13px; font-weight: 700; color: #fef08a;">🌱 เลือกเมล็ดพันธุ์ปลูกผัก</span>
+        <button onclick="closeSeedPickerModal()" style="background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; padding: 0 4px;">✕</button>
+      </div>
+
+      <!-- Seed Options Grid -->
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+        <div class="seed-card" onclick="plantSelectedCrop('carrot')" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 14px; padding: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.15s ease;">
+          <span style="font-size: 32px;">🥕</span>
+          <span style="font-size: 11px; font-weight: 700; margin-top: 2px;">แครอท</span>
+          <span style="font-size: 9px; color: #fef08a; margin-top: 2px; font-weight: 800;">⏱️ 10วิ | +20🪙</span>
+        </div>
+        
+        <div class="seed-card" onclick="plantSelectedCrop('tomato')" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 14px; padding: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.15s ease;">
+          <span style="font-size: 32px;">🍅</span>
+          <span style="font-size: 11px; font-weight: 700; margin-top: 2px;">มะเขือเทศ</span>
+          <span style="font-size: 9px; color: #fef08a; margin-top: 2px; font-weight: 800;">⏱️ 15วิ | +30🪙</span>
+        </div>
+        
+        <div class="seed-card" onclick="plantSelectedCrop('corn')" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 14px; padding: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.15s ease;">
+          <span style="font-size: 32px;">🌽</span>
+          <span style="font-size: 11px; font-weight: 700; margin-top: 2px;">ข้าวโพด</span>
+          <span style="font-size: 9px; color: #fef08a; margin-top: 2px; font-weight: 800;">⏱️ 20วิ | +40🪙</span>
+        </div>
+        
+        <div class="seed-card" onclick="plantSelectedCrop('strawberry')" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 14px; padding: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.15s ease;">
+          <span style="font-size: 32px;">🍓</span>
+          <span style="font-size: 11px; font-weight: 700; margin-top: 2px;">สตรอว์เบอร์รี่</span>
+          <span style="font-size: 9px; color: #fef08a; margin-top: 2px; font-weight: 800;">⏱️ 25วิ | +50🪙</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Dedicated Pet Eating Popup Modal (หน้าเด้งอนิเมชันกินอาหาร) -->
+  <div id="petEatingModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); z-index: 999; align-items: center; justify-content: center; padding: 20px;">
+    <div style="width: 100%; max-width: 320px; background: linear-gradient(180deg, #fef3c7 0%, #fff7ed 60%, #ffedd5 100%); border: 3px solid #f59e0b; border-radius: 28px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); text-align: center; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center;">
+      
+      <!-- Title Header -->
+      <div style="font-size: 15px; font-weight: 800; color: #92400e; margin-bottom: 12px; text-shadow: 0 1px 2px rgba(255,255,255,0.8);" id="eatingModalTitle">
+        ✨ น้องกำลังหม่ำๆ แซนวิช...
+      </div>
+
+      <!-- Center Stage: Large Pet & Food Item -->
+      <div style="position: relative; width: 190px; height: 190px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+        
+        <!-- Pet Avatar Display -->
+        <div id="eatingPetDisplay" style="position: relative; z-index: 2;">
+          <!-- Large Pet Visual rendered dynamically -->
+        </div>
+        
+        <!-- Food Piece positioned right at the pet's mouth -->
+        <div id="eatingFoodPiece" style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(1); z-index: 10; font-size: 64px; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25)); transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;">
+          🥪
+        </div>
+
+        <!-- Bite particles container -->
+        <div id="eatingBiteParticles" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 12;"></div>
+
+        <!-- Floor Shadow -->
+        <div class="pet-3d-floor-shadow" style="bottom: 10px;"></div>
+      </div>
+
+      <!-- Eating Status & Speech Bubble -->
+      <div id="eatingStatusText" style="font-size: 13px; font-weight: 800; color: #b45309; background: rgba(255, 255, 255, 0.9); padding: 8px 16px; border-radius: 20px; border: 1.5px solid #fde68a; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+        ง่ำๆๆ! อร่อยมากๆ เลย 😋
+      </div>
+
+    </div>
+  </div>
+
+  <!-- App Main Logic Script -->
+  <script src="app.js"></script>
+</body>
+</html>

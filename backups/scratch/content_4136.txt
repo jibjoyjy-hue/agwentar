@@ -1,0 +1,359 @@
+﻿                <!-- ==================== PAGE 0: Joy Blob ðŸ’§ ==================== -->
+                <g id="color-page-0" class="color-page-group">
+                  <!-- background -->
+                  <rect class="paintable" x="0" y="0" width="200" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Plush cushion -->
+                  <path class="paintable" d="M 20 155 C 20 135, 180 135, 180 155 C 180 170, 20 170, 20 155 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <path d="M 50 156 Q 100 162 150 156" fill="none" stroke="#cbd5e1" stroke-width="1.5" />
+                  <!-- Joy Blob Body -->
+                  <path class="paintable" d="M 60 130 C 40 100, 50 60, 80 50 C 90 45, 110 45, 120 50 C 150 60, 160 100, 140 130 C 128 145, 72 145, 60 130 Z" fill="#ffffff" stroke="#1e293b" stroke-width="3" style="cursor: pointer;" />
+                  <!-- Crown -->
+                  <path class="paintable" d="M 85 46 L 90 32 L 100 40 L 110 32 L 115 46 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <!-- Eyes -->
+                  <circle cx="85" cy="85" r="7" fill="#1e293b" />
+                  <circle cx="83" cy="82" r="2.5" fill="#ffffff" />
+                  <circle cx="115" cy="85" r="7" fill="#1e293b" />
+                  <circle cx="113" cy="82" r="2.5" fill="#ffffff" />
+                  <!-- Smile mouth -->
+                  <path d="M 96 95 Q 100 100 104 95" stroke="#1e293b" stroke-width="2" stroke-linecap="round" fill="none" />
+                  <!-- Pink Cheeks -->
+                  <ellipse class="paintable" cx="74" cy="94" rx="6" ry="3.5" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <ellipse class="paintable" cx="126" cy="94" rx="6" ry="3.5" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <!-- Bubbles & Sparkles -->
+                  <circle class="paintable" cx="30" cy="30" r="5" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <circle class="paintable" cx="170" cy="40" r="7" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <polygon class="paintable" points="160,85 162,90 167,90 163,93 165,98 160,95 155,98 157,93 153,90 158,90" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <polygon class="paintable" points="35,95 37,100 42,100 38,103 40,108 35,105 30,108 32,103 28,100 33,100" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                </g>
+
+                <!-- ==================== PAGE 1: à¸šà¹‰à¸²à¸™à¸ªà¸¸à¸‚à¸ªà¸±à¸™à¸•à¹Œ ðŸ¡ ==================== -->
+                <g id="color-page-1" class="color-page-group" style="display: none;">
+                  <!-- background -->
+                  <rect class="paintable" x="0" y="0" width="200" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Sun -->
+                  <circle class="paintable" cx="160" cy="40" r="15" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Clouds -->
+                  <path class="paintable" d="M 25 35 C 15 35, 15 45, 25 45 C 30 45, 35 40, 40 45 C 45 50, 55 50, 60 45 C 65 40, 70 45, 75 40 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <!-- Tree -->
+                  <rect class="paintable" x="135" y="115" width="14" height="50" fill="#ffffff" stroke="#1e293b" stroke-width="2.2" style="cursor: pointer;" />
+                  <circle class="paintable" cx="142" cy="85" r="28" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <!-- Ground and Path -->
+                  <line x1="10" y1="165" x2="190" y2="165" stroke="#1e293b" stroke-width="2.8" stroke-linecap="round" />
+                  <path class="paintable" d="M 50 165 Q 60 145 55 125 H 70 Q 75 145 65 165 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <!-- House -->
+                  <rect class="paintable" x="25" y="90" width="70" height="75" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" rx="3" style="cursor: pointer;" />
+                  <polygon class="paintable" points="20,90 60,50 100,90" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <!-- Chimney -->
+                  <rect class="paintable" x="80" y="55" width="10" height="20" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Door -->
+                  <rect class="paintable" x="48" y="118" width="22" height="47" fill="#ffffff" stroke="#1e293b" stroke-width="2" rx="2" style="cursor: pointer;" />
+                  <circle class="paintable" cx="54" cy="140" r="2.5" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <!-- Window -->
+                  <rect class="paintable" x="73" y="105" width="16" height="16" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" rx="2" style="cursor: pointer;" />
+                  <line x1="81" y1="105" x2="81" y2="121" stroke="#1e293b" stroke-width="1.2" />
+                  <line x1="73" y1="113" x2="89" y2="113" stroke="#1e293b" stroke-width="1.2" />
+                </g>
+
+                <!-- ==================== PAGE 2: à¸à¸­à¸”à¸à¸£à¸°à¸•à¹ˆà¸²à¸¢ ðŸ° ==================== -->
+                <g id="color-page-2" class="color-page-group" style="display: none;">
+                  <!-- background -->
+                  <rect class="paintable" x="0" y="0" width="200" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Hair back -->
+                  <path class="paintable" d="M 60 70 C 50 110, 150 110, 140 70 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Head -->
+                  <circle class="paintable" cx="100" cy="70" r="25" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <!-- Hair bangs -->
+                  <path class="paintable" d="M 75 70 Q 100 55 125 70 C 120 50, 80 50, 75 70 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <path class="paintable" d="M 70 50 C 65 40, 80 40, 75 50 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" /> <!-- hair bow -->
+                  <path class="paintable" d="M 80 50 C 85 40, 75 40, 75 50 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <!-- Face details -->
+                  <circle cx="88" cy="72" r="2.5" fill="#1e293b" />
+                  <circle cx="112" cy="72" r="2.5" fill="#1e293b" />
+                  <path d="M 98 78 Q 100 81 102 78" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round" fill="none" />
+                  <!-- Body / Dress -->
+                  <path class="paintable" d="M 85 95 L 72 155 L 128 155 L 115 95 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <path class="paintable" d="M 80 105 Q 100 112 120 105" fill="none" stroke="#1e293b" stroke-width="3" style="cursor: pointer;" /> <!-- arms -->
+                  <!-- Fluffy Bunny -->
+                  <ellipse class="paintable" cx="100" cy="130" rx="14" ry="18" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <circle class="paintable" cx="100" cy="112" r="10" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <!-- Bunny ears -->
+                  <ellipse class="paintable" cx="96" cy="98" rx="3" ry="8" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" transform="rotate(-15, 96, 98)" style="cursor: pointer;" />
+                  <ellipse class="paintable" cx="104" cy="98" rx="3" ry="8" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" transform="rotate(15, 104, 98)" style="cursor: pointer;" />
+                  <circle cx="97" cy="112" r="1" fill="#1e293b" />
+                  <circle cx="103" cy="112" r="1" fill="#1e293b" />
+                  <!-- Hearts and stars -->
+                  <path class="paintable" d="M 40 45 C 35 35, 20 40, 30 50 C 40 40, 45 35, 40 45 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <polygon class="paintable" points="160,85 162,90 167,90 163,93 165,98 160,95 155,98 157,93 153,90 158,90" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                </g>
+
+                <!-- ==================== PAGE 3: à¸ˆà¸£à¸§à¸” ðŸš€ ==================== -->
+                <g id="color-page-3" class="color-page-group" style="display: none;">
+                  <!-- background -->
+                  <rect class="paintable" x="0" y="0" width="200" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Stars -->
+                  <polygon class="paintable" points="40,30 42,35 47,35 43,38 45,43 40,40 35,43 37,38 33,35 38,35" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <polygon class="paintable" points="165,65 167,70 172,70 168,73 170,78 165,75 160,78 162,73 158,70 163,70" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <!-- Planet Saturn -->
+                  <circle class="paintable" cx="45" cy="130" r="13" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <ellipse class="paintable" cx="45" cy="130" rx="23" ry="5" fill="none" stroke="#1e293b" stroke-width="2" transform="rotate(-15, 45, 130)" style="cursor: pointer;" />
+                  <!-- Moon -->
+                  <circle class="paintable" cx="155" cy="140" r="16" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <circle class="paintable" cx="147" cy="135" r="3" fill="#ffffff" stroke="#1e293b" stroke-width="1" style="cursor: pointer;" />
+                  <circle class="paintable" cx="158" cy="148" r="2.5" fill="#ffffff" stroke="#1e293b" stroke-width="1" style="cursor: pointer;" />
+                  <!-- Rocket Body -->
+                  <path class="paintable" d="M 100 40 C 110 70, 115 110, 115 125 L 85 125 C 85 110, 90 70, 100 40 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <!-- Rocket nose cone -->
+                  <path class="paintable" d="M 90 65 C 90 40, 110 40, 110 65 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Window -->
+                  <circle class="paintable" cx="100" cy="90" r="10" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <!-- Side fins -->
+                  <path class="paintable" d="M 85 105 L 70 128 L 85 125 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <path class="paintable" d="M 115 105 L 130 128 L 115 125 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Booster fire -->
+                  <path class="paintable" d="M 92 125 L 100 155 L 108 125 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <path class="paintable" d="M 95 125 L 100 143 L 105 125 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.2" style="cursor: pointer;" />
+                </g>
+
+                <!-- ==================== PAGE 4: à¹„à¸”à¹‚à¸™ ðŸ¦• ==================== -->
+                <g id="color-page-4" class="color-page-group" style="display: none;">
+                  <!-- background -->
+                  <rect class="paintable" x="0" y="0" width="200" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Volcano -->
+                  <path class="paintable" d="M 120 165 L 140 120 L 155 120 L 175 165 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <path class="paintable" d="M 147 120 C 140 110, 155 100, 160 115 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <!-- Palm tree -->
+                  <rect class="paintable" x="20" y="110" width="8" height="55" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <path class="paintable" d="M 15 110 C 10 90, 20 85, 24 110 C 30 85, 40 90, 24 110 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <!-- Ground Line -->
+                  <line x1="10" y1="165" x2="190" y2="165" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round" />
+                  <!-- Dino Body -->
+                  <ellipse class="paintable" cx="75" cy="132" rx="28" ry="18" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <!-- Dino Neck & Head -->
+                  <path class="paintable" d="M 88 126 C 105 105, 100 75, 88 75 C 78 75, 78 85, 88 95 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <!-- Tail -->
+                  <path class="paintable" d="M 50 132 Q 32 122 26 112 Q 40 127 50 132" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Legs -->
+                  <rect class="paintable" x="56" y="146" width="10" height="19" rx="2" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <rect class="paintable" x="80" y="146" width="10" height="19" rx="2" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Eye & Smile -->
+                  <circle cx="85" cy="82" r="1.5" fill="#1e293b" />
+                  <path d="M 91 86 Q 93 88 91 90" stroke="#1e293b" stroke-width="1.2" fill="none" />
+                </g>
+
+                <!-- ==================== PAGE 5: à¹à¸¡à¸§à¹€à¸«à¸¡à¸µà¸¢à¸§ ðŸ± ==================== -->
+                <g id="color-page-5" class="color-page-group" style="display: none;">
+                  <!-- background -->
+                  <rect class="paintable" x="0" y="0" width="200" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Ground line -->
+                  <line x1="10" y1="165" x2="190" y2="165" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round" />
+                  <!-- Cat Body -->
+                  <ellipse class="paintable" cx="100" cy="128" rx="22" ry="28" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <!-- Cat Head -->
+                  <circle class="paintable" cx="100" cy="80" r="22" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <!-- Cat Ears -->
+                  <polygon class="paintable" points="82,68 66,42 93,60" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <polygon class="paintable" points="118,68 134,42 107,60" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Eyes -->
+                  <circle cx="92" cy="78" r="2" fill="#1e293b" />
+                  <circle cx="108" cy="78" r="2" fill="#1e293b" />
+                  <path d="M 97 84 Q 100 87 103 84" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round" fill="none" />
+                  <!-- Collar & Bell -->
+                  <path class="paintable" d="M 84 98 Q 100 108 116 98" fill="none" stroke="#1e293b" stroke-width="3" style="cursor: pointer;" />
+                  <circle class="paintable" cx="100" cy="106" r="4" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <!-- Cat Tail -->
+                  <path class="paintable" d="M 120 135 C 135 130, 140 105, 135 98 C 130 105, 125 125, 120 135 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Food Bowl -->
+                  <ellipse class="paintable" cx="155" cy="155" rx="16" ry="7" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <path d="M 148 155 Q 155 152 162 155 M 160 152 L 160 158" stroke="#1e293b" stroke-width="1" />
+                </g>
+
+                <!-- ==================== PAGE 6: à¹€à¸£à¸·à¸­à¸¥à¹ˆà¸­à¸‡ ðŸš¢ ==================== -->
+                <g id="color-page-6" class="color-page-group" style="display: none;">
+                  <!-- background -->
+                  <rect class="paintable" x="0" y="0" width="200" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Sun & Clouds -->
+                  <circle class="paintable" cx="30" cy="35" r="12" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <path class="paintable" d="M 140 35 C 130 35, 130 45, 140 45 C 145 45, 150 40, 155 45 C 160 50, 170 50, 175 45 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <!-- Chimney & Steam -->
+                  <rect class="paintable" x="90" y="65" width="18" height="25" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <circle class="paintable" cx="99" cy="50" r="7" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <!-- Cabin -->
+                  <rect class="paintable" x="65" y="90" width="70" height="30" fill="#ffffff" stroke="#1e293b" stroke-width="2.2" style="cursor: pointer;" />
+                  <circle class="paintable" cx="80" cy="105" r="5" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <circle class="paintable" cx="100" cy="105" r="5" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <circle class="paintable" cx="120" cy="105" r="5" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <!-- Hull -->
+                  <path class="paintable" d="M 30 120 L 170 120 L 152 148 L 48 148 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <!-- Sea Waves -->
+                  <path class="paintable" d="M 10 152 Q 30 142 50 152 T 90 152 T 130 152 T 170 152 T 190 152 L 190 185 L 10 185 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <!-- Lifebuoy -->
+                  <circle class="paintable" cx="162" cy="168" r="9" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                </g>
+
+                <!-- ==================== PAGE 7: à¸šà¹‰à¸²à¸™à¹€à¸«à¹‡à¸” ðŸ„ [HARD] ==================== -->
+                <g id="color-page-7" class="color-page-group" style="display: none;">
+                  <!-- background -->
+                  <rect class="paintable" x="0" y="0" width="200" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Ground meadow and path -->
+                  <line x1="10" y1="165" x2="190" y2="165" stroke="#1e293b" stroke-width="2.8" stroke-linecap="round" />
+                  <path class="paintable" d="M 85 165 C 80 155, 95 145, 90 135 H 110 C 105 145, 120 155, 115 165 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <!-- Mushroom Cap -->
+                  <path class="paintable" d="M 30 100 C 30 30, 170 30, 170 100 C 140 105, 60 105, 30 100 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <!-- Cap Spots -->
+                  <circle class="paintable" cx="60" cy="60" r="10" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <circle class="paintable" cx="100" cy="50" r="12" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <circle class="paintable" cx="140" cy="65" r="9" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <circle class="paintable" cx="102" cy="82" r="7.5" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <!-- Mushroom Stem (House Body) -->
+                  <path class="paintable" d="M 60 100 L 50 165 H 150 L 140 100 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <!-- Door with Heart -->
+                  <path class="paintable" d="M 85 165 V 125 C 85 115, 115 115, 115 125 V 165 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <path class="paintable" d="M 100 135 C 95 130, 90 135, 100 145 C 110 135, 105 130, 100 135 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.2" style="cursor: pointer;" />
+                  <!-- Windows on stem -->
+                  <rect class="paintable" x="62" y="112" width="12" height="12" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" rx="2" style="cursor: pointer;" />
+                  <rect class="paintable" x="126" y="112" width="12" height="12" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" rx="2" style="cursor: pointer;" />
+                  <!-- Climbing Vine and Leaves -->
+                  <path class="paintable" d="M 38 165 Q 25 130 46 108" fill="none" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <path class="paintable" d="M 28 140 Q 23 135 28 130 Q 33 135 28 140 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.2" style="cursor: pointer;" />
+                  <path class="paintable" d="M 36 122 Q 31 117 36 112 Q 41 117 36 122 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.2" style="cursor: pointer;" />
+                  <!-- Bunny with Carrot -->
+                  <ellipse class="paintable" cx="165" cy="148" rx="10" ry="14" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <circle class="paintable" cx="165" cy="130" r="8" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <ellipse class="paintable" cx="162" cy="118" rx="2.5" ry="7" fill="#ffffff" stroke="#1e293b" stroke-width="1.2" style="cursor: pointer;" />
+                  <ellipse class="paintable" cx="168" cy="118" rx="2.5" ry="7" fill="#ffffff" stroke="#1e293b" stroke-width="1.2" style="cursor: pointer;" />
+                  <polygon class="paintable" points="152,148 146,140 148,138 154,142" fill="#ffffff" stroke="#1e293b" stroke-width="1.2" style="cursor: pointer;" /> <!-- carrot -->
+                  <!-- Fence -->
+                  <path class="paintable" d="M 10 165 V 145 H 18 V 165 M 18 145 H 28 V 165" fill="none" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                </g>
+
+                <!-- ==================== PAGE 8: à¹€à¸ˆà¹‰à¸²à¸«à¸à¸´à¸‡à¹€à¸‡à¸·à¸­à¸ ðŸ§œâ€â™€ï¸ [HARD] ==================== -->
+                <g id="color-page-8" class="color-page-group" style="display: none;">
+                  <!-- background -->
+                  <rect class="paintable" x="0" y="0" width="200" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Mermaid tail & scales -->
+                  <path class="paintable" d="M 100 120 C 130 110, 150 140, 130 160 C 120 170, 110 165, 100 155" fill="none" stroke="#1e293b" stroke-width="12" stroke-linecap="round" style="cursor: pointer;" />
+                  <path class="paintable" d="M 140 160 L 160 175 L 148 152 L 155 145 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" /> <!-- tail fin -->
+                  <!-- Body and Hair -->
+                  <path class="paintable" d="M 100 95 L 93 125 H 107 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <circle class="paintable" cx="100" cy="75" r="12" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Flowing detailed hair -->
+                  <path class="paintable" d="M 88 75 C 80 90, 85 130, 75 140 C 72 125, 78 90, 88 75 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <path class="paintable" d="M 112 75 C 120 90, 115 130, 125 140 C 128 125, 122 90, 112 75 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <circle class="paintable" cx="110" cy="68" r="3.5" fill="#ffffff" stroke="#1e293b" stroke-width="1" style="cursor: pointer;" /> <!-- hair flower -->
+                  <!-- Jellyfish -->
+                  <path class="paintable" d="M 22 45 C 22 25, 52 25, 52 45 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <path d="M 27 45 Q 22 65 27 75 M 37 45 Q 42 65 37 75 M 47 45 Q 45 65 47 75" fill="none" stroke="#1e293b" stroke-width="1.2" />
+                  <!-- Seahorse -->
+                  <path class="paintable" d="M 172 75 Q 162 90 172 105 Q 177 115 167 120 Q 163 105 172 75 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Corals at bottom -->
+                  <path class="paintable" d="M 10 190 Q 20 150 25 190 M 25 190 Q 35 140 45 190" fill="none" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round" style="cursor: pointer;" />
+                  <circle class="paintable" cx="150" cy="40" r="3.5" fill="#ffffff" stroke="#1e293b" stroke-width="1" style="cursor: pointer;" />
+                  <circle class="paintable" cx="158" cy="30" r="2.5" fill="#ffffff" stroke="#1e293b" stroke-width="1" style="cursor: pointer;" />
+                </g>
+
+                <!-- ==================== PAGE 9: à¸›à¸´à¸à¸™à¸´à¸ ðŸ§º [HARD] ==================== -->
+                <g id="color-page-9" class="color-page-group" style="display: none;">
+                  <!-- background -->
+                  <rect class="paintable" x="0" y="0" width="200" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Large tree trunk -->
+                  <path class="paintable" d="M 170 10 V 190 H 195 V 10 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <path class="paintable" d="M 170 60 Q 110 50 70 65" fill="none" stroke="#1e293b" stroke-width="4" style="cursor: pointer;" />
+                  <!-- Hanging bunting flags -->
+                  <path d="M 20 50 Q 90 70 170 60" fill="none" stroke="#1e293b" stroke-width="1" />
+                  <polygon class="paintable" points="40,55 50,70 60,57" fill="#ffffff" stroke="#1e293b" stroke-width="1" style="cursor: pointer;" />
+                  <polygon class="paintable" points="80,59 90,75 100,61" fill="#ffffff" stroke="#1e293b" stroke-width="1" style="cursor: pointer;" />
+                  <polygon class="paintable" points="120,61 130,76 140,62" fill="#ffffff" stroke="#1e293b" stroke-width="1" style="cursor: pointer;" />
+                  <!-- Picnic Mat -->
+                  <polygon class="paintable" points="20,185 160,185 140,150 40,150" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Bear sitting -->
+                  <ellipse class="paintable" cx="50" cy="145" rx="12" ry="15" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <circle class="paintable" cx="50" cy="120" r="10" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <circle class="paintable" cx="42" cy="112" r="3.5" fill="#ffffff" stroke="#1e293b" stroke-width="1.2" style="cursor: pointer;" />
+                  <circle class="paintable" cx="58" cy="112" r="3.5" fill="#ffffff" stroke="#1e293b" stroke-width="1.2" style="cursor: pointer;" />
+                  <!-- Bunny sitting -->
+                  <ellipse class="paintable" cx="95" cy="143" rx="10" ry="14" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <circle class="paintable" cx="95" cy="120" r="8" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <ellipse class="paintable" cx="92" cy="105" rx="2" ry="8" fill="#ffffff" stroke="#1e293b" stroke-width="1.2" style="cursor: pointer;" />
+                  <ellipse class="paintable" cx="98" cy="105" rx="2" ry="8" fill="#ffffff" stroke="#1e293b" stroke-width="1.2" style="cursor: pointer;" />
+                  <!-- Cake slice -->
+                  <ellipse class="paintable" cx="72" cy="165" rx="12" ry="4" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <path class="paintable" d="M 65 160 L 68 150 L 78 150 L 80 160 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <!-- Basket -->
+                  <rect class="paintable" x="125" y="152" width="20" height="18" rx="2" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <path class="paintable" d="M 125 152 Q 135 140 145 152" fill="none" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                </g>
+
+                <!-- ==================== PAGE 10: à¹à¸•à¹ˆà¸‡à¸•à¸±à¸§ ðŸ‘— [HARD] ==================== -->
+                <g id="color-page-10" class="color-page-group" style="display: none;">
+                  <!-- background -->
+                  <rect class="paintable" x="0" y="0" width="200" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Large Vanity Mirror -->
+                  <rect class="paintable" x="110" y="160" width="60" height="8" rx="2" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <ellipse class="paintable" cx="140" cy="100" rx="25" ry="50" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <line x1="128" y1="75" x2="148" y2="55" stroke="#cbd5e1" stroke-width="1.5" />
+                  <line x1="132" y1="125" x2="152" y2="105" stroke="#cbd5e1" stroke-width="1.5" />
+                  <!-- Girl in dress -->
+                  <circle class="paintable" cx="55" cy="85" r="14" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <path class="paintable" d="M 45 110 L 30 160 H 80 L 65 110 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <path d="M 30 150 Q 55 155 80 150" fill="none" stroke="#1e293b" stroke-width="1.2" />
+                  <!-- Clothes rack on left -->
+                  <path class="paintable" d="M 10 160 H 20 M 15 160 V 70 H 45" fill="none" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <path class="paintable" d="M 25 80 L 20 110 H 38 L 33 80 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" /> <!-- Hanging dress -->
+                  <path class="paintable" d="M 29 74 Q 29 78 26 77" fill="none" stroke="#1e293b" stroke-width="1" /> <!-- hanger hook -->
+                  <!-- Gift box on floor -->
+                  <rect class="paintable" x="85" y="148" width="16" height="16" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <path class="paintable" d="M 85 148 L 93 140 L 101 148" fill="none" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                </g>
+
+                <!-- ==================== PAGE 11: à¹€à¸¡à¸·à¸­à¸‡ ðŸ¢ [HARD] ==================== -->
+                <g id="color-page-11" class="color-page-group" style="display: none;">
+                  <!-- background -->
+                  <rect class="paintable" x="0" y="0" width="200" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Hot Air Balloon -->
+                  <ellipse class="paintable" cx="100" cy="35" rx="14" ry="18" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <rect class="paintable" x="97" y="58" width="6" height="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.2" style="cursor: pointer;" />
+                  <line x1="98" y1="53" x2="98" y2="58" stroke="#1e293b" stroke-width="1" />
+                  <line x1="102" y1="53" x2="102" y2="58" stroke="#1e293b" stroke-width="1" />
+                  <!-- Road line -->
+                  <line x1="10" y1="165" x2="190" y2="165" stroke="#1e293b" stroke-width="3" />
+                  <!-- Bakery Building -->
+                  <rect class="paintable" x="20" y="85" width="45" height="80" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <path class="paintable" d="M 18 105 L 23 95 H 67 L 67 105 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" /> <!-- awning -->
+                  <rect class="paintable" x="25" y="90" width="35" height="12" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <!-- Bookshop Building -->
+                  <rect class="paintable" x="135" y="70" width="45" height="95" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <polygon class="paintable" points="130,70 157,45 185,70" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Bus on road -->
+                  <rect class="paintable" x="70" y="125" width="60" height="35" rx="5" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <rect class="paintable" x="75" y="130" width="12" height="12" rx="2" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <rect class="paintable" x="92" y="130" width="12" height="12" rx="2" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <rect class="paintable" x="109" y="130" width="12" height="12" rx="2" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                  <circle class="paintable" cx="85" cy="162" r="7" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <circle class="paintable" cx="115" cy="162" r="7" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                </g>
+
+                <!-- ==================== PAGE 12: à¸Ÿà¸²à¸£à¹Œà¸¡ ðŸšœ [HARD] ==================== -->
+                <g id="color-page-12" class="color-page-group" style="display: none;">
+                  <!-- background -->
+                  <rect class="paintable" x="0" y="0" width="200" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" style="cursor: pointer;" />
+                  <!-- Windmill -->
+                  <polygon class="paintable" points="25,145 32,80 43,80 50,145" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <line x1="37" y1="80" x2="15" y2="65" stroke="#1e293b" stroke-width="2" />
+                  <line x1="37" y1="80" x2="60" y2="95" stroke="#1e293b" stroke-width="2" />
+                  <line x1="37" y1="80" x2="52" y2="58" stroke="#1e293b" stroke-width="2" />
+                  <line x1="37" y1="80" x2="22" y2="102" stroke="#1e293b" stroke-width="2" />
+                  <!-- Barn -->
+                  <rect class="paintable" x="65" y="100" width="60" height="48" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <polygon class="paintable" points="60,100 80,75 110,75 130,100" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" style="cursor: pointer;" />
+                  <rect class="paintable" x="83" y="118" width="24" height="30" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <line x1="83" y1="118" x2="107" y2="148" stroke="#1e293b" stroke-width="1.5" />
+                  <line x1="107" y1="118" x2="83" y2="148" stroke="#1e293b" stroke-width="1.5" />
+                  <!-- Ground Line -->
+                  <line x1="10" y1="165" x2="190" y2="165" stroke="#1e293b" stroke-width="2.8" stroke-linecap="round" />
+                  <!-- Cow -->
+                  <ellipse class="paintable" cx="155" cy="148" rx="20" ry="14" fill="#ffffff" stroke="#1e293b" stroke-width="2" style="cursor: pointer;" />
+                  <ellipse class="paintable" cx="138" cy="130" rx="9" ry="8" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" style="cursor: pointer;" />
+                  <circle class="paintable" cx="160" cy="162" r="3" fill="#ffffff" stroke="#1e293b" stroke-width="1.2" style="cursor: pointer;" />
+                  <!-- Hen -->
+                  <path class="paintable" d="M 30 175 C 20 175, 15 160, 25 152 C 30 148, 35 152, 40 162 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" style="cursor: pointer;" />
+                </g>
