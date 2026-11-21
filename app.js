@@ -1173,7 +1173,8 @@ function getApparelVisual(apparelId, sizePx = 40) {
     "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8"
   ];
   if (newClothes.includes(apparelId)) {
-    const file = /^F\d+$/.test(apparelId) ? `icon_${apparelId}.png?v=1` : `${apparelId}.png?v=22`; // F = ชุดเปล่า ไม่มีหมี
+    if (window.hasOutfitSvg && hasOutfitSvg(apparelId)) return getOutfitSvg(apparelId, sizePx, "icon"); // ชุดเซ็ตวาดใหม่
+    const file = `${apparelId}.png?v=22`;
     return `<img src="assets/clothes/${file}" style="width:${sizePx}px; height:${sizePx}px; object-fit:contain; pointer-events:none;" alt="${apparelId}" draggable="false">`;
   }
 
@@ -1628,7 +1629,7 @@ function getPetVisual(sizePx = 90) {
   const fullOutfitId = [state.equippedOutfit, state.equippedTop, state.equippedBottom]
     .find(id => id && /^F\d+$/.test(id));
   if (fullOutfitId) {
-    return `<span class="pet-outfit-stack" style="position:relative; display:inline-block; width:${finalSize}px; height:${finalSize}px; line-height:0;">${getBarePetVisual(finalSize)}<img src="assets/clothes/wear_${fullOutfitId}.png?v=1" class="pet-outfit-img" style="position:absolute; left:0; top:0; width:${finalSize}px; height:${finalSize}px; pointer-events:none;" alt="" draggable="false"></span>`;
+    return `<span class="pet-outfit-stack" style="position:relative; display:inline-block; width:${finalSize}px; height:${finalSize}px; line-height:0;">${getBarePetVisual(finalSize)}${window.getOutfitSvg ? getOutfitSvg(fullOutfitId, finalSize, "wear") : ""}</span>`;
   }
   return getBarePetVisual(finalSize);
 }
