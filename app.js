@@ -1,6 +1,60 @@
 // AI (Gemini) เรียกผ่านเซิร์ฟเวอร์ตัวกลาง (ai-proxy/) เพื่อไม่ให้ API key อยู่ในหน้าเว็บ
 const AI_PROXY_URL = "https://agwentar-ai.jibjoyjy.workers.dev";
 
+// ผู้ใช้ใส่ Gemini API key ของตัวเองในแอป (เก็บในเครื่องผู้ใช้เท่านั้น ไม่ส่งไปที่อื่นนอกจาก Google)
+const AI_KEY_STORE = "agwentar_gemini_key";
+function getUserAiKey() {
+  try { return (localStorage.getItem(AI_KEY_STORE) || "").trim(); } catch (e) { return ""; }
+}
+function setUserAiKey(k) {
+  try { k ? localStorage.setItem(AI_KEY_STORE, k.trim()) : localStorage.removeItem(AI_KEY_STORE); } catch (e) {}
+}
+function aiUrl(model) {
+  return getUserAiKey()
+    ? `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`
+    : `${AI_PROXY_URL}/v1beta/models/${model}:generateContent`;
+}
+function aiHeaders() {
+  const h = { "Content-Type": "application/json" };
+  const k = getUserAiKey();
+  if (k) h["x-goog-api-key"] = k;
+  return h;
+}
+function showAiKeyPrompt(note) {
+  const container = document.getElementById("chatContainer");
+  if (!container) return;
+  const old = document.getElementById("aiKeyPrompt");
+  if (old) old.remove();
+  const has = !!getUserAiKey();
+  const b = document.createElement("div");
+  b.className = "chat-bubble bot ai-key-prompt";
+  b.id = "aiKeyPrompt";
+  b.innerHTML =
+    (note ? `<div class="ai-key-note">${note}</div>` : "") +
+    `<div>🔑 ใส่ Gemini API key ของคุณเพื่อคุยกับเกวนทาร์</div>` +
+    `<div class="ai-key-help">ขอ key ฟรีได้ที่ <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> · key จะเก็บไว้ในเครื่องนี้เท่านั้น</div>` +
+    `<div class="ai-key-row"><input type="password" id="aiKeyInput" class="chat-text-input" placeholder="วาง API key ที่นี่" autocomplete="off">` +
+    `<button type="button" class="chat-send-btn" id="aiKeySave" title="บันทึก">✓</button></div>` +
+    (has ? `<button type="button" class="ai-key-remove" id="aiKeyRemove">ลบ key ที่บันทึกไว้</button>` : "");
+  container.appendChild(b);
+  container.scrollTop = container.scrollHeight;
+  const inp = b.querySelector("#aiKeyInput");
+  const save = () => {
+    const v = inp.value.trim();
+    if (!v) { inp.focus(); return; }
+    setUserAiKey(v);
+    b.innerHTML = "✅ บันทึก API key แล้ว พิมพ์คุยได้เลยค่ะ";
+    b.removeAttribute("id");
+    const ci = document.getElementById("chatInput");
+    if (ci) ci.focus();
+  };
+  b.querySelector("#aiKeySave").addEventListener("click", save);
+  inp.addEventListener("keypress", (e) => { if (e.key === "Enter") save(); });
+  const rm = b.querySelector("#aiKeyRemove");
+  if (rm) rm.addEventListener("click", () => { setUserAiKey(""); showAiKeyPrompt("ลบ key แล้ว"); });
+  inp.focus();
+}
+
 // GWENTAR WELLNESS APP - 23 SCREENS ROUTER, SCROLLABLE TABS & DYNAMIC PETS
 
 // 23 Screens Metadata
@@ -3329,6 +3383,7 @@ async function sendChatMessage() {
   const input = document.getElementById("chatInput");
   const text = input.value.trim();
   if (!text) return;
+  if (!getUserAiKey()) { showAiKeyPrompt(); return; }
   
   input.value = "";
   isAiThinking = true;
@@ -3368,12 +3423,10 @@ async function sendChatMessage() {
 
     for (const model of models) {
       try {
-        const url = `${AI_PROXY_URL}/v1beta/models/${model}:generateContent`;
+        const url = aiUrl(model);
         response = await fetch(url, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: aiHeaders(),
           body: JSON.stringify({
             contents: chatHistory,
             system_instruction: {
@@ -3423,6 +3476,14 @@ async function sendChatMessage() {
     container.scrollTop = container.scrollHeight;
   } catch (error) {
     console.error("Gemini API Error:", error);
+    if (/api key|API_KEY|PERMISSION_DENIED|unregistered callers/i.test(error.message || "")) {
+      botBubble.remove();
+      chatHistory.pop();
+      setUserAiKey("");
+      input.value = text;
+      showAiKeyPrompt("⚠️ API key นี้ใช้ไม่ได้ ลองใส่ใหม่อีกครั้ง");
+      return;
+    }
     // Explicit error message directly in the chat bubble
     botBubble.innerText = `⚠️ เชื่อมต่อไม่ได้: ${error.message} (กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต หรือ API Key นะคะ 💔)`;
     state.questsProgress.talk = (state.questsProgress.talk || 0) + 1;
@@ -6637,11 +6698,11 @@ async function verifyMindfulnessInput(key) {
 
   const apiPromise = (async () => {
     const model = "gemini-3.1-flash-lite";
-    const url = `${AI_PROXY_URL}/v1beta/models/${model}:generateContent`;
+    const url = aiUrl(model);
     
     const response = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: aiHeaders(),
       body: JSON.stringify({
         contents: [{ role: "user", parts: [{ text: `${systemPrompt}\n\nข้อความผู้ใช้: "${text}"` }] }],
         generationConfig: { temperature: 0.1, maxOutputTokens: 10 }

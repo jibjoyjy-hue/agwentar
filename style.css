@@ -1612,6 +1612,14 @@ html[data-theme="dark"] .chat-messages-container {
   cursor: pointer;
 }
 
+.ai-key-prompt { max-width: 92%; display: flex; flex-direction: column; gap: 6px; }
+.ai-key-note { font-weight: 600; }
+.ai-key-help { opacity: 0.75; font-size: 10px; }
+.ai-key-help a { color: var(--primary); }
+.ai-key-row { display: flex; gap: 6px; }
+.ai-key-row .chat-text-input { min-width: 0; }
+.ai-key-remove { align-self: flex-start; background: none; border: none; padding: 0; color: var(--text-secondary, inherit); font-size: 10px; text-decoration: underline; cursor: pointer; font-family: inherit; }
+
 /* SCREEN 12: Diary view */
 .calendar-widget {
   background: var(--bg-card);
