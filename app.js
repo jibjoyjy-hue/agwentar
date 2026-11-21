@@ -1623,21 +1623,17 @@ function getPetVisual(sizePx = 90) {
     return `<div class="pet-body-main" style="font-size:${finalSize - 6}px; display:inline-block; animation: petEggWobble 2s infinite ease-in-out; cursor:pointer;">🥚</div>`;
   }
 
-  // Check if a body-replacing outfit is equipped
-    const bodyReplacingId = [
-    state.equippedOutfit, state.equippedTop, state.equippedBottom
-  ].find(id => id && [
-    "pink_cardigan_skirt", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10",
-    "F11", "F12", "F13", "F14", "F15", "F16", "F17", "F18", "F19", "F20", "F21", "F22", "F23", "F24", "F25",
-    "pink_cardigan", "T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8",
-    "pink_skirt", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8",
-    "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8"
-  ].includes(id));
-  
-  if (bodyReplacingId) {
-    return `<img src="assets/clothes/${bodyReplacingId}.png?v=22" class="pet-body-img" style="width:${finalSize}px; height:${finalSize}px; object-fit:contain; pointer-events:none;" alt="${state.petName}" draggable="false">`;
+  // ชุดเต็มตัว (F1–F25): สวมทับบนสัตว์เลี้ยงตัวเดิม แทนการเปลี่ยนเป็นรูปหมี
+  const fullOutfitId = [state.equippedOutfit, state.equippedTop, state.equippedBottom]
+    .find(id => id && /^F\d+$/.test(id));
+  if (fullOutfitId) {
+    return `<span class="pet-outfit-stack" style="position:relative; display:inline-block; width:${finalSize}px; height:${finalSize}px; line-height:0;">${getBarePetVisual(finalSize)}<img src="assets/clothes/wear_${fullOutfitId}.png?v=1" class="pet-outfit-img" style="position:absolute; left:0; top:0; width:${finalSize}px; height:${finalSize}px; pointer-events:none;" alt="" draggable="false"></span>`;
   }
+  return getBarePetVisual(finalSize);
+}
 
+// รูปสัตว์เลี้ยงเปล่า (ไม่มีชุดเต็มตัว)
+function getBarePetVisual(finalSize) {
   let petLower = (state.petId || "aimee").toLowerCase();
   if (petLower === "gwentar") petLower = "bear";
   const croppedPets = ["aimee", "blob", "bunny", "cat", "puppy", "penguin", "bear", "panda", "fox", "chick", "otter", "hamster", "dino", "pig", "capybara", "parrot", "giraffe", "elephant"];
