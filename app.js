@@ -1173,7 +1173,8 @@ function getApparelVisual(apparelId, sizePx = 40) {
     "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8"
   ];
   if (newClothes.includes(apparelId)) {
-    return `<img src="assets/clothes/${apparelId}.png?v=22" style="width:${sizePx}px; height:${sizePx}px; object-fit:contain; pointer-events:none;" alt="${apparelId}" draggable="false">`;
+    const file = /^F\d+$/.test(apparelId) ? `icon_${apparelId}.png?v=1` : `${apparelId}.png?v=22`; // F = ชุดเปล่า ไม่มีหมี
+    return `<img src="assets/clothes/${file}" style="width:${sizePx}px; height:${sizePx}px; object-fit:contain; pointer-events:none;" alt="${apparelId}" draggable="false">`;
   }
 
   const svgMap = {
