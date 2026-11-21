@@ -2317,7 +2317,7 @@ async function sendChatMessage() {
   cleanChatHistory();
 
   try {
-    const apiKey = "AQ.Ab8RN6K8ZKiZle-FDLUaN6oKq5r90-Yo5hTv-8RpMYhzPQ8RFA";
+    const apiKey = "REMOVED_API_KEY";
     const models = [
       "gemini-3.1-flash-lite",
       "gemini-2.0-flash-lite",

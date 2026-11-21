@@ -1957,6 +1957,7 @@ html[data-theme="dark"] .chat-messages-container {
   margin-bottom: 10px;
 }
 .shop-tab {
+  flex-shrink: 0;
   white-space: nowrap;
   background: transparent;
   border: none;
@@ -2018,6 +2019,7 @@ html[data-theme="dark"] .chat-messages-container {
   margin-bottom: 10px;
 }
 .bag-tab {
+  flex-shrink: 0;
   white-space: nowrap;
   background: transparent;
   border: none;

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8">
@@ -49,23 +49,19 @@
               <div class="status-hp-bg"></div>
               <span class="stat-icon">❤️</span>
               <span class="stat-val">46/50</span>
-              <button class="add-stat-btn">+</button>
             </div>
             <div class="status-pill energy-pill" id="pillEnergy">
               <div class="status-energy-bg"></div>
               <span class="stat-icon">⚡</span>
               <span class="stat-val">42/50</span>
-              <button class="add-stat-btn">+</button>
             </div>
             <div class="status-pill coin-pill" id="pillCoins">
               <span class="stat-icon">🪙</span>
               <span class="stat-val" id="coinCounter">12,450</span>
-              <button class="add-stat-btn">+</button>
             </div>
             <div class="status-pill gem-pill" id="pillGems">
               <span class="stat-icon">💎</span>
               <span class="stat-val" id="gemCounter">230</span>
-              <button class="add-stat-btn">+</button>
             </div>
           </div>
         </header>
@@ -757,6 +753,14 @@
               <span style="font-size:18px;">▶</span>
             </div>
 
+            <div class="game-item-card" onclick="startCakeStackGame()">
+              <div class="game-details">
+                <span class="game-name">🧱 หอคอยบล็อกสายรุ้ง (Block Stack Jump)</span>
+                <span class="game-highscore" id="cakeStackUnlockBadge">🔒 ปลดล็อกที่ Lv.5</span>
+              </div>
+              <span style="font-size:18px;">▶</span>
+            </div>
+
 
             <!-- Active Game Overlay: Food Memory Match -->
             <div id="foodMatchGameArea" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; z-index: 50; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; border-radius: 20px; overflow: hidden;">
@@ -841,6 +845,87 @@
                 <button class="btn-secondary" style="flex:1.2; padding: 6px 0; font-size: 11px;" id="btnColoringZoom" onclick="toggleColoringZoom()">🔍 ซูม x2</button>
                 <button class="btn-gradient" style="flex:2; padding: 6px 0; font-size: 11px;" onclick="saveColoringBook()">บันทึกความสุข (+50 🪙)</button>
                 <button class="btn-secondary" style="width: 50px; padding: 6px 0; font-size: 11px;" onclick="closeColoringBook()">ออก</button>
+              </div>
+            </div>
+
+            <!-- Active Game Overlay: Block Stack Jump -->
+            <div id="cakeStackGameArea" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 60%, #bae6fd 100%); z-index: 50; flex-direction: column; align-items: center; justify-content: space-between; padding: 15px; border-radius: 20px; overflow: hidden; font-family: inherit; user-select: none; box-sizing: border-box;">
+              <!-- Header Stats -->
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 5px 10px; background: rgba(255, 255, 255, 0.4); border-radius: 16px; backdrop-filter: blur(4px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); color: #0f172a; font-weight: 800; font-size: 11px; box-sizing: border-box;">
+                <button class="screen-back-btn" style="margin: 0; padding: 2px 6px; font-size: 13px; color: #0f172a; background: transparent; border: none; cursor: pointer; font-weight: 700;" onclick="stopCakeStackGame(false)">← กลับ</button>
+                <div style="display: flex; align-items: center; gap: 4px;">🧱 <span id="cakeStackCountVal">0</span></div>
+                <div style="display: flex; align-items: center; gap: 4px;">🏆 <span id="cakeStackHighScoreVal">0</span></div>
+                <div style="display: flex; align-items: center; gap: 2px; color: #ef4444;" id="cakeStackLivesContainer">❤️ ❤️ ❤️</div>
+              </div>
+              
+              <!-- Score Banner -->
+              <div style="background: rgba(255, 255, 255, 0.7); border: 2px dashed #f59e0b; border-radius: 12px; padding: 4px 15px; font-size: 12px; font-weight: 800; color: #b45309; margin-top: 8px;" id="cakeStackScoreVal">
+                คะแนน: 0
+              </div>
+
+              <!-- Game Playfield (Absolute DOM) -->
+              <div id="cakeStackPlayfield" onclick="triggerCakeStackJump()" style="position: relative; width: 100%; flex-grow: 1; margin: 10px 0; background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 100%); border-radius: 16px; overflow: hidden; border: 1.5px solid rgba(255, 255, 255, 0.4); box-shadow: inset 0 2px 8px rgba(0,0,0,0.05); box-sizing: border-box; cursor: pointer;">
+                <!-- Environments -->
+                <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35px; background: linear-gradient(180deg, #86efac 0%, #4ade80 100%); border-radius: 0 0 14px 14px; z-index: 1;"></div>
+                <div style="position: absolute; top: 15%; left: 10%; font-size: 40px; opacity: 0.3; pointer-events: none; z-index: 0;">☁️</div>
+                <div style="position: absolute; top: 25%; right: 15%; font-size: 50px; opacity: 0.3; pointer-events: none; z-index: 0;">☁️</div>
+                <div style="position: absolute; top: 5%; right: 5%; font-size: 15px; opacity: 0.5; color:#facc15; pointer-events: none; z-index: 0;">⭐</div>
+                <div style="position: absolute; top: 8%; left: 40%; font-size: 12px; opacity: 0.4; color:#facc15; pointer-events: none; z-index: 0;">⭐</div>
+                
+                <div style="position: absolute; bottom: 35px; left: 5%; width: 90%; height: 120px; border-radius: 100px 100px 0 0; border: 15px solid rgba(251, 146, 60, 0.15); border-bottom: none; pointer-events: none; z-index: 0;"></div>
+                
+                <!-- Stacking cakes container -->
+                <div id="cakeStackContainer" style="position: absolute; bottom: 35px; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; transition: transform 0.1s ease-out;"></div>
+
+
+                <!-- Jump Hint overlay (Top Left) -->
+                <div style="position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0.85); border: 1.5px solid #fed7aa; border-radius: 12px; padding: 6px; text-align: center; font-size: 8px; font-weight: 700; color: #b45309; z-index: 3; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; gap: 2px;">
+                  <div>กระโดด!</div>
+                  <div style="font-size: 16px;">⬆️</div>
+                </div>
+              </div>
+
+              <!-- Bottom Controllers -->
+              <div style="width: 100%; display: flex; justify-content: space-around; align-items: center; padding: 5px 0; box-sizing: border-box;">
+                <button id="btnCakeLeft" style="width: 55px; height: 50px; border-radius: 18px; border: 2px solid #fdba74; background: linear-gradient(135deg, #fffbeb 0%, #ffedd5 100%); color: #ea580c; font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 6px rgba(234,88,12,0.15); outline: none; transition: transform 0.1s;" onmousedown="moveCakeStackPetLeft(true)" onmouseup="moveCakeStackPetLeft(false)" ontouchstart="moveCakeStackPetLeft(true)" ontouchend="moveCakeStackPetLeft(false)">⬅️</button>
+                <button id="btnCakeJump" style="width: 100px; height: 55px; border-radius: 20px; border: 2px solid #f87171; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); color: #dc2626; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 8px rgba(220,38,38,0.15); outline: none; transition: transform 0.1s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;" onclick="triggerCakeStackJump()">
+                  <span style="font-size: 15px;">⬆️</span>
+                  <span style="font-size: 9px; letter-spacing: 0.5px;">JUMP</span>
+                </button>
+                <button id="btnCakeRight" style="width: 55px; height: 50px; border-radius: 18px; border: 2px solid #fdba74; background: linear-gradient(135deg, #fffbeb 0%, #ffedd5 100%); color: #ea580c; font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 6px rgba(234,88,12,0.15); outline: none; transition: transform 0.1s;" onmousedown="moveCakeStackPetRight(true)" onmouseup="moveCakeStackPetRight(false)" ontouchstart="moveCakeStackPetRight(true)" ontouchend="moveCakeStackPetRight(false)">➡️</button>
+              </div>
+            </div>
+
+            <!-- Cake Game Over Modal Overlay -->
+            <div id="cakeGameOverModal" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(6px); z-index: 55; align-items: center; justify-content: center; border-radius: 20px; font-family: inherit; color: #fff; text-align: center; box-sizing: border-box;">
+              <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 25px; width: 80%; max-width: 280px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); box-sizing: border-box;">
+                <span style="font-size: 40px; display: block; margin-bottom: 10px;">🎮</span>
+                <h3 style="font-size: 15px; font-weight: 800; color: #f87171; margin-bottom: 5px;">GAME OVER</h3>
+                <p style="font-size: 10px; color: #cbd5e1; margin-bottom: 15px;" id="cakeGameOverMsg">เก่งมากๆ เลยน้า! วางบล็อกต่อสูงได้ตั้ง X ชั้นแน่ะ! 🧱</p>
+                <div style="font-size: 12px; font-weight: 700; color: #facc15; margin-bottom: 15px;">
+                  ได้รับ: <span style="font-size: 14px; font-weight: 800;" id="cakeGameCoinReward">0</span> 🪙
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                  <button class="btn-gradient" style="padding: 8px 16px; font-size: 11px; border-radius: 12px;" onclick="startCakeStackGame()">เล่นอีกครั้ง 🔄</button>
+                  <button class="btn-secondary" style="padding: 8px 16px; font-size: 11px; border-radius: 12px;" onclick="stopCakeStackGame(true)">ออก ✕</button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Cake Game Over Modal Overlay -->
+            <div id="cakeGameOverModal" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(6px); z-index: 55; align-items: center; justify-content: center; border-radius: 20px; font-family: inherit; color: #fff; text-align: center; box-sizing: border-box;">
+              <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 25px; width: 80%; max-width: 280px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); box-sizing: border-box;">
+                <span style="font-size: 40px; display: block; margin-bottom: 10px;">🎮</span>
+                <h3 style="font-size: 15px; font-weight: 800; color: #f87171; margin-bottom: 5px;">GAME OVER</h3>
+                <p style="font-size: 10px; color: #cbd5e1; margin-bottom: 15px;" id="cakeGameOverMsg">เก่งมากๆ เลยน้า! วางเค้กได้ตั้ง X ชั้นแน่ะ! 🍰</p>
+                <div style="font-size: 12px; font-weight: 700; color: #facc15; margin-bottom: 15px;">
+                  ได้รับ: <span style="font-size: 14px; font-weight: 800;" id="cakeGameCoinReward">0</span> 🪙
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                  <button class="btn-gradient" style="padding: 8px 16px; font-size: 11px; border-radius: 12px;" onclick="startCakeStackGame()">เล่นอีกครั้ง 🔄</button>
+                  <button class="btn-secondary" style="padding: 8px 16px; font-size: 11px; border-radius: 12px;" onclick="stopCakeStackGame(true)">ออก ✕</button>
+                </div>
               </div>
             </div>
           </section>
@@ -1029,7 +1114,6 @@
                   <option value="chillrightsmusic-dream-cat-382793.mp3">🌙 Dream Cat - เคลิ้มเคลิ้มสบายใจ</option>
                   <option value="chillrightsmusic-lemon-358300.mp3">🍋 Lemon - สดใสน่ารัก</option>
                   <option value="chillrightsmusic-pear-358294.mp3">🍐 Pear - หวานๆ นุ่มนวล</option>
-                  <option value="tawipop-together-always-343355.mp3">💖 Together Always - อบอุ่นอบอวล</option>
                   <option value="patipana-lonely-echoes-252264.mp3">🌌 Lonely Echoes - ค่ำคืนสงบเงียบ</option>
                 </select>
                 <div style="display: flex; gap: 8px; width: 100%;">

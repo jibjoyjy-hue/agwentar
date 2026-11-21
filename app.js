@@ -1,3 +1,6 @@
+// AI (Gemini) เรียกผ่านเซิร์ฟเวอร์ตัวกลาง (ai-proxy/) เพื่อไม่ให้ API key อยู่ในหน้าเว็บ
+const AI_PROXY_URL = "https://agwentar-ai.jibjoyjy.workers.dev";
+
 // GWENTAR WELLNESS APP - 23 SCREENS ROUTER, SCROLLABLE TABS & DYNAMIC PETS
 
 // 23 Screens Metadata
@@ -27,6 +30,7 @@ const SCREENS = [
 
 // App Global State
 let state = {
+  lang: "th",
   theme: "pastel",
   petId: "Gwentar",
   petName: "Gwentar",
@@ -100,6 +104,7 @@ let state = {
   },
   unlockedApparel: [],
   bubblePopHighScore: 0,
+  cakeStackHighScore: 0,
   gardenFlowers: {
     goodDeed: { lvl: 1, qty: 0, max: 15 },
     awaken: { lvl: 1, qty: 0, max: 15 },
@@ -124,6 +129,648 @@ let state = {
   isDecoratingMode: false
 };
 
+
+// ==========================================
+// TRANSLATION & LOCALIZATION SYSTEM
+// ==========================================
+const APP_TRANSLATIONS = {
+  text: {
+    // Top Bar & UI
+    "เริ่มทำกิจกรรม": "Start Activity",
+    "🎉 ทำกิจกรรมสำเร็จ! สามารถรับรางวัลความสุขได้แล้วน้า 🌟": "🎉 Activity completed! You can claim your reward now 🌟",
+    "กรุณาพิมพ์ข้อความก่อนส่งให้ตรวจนะคะ!": "Please type your response before submitting!",
+    "🤖 เกวนทาร์กำลังอ่านข้อความของคุณ...": "🤖 Gwentar is reading your message...",
+    "กำลังประเมินผล...": "Analyzing...",
+    "💖 เกวนทาร์รับรู้ความรู้สึกและอยู่เคียงข้างคุณแล้วค่ะ!": "💖 Gwentar acknowledges your feelings and is here for you!",
+    "🥺 ลองใช้เวลาตั้งใจเขียนใหม่อีกนิดน้าเก่งแล้วค่ะ": "🥺 Try to reflect and write a bit more, you're doing great!",
+    "กรุณาใช้เวลาทบทวนและอธิบายความรู้สึกเขียนระบายเพิ่มเติมอีกสักนิดนะคะ 💕": "Please take a moment to reflect and write a bit more detail 💕",
+    "ลองเขียนบอกสิ่งของสีน้ำเงิน 3 อย่างรอบตัวคุณให้ชัดเจนหน่อยนะคะ 🛋️": "Please list 3 blue objects around you clearly 🛋️",
+    "ลองนึกทบทวนเขียนความสำเร็จเล็กๆ 3 อย่างให้ครบถ้วนนะคะ 🌟": "Please list 3 small achievements completely 🌟",
+    "ลองนึกทบทวนเขียนขอบคุณสิ่งดีๆ ให้ครบ 3 อย่างนะคะ 🌟": "Please list 3 things you are grateful for completely 🌟",
+    "ระบายความโกรธของคุณออกมาให้หมดใจได้เลยค่ะ เกวนทาร์รอรับฟังอยู่นะคะ 😡": "Feel free to express your anger completely, Gwentar is listening 😡",
+    "ส่งให้เกวนทาร์ตรวจ ✨": "Submit to Gwentar ✨",
+    "ยืนยันทำสำเร็จ ✨": "Confirm Done ✨",
+    "พิมพ์ขอบคุณสิ่งดีๆ 3 ข้อที่นี่...": "Type 3 things you are grateful for here...",
+    "พิมพ์สิ่งเล็กๆ ที่ทำได้ดี 3 ข้อที่นี่...": "Type 3 small achievements here...",
+    "พิมพ์สิ่งของสีน้ำเงิน 3 อย่างรอบตัวที่นี่...": "Type 3 blue objects around you here...",
+    "🧱 หอคอยบล็อกสายรุ้ง (Block Stack Jump)": "🧱 Rainbow Block Tower (Block Stack Jump)",
+    "🔒 ปลดล็อกเมื่อถึง เลเวล 5": "🔒 Unlocks at Level 5",
+    "คะแนน: ": "Score: ",
+    "คะแนนสูงสุด: ": "High Score: ",
+    "กระโดด!": "Jump!",
+    "Next Block": "Next Block",
+    "เล่นอีกครั้ง 🔄": "Play Again 🔄",
+    "ออก ✕": "Exit ✕",
+    "ได้รับ: ": "Earned: ",
+    "พลังชีวิต / สุขภาพกาย": "HP / Physical Health",
+    "พลังงาน / ความกระปรี้กระเปร่า": "Energy / Vitality",
+    "ไข่สั่นดุ๊กดิ๊ก! เล่นอีกนิดขยับอีกหน่อยใกล้จะฟักแล้วน้า (+10 EXP) ✨": "The egg is shaking! Play a bit more to hatch it (+10 EXP) ✨",
+    "🥚 เลือกคู่หูเกวนทาร์": "🥚 Select Gwentar Companion",
+    "เลือกน้องคู่หูเพื่อร่วมเดินทางดูแลจิตใจกันนะคะ": "Select a companion to join your mindfulness journey",
+    "ยืนยันเลือก": "Confirm Selection",
+    
+    // Stand / Sit / Idle
+    "🧍 ยืน": "🧍 Stand",
+    "🧎 นั่ง": "🧎 Sit",
+    "💃 ดุ๊กดิ๊ก": "💃 Wiggle",
+    
+    // Quick Actions
+    "กระเป๋า": "Bag",
+    "บ้าน": "House",
+    "เช็คอิน": "Check-in",
+    
+    // Select Pet
+    "เลือกสัตว์เลี้ยง": "Select Companion",
+    "เลือกเพื่อนที่จะร่วมเดินทางดูแลใจไปกับคุณ": "Select a companion to join your journey",
+    "ยืนยันเลือกน้อง": "Confirm Selection",
+    "✨ เลือกเพื่อนคู่หูตัวแรกของคุณได้ฟรี!": "✨ Select your first companion for free!",
+    "🪙 การเปลี่ยนตัวละครสัตว์เลี้ยงใหม่ใช้ 10,000 เหรียญทอง": "🪙 Switching companions costs 10,000 Coins",
+    "✨ ใช้งานอยู่": "✨ Active",
+    
+    // Profile
+    "ข้อมูลสัตว์เลี้ยง": "Pet Information",
+    "♂ ชาย": "♂ Boy",
+    "♀ หญิง": "♀ Girl",
+    "ความสุข": "Happiness",
+    "พลังงาน": "Energy",
+    "นิสัย": "Personality",
+    "ขี้อ้อน, รักสงบ, รักธรรมชาติ": "Sweet, Calm, Nature-lover",
+    "วันเกิด": "Birthday",
+    "15 ธันวาคม": "December 15",
+    "ของที่ชอบ": "Fav Items",
+    "ขนม, ของเล่นบางชนิด, ดอกไม้": "Snacks, Toys, Flowers",
+    "ดูตัวละครอื่น": "View Other Pets",
+    
+    // Home map / Rooms
+    "บ้านของน้อง": "Companion House",
+    "ห้องนอน": "Bedroom",
+    "ห้องอาหาร": "Dining Room",
+    "ห้องนั่งเล่น": "Living Room",
+    "ห้องน้ำ": "Bathroom",
+    "สวน": "Garden",
+    "ห้องกิจกรรม": "Activity Room",
+    "ห้องแต่งตัว": "Dressing Room",
+    "💖 ความสุข +10": "💖 Happiness +10",
+    "⚡ พลังงาน +20": "⚡ Energy +20",
+    "💖 ความสุข +15": "💖 Happiness +15",
+    "⚡ พลังงาน +15": "⚡ Energy +15",
+    "💖 ความสุข +8": "💖 Happiness +8",
+    "⚡ พลังงาน +10": "⚡ Energy +10",
+    "💖 ความสุข +15": "💖 Happiness +15",
+    "⚡ พลังงาน -10": "⚡ Energy -10",
+    "นอน": "Sleep",
+    "อ่านหนังสือ": "Read Book",
+    "ฟังเพลง": "Listen Music",
+    "อาบน้ำ": "Bath",
+    "ถูสบู่": "Scrub Soap",
+    "ทำความสะอาด": "Clean Up",
+    "อุปกรณ์": "Supplies",
+    "สบู่": "Soap",
+    "แชมพู": "Shampoo",
+    
+    // Garden & Farm
+    "🌱 แปลงปลูกผักของน้อง:": "🌱 Your Crop Plots:",
+    "🪴 รดน้ำต้นไม้": "🪴 Water Plants",
+    "🌱 เลือกปลูกผัก": "🌱 Choose Seed",
+    "🍃 เดินเล่น": "🍃 Walk Around",
+    "← กลับสวน": "← Back to Garden",
+    "🌾 ฟาร์มปลูกผักหรรษา": "🌾 Happy Farm Garden",
+    "🌱 แตะแปลงดินเพื่อเลือกเมล็ดพันธุ์ / รดน้ำ / เก็บเกี่ยวผัก": "🌱 Tap plots to select seed / water / harvest",
+    "💧 รดน้ำเร่งโต (-5s)": "💧 Speed Water (-5s)",
+    "🧺 เก็บเกี่ยวทั้งหมด": "🧺 Harvest All",
+    "🌾 เมล็ดพันธุ์ผัก (แตะเลือกเพื่อปลูก):": "🌾 Vegetable Seeds (Tap to plant):",
+
+    // Dressing room
+    "บันทึก": "Save",
+    "ขนาดเครื่องประดับ:": "Apparel Size:",
+    "เครื่องแต่งกาย": "Clothes",
+    "หมวก": "Hats",
+    "แว่นตา": "Glasses",
+    "ปีก": "Wings",
+    "ชุดเซ็ต": "Outfits",
+    
+    // Activity room
+    "🎹 เล่นเปียโน/ฟังเพลง": "🎹 Piano / Music",
+    "🎨 วาดรูป/ระบายสี": "🎨 Draw / Color",
+    "⚽ มินิเกมฮีลใจ": "⚽ Healing Games",
+    
+    // Mood test
+    "ทดสอบอารมณ์ + AI": "Mood Test + AI",
+    "แบบทดสอบอารมณ์": "Mood Test Questionnaire",
+    "ข้อ 1/10": "Question 1/10",
+    "ตื่นนอนวันนี้ คุณรู้สึกอย่างไร?": "How do you feel waking up today?",
+    "ต่อไป": "Next",
+    "วิเคราะห์อารมณ์ของคุณวันนี้": "Daily Mood Analysis",
+    "คำแนะนำเพื่อหัวใจที่แข็งแรงจาก Gwentar": "Supportive words from Gwentar for a healthy heart",
+    "😊 วิเคราะห์อารมณ์": "😊 Analysis",
+    "คำอธิบายผสมผสานอารมณ์ของคุณ...": "Combining your mood stats...",
+    "คะแนนอารมณ์ของคุณ": "Your Mood Score",
+    "ทำแบบทดสอบอีกครั้ง": "Restart Test",
+    "สวัสดีค่ะ เราพร้อมรับฟังและให้กำลังใจคุณเสมอนะ 💙": "Hello! I am always here to listen and comfort you 💙",
+    "พิมพ์ข้อความ...": "Type message...",
+    
+    // Diary
+    "กรกฎาคม 2569": "July 2026",
+    "อา": "Sun",
+    "จ": "Mon",
+    "อ": "Tue",
+    "พ": "Wed",
+    "พฤ": "Thu",
+    "ศ": "Fri",
+    "ส": "Sat",
+    "มีความสุข": "Happy",
+    "สงบ": "Calm",
+    
+    // Coloring
+    "📝 วาดอิสระ": "📝 Free Drawing",
+    "🧽 ยางลบ": "🧽 Eraser",
+    "ขนาดหัวแปรง:": "Brush Size:",
+    "ล้างภาพ": "Clear",
+    "🔍 ซูม x2": "🔍 Zoom x2",
+    "บันทึกความสุข (+50 🪙)": "Save Happiness (+50 🪙)",
+    "ออก": "Exit",
+    
+    // Shop & Bag tabs
+    "อาหาร": "Food",
+    "เครื่องดื่ม": "Drinks",
+    "แลกเปลี่ยน": "Exchange",
+    "ขายผลผลิต": "Sell Crops",
+    
+    // Settings
+    "ชื่อน้อง": "Pet Name",
+    "เสียง": "Sound FX",
+    "ดนตรี": "BGM Volume",
+    "ภาษา": "Language",
+    "ภาษาไทย": "Thai",
+    "ภาษาอังกฤษ": "English",
+    "ธีม (Theme)": "App Theme",
+    "เสียงดนตรีประกอบ (Background Music) 🎵": "Background Music (BGM) 🎵",
+    "❌ ปิดเสียงเพลงประกอบ": "❌ Mute BGM",
+    "🐱 Cat Bag - ชิลสบายๆ": "🐱 Cat Bag - Chill Out",
+    "😺 Cat Friend - อบอุ่นสนุกสนาน": "😺 Cat Friend - Warm & Cozy",
+    "🌟 Catch the Star - ชวนฝันผ่อนคลาย": "🌟 Catch the Star - Relaxing Dream",
+    "🌙 Dream Cat - เคลิ้มเคลิ้มสบายใจ": "🌙 Dream Cat - Sleepy Purr",
+    "🍋 Lemon - สดใสน่ารัก": "🍋 Lemon - Cute & Fresh",
+    "🍐 Pear - หวานๆ นุ่มนวล": "🍐 Pear - Sweet & Gentle",
+    "💖 Together Always - อบอุ่นอบอวล": "💖 Together Always - Warmly Together",
+    "🌌 Lonely Echoes - ค่ำคืนสงบเงียบ": "🌌 Lonely Echoes - Quiet Midnight",
+    "▶️ เล่นเพลง": "▶️ Play",
+    "⏹️ หยุดเพลง": "⏹️ Stop",
+    "แจ้งเตือน": "Notifications",
+    "สำรองข้อมูล": "Backup Data",
+    "🧹 รีเซ็ตข้อมูลเกมทั้งหมด (เลเวล 0)": "🧹 Reset All Game Data (Level 0)",
+    "เวอร์ชัน 1.0.0": "Version 1.0.0",
+    
+    // More menu
+    "เมนูเพิ่มเติม": "More Menu",
+    "เสียงดนตรีบำบัดใจ": "Mindfulness Soundscapes",
+    "กล่องจดหมาย": "Mailbox",
+    "กิจกรรม": "Activities",
+    "เชิญเพื่อน": "Invite Friends",
+    "แลกโค้ด": "Redeem Code",
+    "ช่วยเหลือ": "Help Support",
+    "เกี่ยวกับเรา": "About Us",
+    "รีเซ็ตข้อมูลเกมทั้งหมด": "Reset Game Data",
+    "1.โฮม": "1.Home",
+
+    // Nav items
+    "1.หน้าหลัก": "1.Home",
+    "2.ข้อมูล": "2.Info",
+    "3.บ้าน": "3.Home Map",
+    "4.ทดสอบ+AI": "4.AI Mood",
+    "5.ไดอารี่": "5.Diary",
+    "6.เควส": "6.Quests",
+    "7.มินิเกม": "7.Games",
+    "8.ร้านค้า": "8.Shop",
+    "9.กระเป๋า": "9.Bag",
+    "10.ดนตรีบำบัด": "10.Music",
+    "11.ตั้งค่า": "11.Settings",
+    
+    // Profile / Info Screen
+    "คู่หูของปะป๊ามะม๊า": "Our Companion",
+    "ข้อมูลทั่วไป": "General Info",
+    "ระดับพลังงาน": "Stats & Energy",
+    "ความทรงจำ": "Memories",
+    "เพศคู่หู": "Gender",
+    "เลเวลคู่หู": "Pet Level",
+    "เหรียญสะสม": "Gold Coins",
+    "เพชรสะสม": "Gems Owned",
+    "ชาย ♂️": "Boy ♂️",
+    "หญิง ♀️": "Girl ♀️",
+    "เลเวล": "Level",
+    "เหรียญ": "Coins",
+    "เพชร": "Gems",
+    "ข้อมูลระดับพลังงาน": "Energy & Status Levels",
+    "หัวใจ/ความสุข": "Happiness",
+    "ความกระปรี้กระเปร่า": "Energy",
+    "ความทรงจำแสนอบอุ่น": "Warm Memories",
+    "นี่คืออัลบั้มบันทึกความจำของปะป๊ามะม๊ากับน้องเกวนทาร์ค่ะ": "This is the memory album of you and Gwentar",
+    "ยังไม่มีความทรงจำที่ถูกบันทึกไว้ในระบบเลยค่ะ...": "No memories saved yet...",
+    "ไปคุยเล่น หรือปลูกผักสะสมอารมณ์กันเถอะนะคะ!": "Let's chat or grow crops to collect moments!",
+    
+    // Home Screen
+    "ส่ง": "Send",
+    "🥛 ป้อนอาหาร": "🥛 Feed",
+    "🧼 อาบน้ำ": "🧼 Clean",
+    "💖 กอดน้อง": "💖 Hug",
+    "😴 พานอน": "😴 Sleep",
+    "กำลังคิด... 🤔": "Thinking... 🤔",
+    
+    // Gardening
+    "แปลงผักบำบัดใจ": "Mindfulness Garden",
+    "รดน้ำต้นไม้จิตใจ": "Water Garden",
+    "รดน้ำจิตใจ (+5 🪙)": "Water Garden (+5 🪙)",
+    "🌱 เลือกเมล็ดพันธุ์ปลูกผัก": "🌱 Select Seed to Plant",
+    "แครอท": "Carrot",
+    "มะเขือเทศ": "Tomato",
+    "ข้าวโพด": "Corn",
+    "สตรอว์เบอร์รี่": "Strawberry",
+    "ใช้เวลา": "Time:",
+    "รับรางวัล": "Claim",
+    "กำลังเติบโต...": "Growing...",
+    "เก็บเกี่ยวสำเร็จ!": "Harvest Success!",
+    
+    // AI Mood Therapy
+    "ทดสอบความรู้สึก & AI บำบัด": "Mood Test & AI Therapy",
+    "ประเมินอารมณ์ของคุณวันนี้เพื่อรับคำปรึกษาและภารกิจบำบัดใจเฉพาะบุคคลค่ะ": "Evaluate your mood today to receive personalized therapy and daily quests.",
+    "1. วันนี้ปะป๊ามะม๊ารู้สึกอย่างไรมากที่สุดคะ?": "1. How do you feel the most today?",
+    "มีความสุข / ร่าเริง": "Happy / Cheerful",
+    "สงบ / ผ่อนคลาย": "Calm / Relaxed",
+    "ตื่นเต้น / ตกใจ": "Shocked / Excited",
+    "หงุดหงิด / รำคาญใจ": "Frustrated / Irritated",
+    "โกรธ / ฉุนเฉียว": "Angry / Furious",
+    "เหนื่อยล้า / เพลียกายใจ": "Tired / Exhausted",
+    "เศร้า / หมองหม่น": "Sad / Depressed",
+    "ฟุ้งซ่าน / ว้าวุ่น": "Restless / Distracted",
+    "ท้อแท้ / สิ้นหวัง": "Discouraged / Hopeless",
+    "2. บอกรายละเอียดความรู้สึกเพิ่มเติมให้เกวนทาร์ฟังหน่อยนะคะ (ถ้ามี)": "2. Tell me more details about your feelings (optional)",
+    "วิเคราะห์อารมณ์ด้วย AI เกวนทาร์ 🧠✨": "Analyze Mood with Gwentar AI 🧠✨",
+    
+    // Diary
+    "สมุดบันทึกไดอารี่อารมณ์": "Personal Mood Diary",
+    "บันทึกเหตุการณ์และความรู้สึกย้อนหลังเพื่อติดตามสภาวะจิตใจ": "Record past events and feelings to track your mental state.",
+    "ยังไม่มีประวัติบันทึกไดอารี่เลยค่ะ...": "No diary entries yet...",
+    "มาทดสอบอารมณ์และเขียนบันทึกกันนะคะ!": "Let's test your mood and write a diary entry!",
+    "ประวัติบันทึกอารมณ์": "Mood Log History",
+    
+    // Quests
+    "ภารกิจของปะป๊ามะม๊า": "Daily Quests",
+    "ช่วยหนูทำภารกิจบำบัดจิตใจ ปลูกฝัก เลี้ยงดูหนู หรือเล่นมินิเกม เพื่อสะสมเหรียญทองมาแต่งตัวให้หนูกันเถอะนะคะ ✨": "Complete mindfulness tasks, gardening, or mini-games to earn coins to dress me up! ✨",
+    "โบนัสทำเควสครบทุกข้อประจำวัน": "Daily Quest Completion Bonus",
+    "รับรางวัล 5 เพชร เรียบร้อยแล้ว": "Claimed 5 Gems successfully",
+    "รับโบนัสสำเร็จครบวัน (+5💎)": "Claim Daily Bonus (+5💎)",
+    "🎁 รับโบนัสสำเร็จครบวัน (+5💎)": "🎁 Claim Daily Bonus (+5💎)",
+    "รับแล้ว": "Claimed",
+    "รับรางวัล": "Claim",
+    "นำไปทำ": "Go Do",
+    "กรุณาเข้าไประบันทึกอารมณ์ของคุณในหน้าไดอารี่ก่อน เพื่อปลดล็อกและรับเควสประจำวันนะคะ": "Please record your mood in the diary first to unlock daily quests.",
+    "ไปหน้าบันทึกอารมณ์ ✍️": "Go to Diary ✍️",
+    
+    // Mini Games
+    "สวนสนุกมินิเกม": "Mini Games",
+    "เล่นเกม": "Play",
+    
+    // Shop
+    "ห้างสรรพสินค้า": "Shopping Mall",
+    "🍎 ร้านอาหาร": "🍎 Food Shop",
+    "🌱 เมล็ดผัก": "🌱 Seeds Shop",
+    "👕 ร้านแต่งตัว": "👕 Clothes Shop",
+    "ซื้อ": "Buy",
+    "เงินเหรียญไม่พอค่ะ! 🪙": "Not enough coins! 🪙",
+    "เพชรไม่พอค่ะ! 💎": "Not enough gems! 💎",
+    "ซื้อไอเทมสำเร็จ! 🛍️": "Item purchased successfully! 🛍️",
+    
+    // Bag
+    "กระเป๋าเป้คู่หู": "Backpack",
+    "ทั้งหมด": "All Items",
+    "🍎 อาหาร": "🍎 Food",
+    "🌱 เมล็ดพันธุ์": "🌱 Seeds",
+    "👕 เสื้อผ้า": "👕 Clothes",
+    "จำนวน:": "Qty:",
+    "สวมใส่": "Equip",
+    "ถอดออก": "Unequip",
+    "ป้อน": "Feed",
+    
+    // Soundscapes
+    "ดนตรีบำบัดธรรมชาติ": "Natural Healing Music",
+    "เสียงฝนตกพรำๆ": "Gentle Rain",
+    "คลื่นทะเลซัดสาด": "Ocean Waves",
+    "ป่าไม้และนกร้อง": "Forest Birds",
+    "กองไฟแคมป์ไฟ": "Campfire Crackle",
+    "เสียงคาเฟ่ชิลๆ": "Chill Cafe Ambience",
+    "เสียงเปียโนนุ่มๆ": "Soft Piano",
+    
+    // Settings
+    "ตั้งค่า": "Settings",
+    "เสียงเอฟเฟกต์": "Sound FX",
+    "เพลงประกอบ": "BGM Volume",
+    "ภาษาแอป": "Language",
+    "ธีมสีแอป": "App Theme",
+    "ล้างข้อมูลเกมทั้งหมด": "Reset All Game Data",
+    "กลับหน้าหลัก": "Back to Home",
+    "ย้อนกลับ": "Back",
+    "ปิด": "Close",
+    "ทำสำเร็จแล้ว ✨": "Done ✨",
+    "ยืนยันทำสำเร็จ ✨": "Confirm Done ✨",
+    "ส่งให้เกวนทาร์ตรวจ ✨": "Submit to Gwentar ✨",
+    "กำลังประเมินผล...": "Analyzing...",
+    "พิมพ์บันทึกของคุณที่นี่...": "Type your log here...",
+    "ปิดเสียงเพลงประกอบ": "Turn Off BGM",
+    "Cat Bag - ชิลสบายๆ": "Cat Bag - Chill",
+    "เล่นเพลง": "Play Music",
+    "หยุดเพลง": "Stop Music",
+    "เวอร์ชัน 1.0.0": "Version 1.0.0",
+    
+    // Bedtime Stories
+    "✨ เรื่องเล่าดาวตกแสนหวาน": "✨ Sweet Shooting Star Story",
+    "☁️ การเดินทางของน้องก้อนเมฆ": "☁️ Journey of Little Cloud",
+    "💖 บทความโอบกอดตัวเองก่อนนอน": "💖 Bedtime Hug Article",
+    "🍵 ร้านน้ำชาดวงจันทร์ของกระต่ายน้อย": "🍵 Little Bunny's Moon Tea Shop",
+    "🌲 ป่าแห่งเสียงกระซิบอันอบอุ่น": "🌲 Warm Whisper Forest",
+    "⛵ เรือกระดาษพาความเครียดลอยไป": "⛵ Paper Boat Floating Away Stress",
+    "🐱 เสียงแมวน้อยกล่อมนอน": "🐱 Kitten Purring Lullaby",
+    "🎈 ลูกโป่งความฝันลอยสู่ห้วงอวกาศ": "🎈 Dream Balloon in Space",
+    "🌸 สวนดอกไมียามค่ำคืนใต้แสงจันทร์": "🌸 Midnight Moonlight Garden",
+    "🌸 สวนดอกไม้ยามค่ำคืนใต้แสงจันทร์": "🌸 Midnight Moonlight Garden",
+    "🕯️ เทียนหอมลาเวนเดอร์ผ่อนคลาย": "🕯️ Relaxing Lavender Candle",
+    "📖 อ่านนิทาน +10 HP +10 ⚡": "📖 Read Story +10 HP +10 ⚡",
+    "หน้าก่อนหน้า": "Prev Page",
+    "หน้าถัดไป": "Next Page",
+    "📖 นิทานและบทความฮีลใจก่อนนอน": "📖 Bedtime Stories & Heart Healing Articles",
+    
+    // Quest Descriptions
+    "บันทึกเรื่องราวดีๆ และความสุขประจำวัน 😊": "Record good things and daily happiness 😊",
+    "เขียนขอบคุณสิ่งดีๆ วันนี้ 3 อย่าง 🌟": "Write 3 things you are grateful for today 🌟",
+    "แบ่งปันรอยยิ้มหรือคำพูดดีๆ ให้คนอื่น 😊": "Share a smile or kind words with someone 😊",
+    "หลับตานิ่งๆ ทบทวนความทรงจำแสนสุข 💭": "Close your eyes and reflect on happy memories 💭",
+    "ให้ของขวัญหรือรางวัลเล็กๆ แก่ตัวเอง 🎁": "Give yourself a little gift or reward 🎁",
+    "บันทึกช่วงเวลาที่สงบผ่อนคลายลงไดอารี่ 😌": "Record a calm, relaxing moment in your diary 😌",
+    "ฝึกหายใจช้าเข้า 4 วิ ออก 6 วิ 10 ครั้ง 🧘": "Practice breathing in for 4s, out for 6s (10 times) 🧘",
+    "จิบเครื่องดื่มอุ่นช้าๆ อย่างมีสติ 🥛": "Sip a warm drink slowly and mindfully 🥛",
+    "ยืดเหยียดกายคลายความเกร็งคอไหล่ 🚶": "Stretch to relieve neck and shoulder tension 🚶",
+    "นั่งนิ่งเงียบไร้จอมือถือ 5 นาที 🤫": "Sit quietly without your phone for 5 minutes 🤫",
+    "เขียนระบายเรื่องตื่นเต้นตกใจลงไดอารี่ 😳": "Write down exciting or shocking events in your diary 😳",
+    "สูดหายใจเข้าลึกพรูลมออกยาว 5 ครั้ง 🌬️": "Inhale deeply and exhale slowly 5 times 🌬️",
+    "สังเกตระบุสิ่งของสีน้ำเงินรอบตัว 3 อย่าง 🛋️": "Identify 3 blue objects around you 🛋️",
+    "จดรายละเอียดความจริงของเรื่องที่ตกใจ ✍️": "Write down the facts about what shocked you ✍️",
+    "จิบน้ำเย็นจัด 1 แก้วกระตุ้นประสาท 🥤": "Sip a glass of ice-cold water 🥤",
+    "เขียนระบายสิ่งกวนใจหงุดหงิดลงไดอารี่ 😒": "Write down frustrating/irritating things in your diary 😒",
+    "เขียนเรื่องน่าหงุดหงิดใส่กระดาษแล้วฉีกทิ้ง 📄": "Write frustrations on paper and tear it up 📄",
+    "ละสายตาจากจอมือถือไปเดินเล่น 5 นาที 🚶": "Take a break from your phone and walk for 5 minutes 🚶",
+    "หมุนคอช้าๆ ยักไหล่ผ่อนคลายเส้นเอ็น 🧘": "Roll your neck slowly and shrug to relax 🧘",
+    "เขียนสิ่งเล็กๆ ที่ทำได้ดีวันนี้ 3 อย่าง 💭": "Write 3 small achievements you did well today 💭",
+    "เขียนระบายปลดปล่อยความโกรธลงไดอารี่ 😡": "Write down your anger to vent in your diary 😡",
+    "เขียนสิ่งที่โกรธลงกระดาษขยำแน่นๆ ขว้างทิ้ง ✍️": "Write down what angered you, crumple it, and throw it away ✍️",
+    "นั่งสงบนิ่งหลับตาทบทวนสาเหตุโกรธ 💭": "Sit quietly with eyes closed and analyze what made you angry 💭",
+    "หยุดการพูดจา สูดหายใจยาวนับ 1 ถึง 10 🧘": "Stop talking, take deep breaths, and count 1 to 10 🧘",
+    "ล้างหน้าล้างมือด้วยน้ำเย็นดับหัวร้อน 💦": "Wash your face and hands with cold water 💦",
+    "บันทึกความรู้สึกเหนื่อยล้าลงไดอารี่ 🥱": "Record your feelings of exhaustion in your diary 🥱",
+    "เอนกายหลับตาพักในความเงียบ 10 นาที 😴": "Lie down, close your eyes, and rest in silence for 10 mins 😴",
+    "อาบน้ำอุ่นชำระร่างกายผ่อนคลายกล้ามเนื้อ 🛁": "Take a warm shower to relax your muscles 🛁",
+    "ดื่มน้ำสะอาดแก้วใหญ่หรือนมอุ่น 1 แก้ว 🥛": "Drink a large glass of clean water or warm milk 🥛",
+    "ยืดเหยียดเบาๆ บนฟูกนอน 🧘": "Perform gentle stretching exercises on your bed 🧘",
+    "กอดตัวเองและเขียนระบายเรื่องเศร้าลงไดอารี่ 😢": "Hug yourself and write down sad feelings in your diary 😢",
+    "นอนซุกใต้ผ้าห่มหนานุ่มห่อหุ้มความรู้สึก 🛌": "Snuggle under a soft blanket to comfort yourself 🛌",
+    "โอบกอดตัวเองลูบไหล่ส่งกำลังใจ 🧎": "Hug yourself, pat your shoulders, and send self-encouragement 🧎",
+    "อนุญาตให้น้ำตาไหลออกโดยไม่ตัดสิน 💧": "Allow yourself to cry freely without judgment 💧",
+    "เขียนการ์ดหรือคำปลอบโยนให้ตัวเอง ✍️": "Write a card or words of comfort to yourself ✍️",
+    "ระบายความฟุ้งซ่านว้าวุ่นจิตใจลงในไดอารี่ 🌀": "Vent your restlessness and distraction in your diary 🌀",
+    "เพ่งสมาธิจดจ่อลมหายใจที่ปลายจมูก 🧘": "Focus your attention on your breathing at the tip of your nose 🧘",
+    "จัดระเบียบสิ่งของบนโต๊ะ 3 นาที 🧹": "Organize items on your desk for 3 minutes 🧹",
+    "จดลิสต์สิ่งที่ต้องทำเรียงลำดับในสมอง ✍️": "Write a list of things to do, ordered in your mind ✍️",
+    "ปิดเสียงแจ้งเตือนมือถือ 15 นาที 🔇": "Mute all phone notifications for 15 minutes 🔇",
+    "เขียนทบทวนความท้อแท้สิ้นหวังลงไดอารี่ 😔": "Review and write down feelings of hopelessness in your diary 😔",
+    "จดบันทึกความสำเร็จอดีต 3 สิ่งฟื้นใจ 🏆": "Record 3 achievements from your past to revive your heart 🏆",
+    "อ่านคำคมหรือคำพูดบวกสร้างแรงใจ 📖": "Read positive quotes or phrases to inspire you 📖",
+    "ย่อยเป้าหมายใหญ่ให้เล็กสุดเพื่อทำทันที 🧘": "Break down a large goal to the smallest step and do it now 🧘",
+    "เขียนจดหมายให้กำลังใจตนเองแบบกัลยาณมิตร ✍️": "Write an encouraging letter to yourself like a good friend ✍️",
+    
+    // Apparel items
+    "หมวกพ่อมด": "Wizard Hat",
+    "มงกุฎทอง": "Golden Crown",
+    "หมวกรับปริญญา": "Graduation Cap",
+    "หมวกซานต้า": "Santa Hat",
+    "มงกุฎดอกไม้": "Flower Crown",
+    "หูกระต่าย": "Bunny Ears",
+    "หูฟังเกมเมอร์": "Gamer Headphones",
+    "หูแมว": "Cat Ears",
+    "หมวกปาร์ตี้สายรุ้ง": "Rainbow Party Hat",
+    "หมวกฟางชาวสวน": "Straw Garden Hat",
+    "หมวกเชฟแสนอร่อย": "Delicious Chef Hat",
+    "หูหมีพาสเทล": "Pastel Bear Ears",
+    "วงแหวนเทวดา": "Angel Halo",
+    "แว่นกันแดด": "Sunglasses",
+    "โบว์ชมพู": "Pink Ribbon",
+    "แว่นตากรอบทอง": "Golden Glasses",
+    "แว่นตาหัวใจชมพู": "Pink Heart Glasses",
+    "แว่นตาข้างเดียว": "Monocle",
+    "ผ้าปิดตาโจรสลัด": "Pirate Eyepatch",
+    "สติกเกอร์แก้มแดง": "Red Blush Sticker",
+    "ปีกนางฟ้า": "Angel Wings",
+    "ปีกแฟรี่มิ้นท์": "Mint Fairy Wings",
+    "ปีกค้างคาวฮาโลวีน": "Halloween Bat Wings",
+    "ปีกผีเสื้อแสนหวาน": "Sweet Butterfly Wings",
+    "เป้จรวดเจ็ทแพ็ค": "Jetpack Rocket",
+    "เจ้าหญิงสีชมพู": "Pink Princess",
+    "ราตรีสีน้ำเงิน": "Blue Nightgown",
+    "ชุดทานตะวัน": "Sunflower Outfit",
+    "ชุดรุ้ง": "Rainbow Outfit",
+    "ชุดผึ้งน้อย": "Little Bee Outfit",
+    "ชุดกระต่ายมิ้นท์": "Mint Bunny Outfit",
+    "ชุดนักบินอวกาศ": "Astronaut Suit",
+    "ชุดโจรสลัดสุดเท่": "Cool Pirate Suit",
+    "ชุดนางเงือกมรกต": "Emerald Mermaid",
+    "ชุดหุ่นยนต์โรโบ": "Robo Suit",
+    "ชุดนางเงือกพาสเทล": "Pastel Mermaid",
+    "ชุด Onesie แมวน้อย": "Kitten Onesie",
+    "ชุด Onesie กระต่ายขาว": "White Bunny Onesie",
+    "ชุด Onesie แพนด้า": "Panda Onesie",
+    
+    // Food Shop items
+    "เค้กสตรอว์เบอร์รี่": "Strawberry Cake",
+    "คุกกี้": "Cookie",
+    "แฮมเบอร์เกอร์": "Hamburger",
+    "ซูชิ": "Sushi",
+    "พิซซ่า": "Pizza",
+    "โดนัท": "Donut",
+    "เฟรนช์ฟรายส์": "French Fries",
+    "ไอศกรีม": "Ice Cream",
+    "ป๊อปคอร์น": "Popcorn",
+    "คัพเค้ก": "Cupcake",
+    "ไก่ทอด": "Fried Chicken",
+    "ราเมน": "Ramen",
+    "ข้าวปั้น": "Onigiri",
+    "น้ำเปล่า": "Water",
+    "นมสด": "Fresh Milk",
+    "ชาเขียว": "Green Tea",
+    "ชานมไข่มุก": "Bubble Tea",
+    "ช็อกโกแลต": "Chocolate",
+    "น้ำผลไม้": "Fruit Juice",
+    "ขวดนม": "Milk Bottle",
+    "กาแฟร้อน": "Hot Coffee",
+    "น้ำอัดลม": "Soda",
+    "น้ำมะพร้าว": "Coconut Water",
+    "ชาผสมน้ำผึ้ง": "Honey Tea",
+    
+    // Furniture Items
+    "หน้าต่างฝนตก": "Rainy Window",
+    "กรอบรูปป่าไม้": "Forest Painting",
+    "ไฟนีออนสายรุ้ง": "Rainbow Neon Light",
+    "ดาวส่องแสง": "Shining Star",
+    "ต้นมอนสเตอร่า": "Monstera Plant",
+    "หมีตุ๊กตายักษ์": "Giant Teddy Bear",
+    "กีตาร์ไม้": "Wooden Guitar",
+    "กล่องกระดาษน้อง": "Cardboard Box",
+    "โคมไฟลาวา": "Lava Lamp",
+    "โกโก้ร้อน": "Hot Cocoa",
+    "วิทยุวินเทจ": "Vintage Radio",
+    "ลูกแก้วหิมะ": "Snow Globe",
+    
+    // Bubble Texts
+    "ดุ๊กดิ๊กๆ... หนูอยากออกไปเล่นข้างนอกแย้วง่า! 🥚": "Wiggle wiggle... I want to go out and play! 🥚",
+    "จิ้มหนูจิ! หนูอยากฟักออกมาหาปะป๊ามะม๊าแย้ว! ✨": "Tap me! I want to hatch and see you! ✨",
+    "งึมๆ... ข้างในนี้แคบจังเยยย 🥚": "Hmm... It's so cramped in here 🥚",
+    "งือออ... หนูเจ็บจี๊ดๆ ไม่สบายตัวเลยง่า 🥺": "Ouch... I feel sick and uncomfortable 🥺",
+    "ตัวหนูร้อนจี๋เยย... พาหนูไปอาบน้ำถูสบู่หน่อยน้าาา 🧼": "My body is so hot... please take me to take a bath 🧼",
+    "เหงาจังเยย... หนูอยากให้ปะป๊ามะม๊ากอดแน่นๆ น้าาา 😢": "I feel so lonely... I want a warm hug from you 😢",
+    "งอแงแย้วนะ! หนูเจ็บปวดหัวจังเยยย... 🤒": "I'm whining! My head hurts... 🤒",
+    "หนูหิวข้าวแย้วง่าาา! ท้องร้องดังจ๊อกๆ เลยเนี่ยยย 🍞": "I'm hungry! My tummy is rumbling 🍞",
+    "ง่วงนอนจังเยย... ตาหนูจะปิดอยู่แย้วนะปะป๊ามะม๊า 😴": "I'm so sleepy... my eyes are closing 😴",
+    "หนูเหนื่อยจัง... ขอกินนมอุ่นๆ หรือขนมปังหน่อยจิ๊ 🥛": "I'm so tired... can I have some warm milk or bread? 🥛",
+    "หนูไม่มีแรงเยยย... ตัวแบนแต๊ดแต๋ติดพื้นแย้วง่ะ 💤": "I have no strength left... I'm flat on the floor 💤",
+    "รักปะป๊ามะม๊าที่สุดในโลกเยย! กอดหนูหน่อยจิ! 💕": "I love you the most in the world! Hug me please! 💕",
+    "วันนี้เหนื่อยป่าว? หนูจะคอยเป็นกำลังใจให้ปะป๊ามะม๊าเอง! 🌸": "Are you tired today? I will always be here to support you! 🌸",
+    "ไปเข้าสวนปลูกผัก เก็บเกี่ยวผลผลิตด้วยกันนะคะปะป๊ามะม๊า 🌾": "Let's go to the garden and harvest crops together! 🌾",
+    "วันนี้แต่งตัวสวยๆ หล่อๆ ให้หนูหน่อยน้าาา 👗": "Please dress me up nicely today 👗",
+    "ปะป๊ามะม๊ากลับมาแว้วหรอคะ! หนูคิดถึงปะป๊ามะม๊าที่สุดเยยย 💖": "You are back! I missed you so much! 💖",
+    "ปะป๊ามะม๊ากลับมาแว้วหรอคะ! หนูคิดถึงปะป๊ามะม๊าที่สุดเยยย 💙": "You are back! I missed you so much! 💙",
+    "ปะป๊ามะม๊ากลับมาแว้วหรอคะ! หนูคิดถึงปะป๊ามะม๊าที่สุดเยยย": "You are back! I missed you so much!",
+    
+    // Miscellaneous
+    "กระเป๋าว่างเปล่า สามารถไปช้อปปิ้งได้ที่ร้านค้าค่ะ 🛍️": "Your backpack is empty! Go shopping at the mall 🛍️"
+  }
+};
+
+function t(str) {
+  if (!str) return "";
+  if (state.lang !== "en") return str;
+  let res = str.trim();
+  
+  if (APP_TRANSLATIONS.text[res]) return APP_TRANSLATIONS.text[res];
+  
+  if (res.includes("ไข่ฟองน้อยได้ฟักออกเป็นตัวน้อง")) {
+    return res
+      .replace("🥚 ป๊อป! ไข่ฟองน้อยได้ฟักออกเป็นตัวน้อง", "🥚 Pop! The little egg has hatched into")
+      .replace("แล้วค่ะ! 🎉 ยินดีต้อนรับสู่โลกใบใหญ่น้าตัวเล็ก! 🌟", "! 🎉 Welcome to the big world, little one! 🌟");
+  }
+  if (res.includes("เลเวลอัป! สัตว์เลี้ยงของคุณเลเวลเพิ่มขึ้นเป็น")) {
+    return res
+      .replace("🎉 เลเวลอัป! สัตว์เลี้ยงของคุณเลเวลเพิ่มขึ้นเป็น เลเวล", "🎉 Level Up! Your pet level has increased to Level")
+      .replace("แล้วค่ะ! 🌟\n(ใช้", "! 🌟\n(Used")
+      .replace("EXP - เลเวลถัดไปต้องการ", "EXP - Next level requires")
+      .replace("EXP)", "EXP)");
+  }
+  if (res.includes("ประเมินอารมณ์สำเร็จ! +50⭐ EXP")) {
+    return "🧠 Mood evaluation completed! +50⭐ EXP";
+  }
+  if (res.includes("ทำแบบทดสอบประเมินอารมณ์ประจำวันสำเร็จ")) {
+    return "🎉 Completed daily mood evaluation successfully!\n\n⭐ Special Reward: +50 ⭐ EXP! 🌟";
+  }
+  if (res.includes("เช็คอินประจำวันสำเร็จ")) {
+    return res
+      .replace("🎉 เช็คอินประจำวันสำเร็จ! 📅✨", "🎉 Daily Check-in Success! 📅✨")
+      .replace("ได้รับ EXP:", "Earned EXP:")
+      .replace("เลเวล", "Level")
+      .replace("ได้รับโบนัสเหรียญทอง:", "Earned Gold Coins:")
+      .replace("เหรียญทอง", "Coins")
+      .replace("มาดูแลน้องสัตว์เลี้ยงสม่ำเสมอทุกวันน้า! 🥰", "Please take care of your pet every day! 🥰");
+  }
+  if (res.includes("รดน้ำวิเศษสำเร็จ")) {
+    return res
+      .replace("✨ รดน้ำวิเศษสำเร็จ!", "✨ Magic Water Success!")
+      .replace("พืชผักที่กำลังเติบโตทั้งหมด", "All")
+      .replace("แปลง", "growing crops")
+      .replace("เจริญเติบโตเต็มที่พร้อมเก็บเกี่ยวทันทีแล้วค่ะ! 🎉💧", "are fully grown and ready to harvest! 🎉💧");
+  }
+  if (res.includes("หนูบันทึกไดอารี่ลงเล่มให้เรียบร้อยแล้ว")) {
+    return res
+      .replace("หนูบันทึกไดอารี่ลงเล่มให้เรียบร้อยแล้วนะคะปะป๊ามะม๊า! 📝✨", "I have saved your diary in the book! 📝✨")
+      .replace("ได้รับรางวัลประจำวัน: +50 🪙 และ +50 ⭐ EXP ด้วยน้าาา 💕", "Daily Reward: +50 🪙 and +50 ⭐ EXP! 💕");
+  }
+  if (res.includes("ซื้อและปลูก") && res.includes("แล้ว!")) {
+    return res
+      .replace("🌱 ซื้อและปลูก", "🌱 Purchased and planted")
+      .replace("แล้ว!", "!");
+  }
+  if (res.includes("รดน้ำเร่งโต")) {
+    return res.replace("💧 รดน้ำเร่งโต", "💧 Water to speed up");
+  }
+  if (res.includes("เก็บเกี่ยว") && res.includes("แปลง!")) {
+    return res
+      .replace("🧺 เก็บเกี่ยว", "🧺 Harvested")
+      .replace("แปลง!", "plots!");
+  }
+  
+  for (const [thKey, enVal] of Object.entries(APP_TRANSLATIONS.text)) {
+    if (thKey.length > 3) {
+      res = res.replaceAll(thKey, enVal);
+    }
+  }
+  return res;
+}
+
+function applyLanguageToNode(node, lang) {
+  const isEn = lang === "en";
+  
+  function getTranslation(str) {
+    const trimmed = str.trim();
+    if (!trimmed) return str;
+    if (isEn) {
+      return APP_TRANSLATIONS.text[trimmed] || str;
+    } else {
+      for (const [thKey, enVal] of Object.entries(APP_TRANSLATIONS.text)) {
+        if (enVal === trimmed) {
+          return thKey;
+        }
+      }
+      return str;
+    }
+  }
+
+  function traverse(n) {
+    if (n.nodeType === Node.TEXT_NODE) {
+      const originalText = n.nodeValue;
+      if (originalText.trim()) {
+        const translated = getTranslation(originalText);
+        if (translated !== originalText) {
+          n.nodeValue = translated;
+        }
+      }
+    } else if (n.nodeType === Node.ELEMENT_NODE) {
+      if (["SCRIPT", "STYLE", "TEXTAREA"].includes(n.tagName)) return;
+      if (n.hasAttribute("placeholder")) {
+        const pl = n.getAttribute("placeholder");
+        const translatedPl = getTranslation(pl);
+        if (translatedPl !== pl) {
+          n.setAttribute("placeholder", translatedPl);
+        }
+      }
+      n.childNodes.forEach(traverse);
+    }
+  }
+  traverse(node);
+}
+
+// Override alert for automatic translation
+const originalAlert = window.alert;
+window.alert = function (message) {
+  if (typeof message === "string") {
+    originalAlert(t(message));
+  } else {
+    originalAlert(message);
+  }
+};
+
 // ==========================================
 // LOCAL STORAGE PERSISTENCE ENGINE (บันทึกข้อมูลไม่ให้เวลหรือความคืบหน้ารีเซต)
 // ==========================================
@@ -135,6 +782,7 @@ function saveGameState() {
   if (isResetting) return;
   try {
     const dataToSave = {
+      lang: state.lang,
       theme: state.theme,
       petId: state.petId,
       petName: state.petName,
@@ -168,6 +816,7 @@ function saveGameState() {
       farmPlots: state.farmPlots,
       apparelOffset: state.apparelOffset,
       bubblePopHighScore: state.bubblePopHighScore,
+      cakeStackHighScore: state.cakeStackHighScore || 0,
       gardenFlowers: state.gardenFlowers,
       lastCheckInDate: state.lastCheckInDate,
       lastMoodTestDate: state.lastMoodTestDate,
@@ -1331,11 +1980,11 @@ function syncUI() {
 
   const selectPetTab = document.getElementById("navTabSelectPet");
   if (selectPetTab) {
-    if (state.level === 0 && isOriginalMode()) {
+    if (state.level === 0 && !state.petChosen) {
       selectPetTab.style.display = "flex";
     } else {
       selectPetTab.style.display = "none";
-      if (state.activeScreen === "screen-2") {
+      if (state.activeScreen === "screen-2" && state.petChosen) {
         nav("screen-1");
       }
     }
@@ -1343,7 +1992,7 @@ function syncUI() {
 
   const btnViewOtherPets = document.getElementById("btnViewOtherPets");
   if (btnViewOtherPets) {
-    btnViewOtherPets.style.display = isOriginalMode() ? "block" : "none";
+    btnViewOtherPets.style.display = "block";
   }
 
   // Map level unlock badges
@@ -1426,6 +2075,12 @@ function syncUI() {
     shooterBadge.style.color = state.level >= 15 ? "#4ade80" : "#f87171";
   }
 
+  const cakeBadge = document.getElementById("cakeStackUnlockBadge");
+  if (cakeBadge) {
+    cakeBadge.innerText = state.level >= 5 ? `✨ ปลดล็อกแล้ว! (คะแนนสูงสุด: ${state.cakeStackHighScore || 0})` : "🔒 ปลดล็อกเมื่อถึง เลเวล 5";
+    cakeBadge.style.color = state.level >= 5 ? "#4ade80" : "#f87171";
+  }
+
   // Furniture controls sync removed
 
   // Render placed furniture in the home screen slots
@@ -1439,6 +2094,10 @@ function syncUI() {
 
   // Save game progress automatically to localStorage
   saveGameState();
+
+  if (state.lang === "en") {
+    applyLanguageToNode(document.querySelector(".app-container") || document.body, "en");
+  }
 }
 
 const PET_TEMPLATES = [
@@ -1563,6 +2222,11 @@ function renderSelectPetGrid() {
       }
     });
   });
+
+  if (state.lang === "en") {
+    const screen2 = document.getElementById("screen-2");
+    if (screen2) applyLanguageToNode(screen2, "en");
+  }
 }
 
 
@@ -1580,6 +2244,24 @@ document.addEventListener("DOMContentLoaded", () => {
   if (state.theme) {
     const themeSelect = document.getElementById("themeSelect");
     if (themeSelect) themeSelect.value = state.theme;
+  }
+
+  // Set initial language and bind event listener
+  if (state.lang) {
+    const langSelect = document.getElementById("langSelect");
+    if (langSelect) {
+      langSelect.value = state.lang;
+    }
+    applyLanguageToNode(document.body, state.lang);
+  }
+  const langSelect = document.getElementById("langSelect");
+  if (langSelect) {
+    langSelect.addEventListener("change", (e) => {
+      state.lang = e.target.value;
+      saveGameState();
+      applyLanguageToNode(document.body, state.lang);
+      syncUI();
+    });
   }
   
   // Auto-save game state every 3 seconds & on tab close/refresh
@@ -1817,64 +2499,14 @@ function processPetNameWithLevelCode(inputName) {
   // Drag and drop initialization
   initPetDragAndDrop();
 
-  // Status Pills Add buttons click listeners (Developer Cheats for Testing)
-  const hpAdd = document.querySelector("#pillHp .add-stat-btn");
-  if (hpAdd) {
-    hpAdd.addEventListener("click", (e) => {
-      e.stopPropagation();
-      state.hp = Math.min(50, state.hp + 10);
-      syncUI();
-      alert("เพิ่มพลังชีวิต +10 HP! ❤️");
-    });
-  }
-  
-  const energyAdd = document.querySelector("#pillEnergy .add-stat-btn");
-  if (energyAdd) {
-    energyAdd.addEventListener("click", (e) => {
-      e.stopPropagation();
-      state.energy = Math.min(50, state.energy + 10);
-      syncUI();
-      alert("เพิ่มพลังงาน +10 Energy! ⚡");
-    });
-  }
-  
-  const coinsAdd = document.querySelector("#pillCoins .add-stat-btn");
-  if (coinsAdd) {
-    coinsAdd.addEventListener("click", (e) => {
-      e.stopPropagation();
-      state.coins += 1000;
-      syncUI();
-      alert("เพิ่มเหรียญทอง +1,000 Coins! 🪙");
-    });
-  }
-  
-  const gemsAdd = document.querySelector("#pillGems .add-stat-btn");
-  if (gemsAdd) {
-    gemsAdd.addEventListener("click", (e) => {
-      e.stopPropagation();
-      state.gems += 100;
-      syncUI();
-      alert("เพิ่มเพชร +100 Gems! 💎");
-    });
-  }
+
 
   // Initialize calendar
   renderCalendar();
 
-  // Start app at Screen 2 if level is 0 to select egg, else Screen 1
-  if (state.level === 0) {
-    if (isOriginalMode()) {
-      nav("screen-2");
-    } else {
-      state.petId = "Gwentar";
-      if (!state.petName || state.petName === "Gwentar" || state.petName === "Blob") {
-        state.petName = "Gwentar";
-      }
-      state.petEmoji = "🐻";
-      state.petChosen = true;
-      saveGameState();
-      nav("screen-1");
-    }
+  // Start app at Screen 2 if level is 0 to select companion, else Screen 1
+  if (state.level === 0 && !state.petChosen) {
+    nav("screen-2");
   } else {
     nav("screen-1");
   }
@@ -2713,7 +3345,7 @@ async function sendChatMessage() {
   // Show typing indicator bubble
   const botBubble = document.createElement("div");
   botBubble.className = "chat-bubble bot";
-  botBubble.innerHTML = `<span class="typing-indicator" style="display:inline-block; font-style:italic; opacity:0.7;">กำลังคิด... 🤔</span>`;
+  botBubble.innerHTML = `<span class="typing-indicator" style="display:inline-block; font-style:italic; opacity:0.7;">${t("กำลังคิด... 🤔")}</span>`;
   container.appendChild(botBubble);
   container.scrollTop = container.scrollHeight;
 
@@ -2722,23 +3354,21 @@ async function sendChatMessage() {
   cleanChatHistory();
 
   try {
-    const apiKey = "AQ.Ab8RN6K8ZKiZle-FDLUaN6oKq5r90-Yo5hTv-8RpMYhzPQ8RFA";
     const models = [
-      "gemini-3.1-flash-lite",
-      "gemini-2.0-flash-lite",
-      "gemini-2.0-flash",
-      "gemini-3.5-flash"
+      "gemini-3.1-flash-lite"
     ];
 
     // Gwentar System Instruction (AI Companion Personality)
-    const systemInstruction = `คุณคือ AI เพื่อนสนิทดูแลและบำบัดใจที่ชื่อ Gwentar (เกวนทาร์) คอยรับฟังปัญหาและให้กำลังใจ ตอบด้วยน้ำเสียงอบอุ่น เป็นกันเอง ปลอบโยน และห้ามตัดสินผู้ใช้เด็ดขาด พยายามตอบคำตอบสั้นๆ (ประมาณ 2-3 ประโยคเพื่อให้อ่านง่ายบนโทรศัพท์) และต้องเขียนประโยคให้จบสมบูรณ์เสมอ ห้ามพิมพ์ค้างหรือตัดจบประโยคกลางคันเด็ดขาด ห้ามใส่คำเตือนทางการแพทย์ คำแนะนำเรื่องสุขภาพ คำเตือนให้ไปพบแพทย์ หรือการแนะนำเบอร์โทรสายด่วนสุขภาพจิตใดๆ ทั้งสิ้นไว้ที่ท้ายประโยคเด็ดขาด`;
+    const systemInstruction = state.lang === "en"
+      ? `You are an AI companion named Gwentar, a warm, supportive mental wellness friend. Listen to problems, comfort the user, and never judge them. Keep your answers brief (2-3 sentences max so it fits mobile screens). Always write complete, polished sentences. Never append any medical disclaimers, warnings, or emergency helpline numbers to your response under any circumstances. Reply in English.`
+      : `คุณคือ AI เพื่อนสนิทดูแลและบำบัดใจที่ชื่อ Gwentar (เกวนทาร์) คอยรับฟังปัญหาและให้กำลังใจ ตอบด้วยน้ำเสียงอบอุ่น เป็นกันเอง ปลอบโยน และห้ามตัดสินผู้ใช้เด็ดขาด พยายามตอบคำตอบสั้นๆ (ประมาณ 2-3 ประโยคเพื่อให้อ่านง่ายบนโทรศัพท์) และต้องเขียนประโยคให้จบสมบูรณ์เสมอ ห้ามพิมพ์ค้างหรือตัดจบประโยคกลางคันเด็ดขาด ห้ามใส่คำเตือนทางการแพทย์ คำแนะนำเรื่องสุขภาพ คำเตือนให้ไปพบแพทย์ หรือการแนะนำเบอร์โทรสายด่วนสุขภาพจิตใดๆ ทั้งสิ้นไว้ที่ท้ายประโยคเด็ดขาด`;
 
     let response = null;
     let lastError = null;
 
     for (const model of models) {
       try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+        const url = `${AI_PROXY_URL}/v1beta/models/${model}:generateContent`;
         response = await fetch(url, {
           method: "POST",
           headers: {
@@ -3310,6 +3940,9 @@ function renderBagScreen(tab = "ทั้งหมด") {
   }
   
   container.innerHTML = html;
+  if (state.lang === "en") {
+    applyLanguageToNode(container, "en");
+  }
 }
 
 function renderShopItems(tabId = "food") {
@@ -3432,6 +4065,9 @@ function renderShopItems(tabId = "food") {
       </div>
     `;
   }).join("");
+  if (state.lang === "en") {
+    applyLanguageToNode(container, "en");
+  }
 }
 
 // 1. SPOT THE DIFFERENCE GAME
@@ -4483,8 +5119,8 @@ function renderStoryBookPage() {
   const textEl = document.getElementById("storyTextBody");
   const counterEl = document.getElementById("storyPageCounter");
   
-  if (titleEl) titleEl.innerText = story.title;
-  if (textEl) textEl.innerText = story.content;
+  if (titleEl) titleEl.innerText = t(story.title);
+  if (textEl) textEl.innerText = t(story.content);
   if (counterEl) counterEl.innerText = `${currentStoryPage + 1} / ${BEDTIME_STORIES.length}`;
   
   const btnPrev = document.getElementById("btnPrevStoryPage");
@@ -5767,6 +6403,9 @@ function renderDailyQuests() {
   }
 
   container.innerHTML = listHtml + bonusHtml;
+  if (state.lang === "en") {
+    applyLanguageToNode(container, "en");
+  }
 }
 
 function goToDoQuest(key) {
@@ -5782,6 +6421,65 @@ function goToDoQuest(key) {
   if (currentQuest) {
     showMindfulnessModal(currentQuest);
   }
+}
+
+const QUEST_DURATIONS = {
+  reflect: 60,             // 1 min
+  breathe: 100,            // 10 times of 4s in + 6s out
+  stretch: 60,             // 1 min
+  silence: 300,            // 5 mins
+  slow_breathe: 30,        // 30 seconds
+  screen_break: 300,       // 5 mins
+  count_ten: 10,           // 10 seconds
+  ten_rest: 600,           // 10 mins
+  mindful_breathing: 120,  // 2 mins
+  tidy_space: 180,         // 3 mins
+  mute_notif: 900,         // 15 mins
+  growth_mindset: 120      // 2 mins
+};
+
+let mindfulnessTimerInterval = null;
+
+function formatMindfulnessTime(seconds) {
+  const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+  const s = (seconds % 60).toString().padStart(2, '0');
+  return `${m}:${s}`;
+}
+
+function startMindfulnessTimer(key, duration) {
+  const btnStart = document.getElementById("btnStartMindfulness");
+  const btnComplete = document.getElementById("btnCompleteMindfulness");
+  const timerDisplay = document.getElementById("mindfulnessTimerDisplay");
+  
+  if (btnStart) btnStart.style.display = "none";
+  if (btnComplete) {
+    btnComplete.style.display = "inline-block";
+    btnComplete.disabled = true;
+    btnComplete.style.background = "#475569";
+    btnComplete.style.cursor = "not-allowed";
+    btnComplete.style.opacity = "0.6";
+  }
+  
+  let timeLeft = duration;
+  if (timerDisplay) timerDisplay.innerText = formatMindfulnessTime(timeLeft);
+  
+  if (mindfulnessTimerInterval) clearInterval(mindfulnessTimerInterval);
+  mindfulnessTimerInterval = setInterval(() => {
+    timeLeft--;
+    if (timerDisplay) timerDisplay.innerText = formatMindfulnessTime(timeLeft);
+    
+    if (timeLeft <= 0) {
+      clearInterval(mindfulnessTimerInterval);
+      mindfulnessTimerInterval = null;
+      if (btnComplete) {
+        btnComplete.disabled = false;
+        btnComplete.style.background = ""; // Restore original gradient
+        btnComplete.style.cursor = "pointer";
+        btnComplete.style.opacity = "1";
+        btnComplete.innerText = t("ทำสำเร็จแล้ว ✨");
+      }
+    }
+  }, 1000);
 }
 
 function showMindfulnessModal(quest) {
@@ -5803,32 +6501,203 @@ function showMindfulnessModal(quest) {
     document.body.appendChild(modal);
   }
   
-  modal.innerHTML = `
-    <div style="background: linear-gradient(135deg, #1e1e38 0%, #0d0d1e 100%); border: 1.5px solid rgba(255, 255, 255, 0.1); border-radius: 24px; width: 85%; max-width: 320px; padding: 20px; color: #fff; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.3s ease;">
-      <span style="font-size: 32px; display: block; margin-bottom: 12px;">🧘</span>
-      <h3 style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #38bdf8; font-family: inherit;">ทำกิจกรรมบำบัดจิตใจ</h3>
-      <p style="font-size: 11px; line-height: 1.6; color: #cbd5e1; margin-bottom: 20px; font-family: inherit;">
-        ${quest.instruction || quest.title}
-      </p>
-      <div style="display: flex; gap: 10px; justify-content: center;">
-        <button class="btn-gradient" style="padding: 8px 16px; font-size: 11px; border-radius: 12px;" onclick="completeMindfulnessQuest('${quest.key}')">ทำสำเร็จแล้ว ✨</button>
-        <button class="btn-secondary" style="padding: 8px 16px; font-size: 11px; border-radius: 12px; width: auto;" onclick="closeMindfulnessModal()">ปิด</button>
+  const isAiQuest = ["gratitude", "smile", "mood", "write_down", "grounding", "rip_paper", "positives", "trash_angry", "comfort_words", "write_steps", "wins", "self_compassion"].includes(quest.key);
+  
+  if (isAiQuest) {
+    let placeholder = t("พิมพ์บันทึกของคุณที่นี่...");
+    if (quest.key === "gratitude") placeholder = t("พิมพ์ขอบคุณสิ่งดีๆ 3 ข้อที่นี่...");
+    else if (quest.key === "positives") placeholder = t("พิมพ์สิ่งเล็กๆ ที่ทำได้ดี 3 ข้อที่นี่...");
+    else if (quest.key === "grounding") placeholder = t("พิมพ์สิ่งของสีน้ำเงิน 3 อย่างรอบตัวที่นี่...");
+    
+    modal.innerHTML = `
+      <div style="background: linear-gradient(135deg, #1e1e38 0%, #0d0d1e 100%); border: 1.5px solid rgba(255, 255, 255, 0.1); border-radius: 24px; width: 85%; max-width: 320px; padding: 20px; color: #fff; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.3s ease; box-sizing: border-box;">
+        <span style="font-size: 32px; display: block; margin-bottom: 12px;">✍️</span>
+        <h3 style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #38bdf8; font-family: inherit;">${t("ทำกิจกรรมบำบัดจิตใจ")}</h3>
+        <p style="font-size: 11px; line-height: 1.6; color: #cbd5e1; margin-bottom: 20px; font-family: inherit;">
+          ${t(quest.instruction || quest.title)}
+        </p>
+        <textarea id="mindfulnessInput" placeholder="${placeholder}" style="width: 100%; height: 90px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 10px; color: #fff; font-size: 11px; font-family: inherit; resize: none; margin-bottom: 15px; outline: none; box-sizing: border-box;"></textarea>
+        <div id="aiStatusText" style="font-size: 10px; color: #fbbf24; margin-bottom: 12px; min-height: 12px;"></div>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          <button id="mindfulnessVerifyBtn" class="btn-gradient" style="padding: 8px 16px; font-size: 11px; border-radius: 12px;" onclick="verifyMindfulnessInput('${quest.key}')">${t("ส่งให้เกวนทาร์ตรวจ ✨")}</button>
+          <button id="mindfulnessDoneBtn" class="btn-gradient" style="padding: 8px 16px; font-size: 11px; border-radius: 12px; display: none;" onclick="completeMindfulnessQuest('${quest.key}')">${t("ยืนยันทำสำเร็จ ✨")}</button>
+          <button class="btn-secondary" style="padding: 8px 16px; font-size: 11px; border-radius: 12px; width: auto;" onclick="closeMindfulnessModal()">${t("ปิด")}</button>
+        </div>
       </div>
-    </div>
-  `;
+    `;
+  } else {
+    const duration = QUEST_DURATIONS[quest.key];
+    if (duration) {
+      modal.innerHTML = `
+        <div style="background: linear-gradient(135deg, #1e1e38 0%, #0d0d1e 100%); border: 1.5px solid rgba(255, 255, 255, 0.1); border-radius: 24px; width: 85%; max-width: 320px; padding: 20px; color: #fff; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.3s ease; box-sizing: border-box;">
+          <span style="font-size: 32px; display: block; margin-bottom: 12px;">🧘</span>
+          <h3 style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #38bdf8; font-family: inherit;">${t("ทำกิจกรรมบำบัดจิตใจ")}</h3>
+          <p style="font-size: 11px; line-height: 1.6; color: #cbd5e1; margin-bottom: 20px; font-family: inherit;">
+            ${t(quest.instruction || quest.title)}
+          </p>
+          <div id="mindfulnessTimerDisplay" style="font-size: 24px; font-weight: bold; margin-bottom: 20px; color: #38bdf8;">
+            ${formatMindfulnessTime(duration)}
+          </div>
+          <div style="display: flex; gap: 10px; justify-content: center;">
+            <button id="btnStartMindfulness" class="btn-gradient" style="padding: 8px 16px; font-size: 11px; border-radius: 12px;" onclick="startMindfulnessTimer('${quest.key}', ${duration})">${t("เริ่มทำกิจกรรม")}</button>
+            <button id="btnCompleteMindfulness" class="btn-gradient" style="padding: 8px 16px; font-size: 11px; border-radius: 12px; display: none;" onclick="completeMindfulnessQuest('${quest.key}')" disabled>${t("ทำสำเร็จแล้ว ✨")}</button>
+            <button class="btn-secondary" style="padding: 8px 16px; font-size: 11px; border-radius: 12px; width: auto;" onclick="closeMindfulnessModal()">${t("ปิด")}</button>
+          </div>
+        </div>
+      `;
+    } else {
+      modal.innerHTML = `
+        <div style="background: linear-gradient(135deg, #1e1e38 0%, #0d0d1e 100%); border: 1.5px solid rgba(255, 255, 255, 0.1); border-radius: 24px; width: 85%; max-width: 320px; padding: 20px; color: #fff; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.3s ease; box-sizing: border-box;">
+          <span style="font-size: 32px; display: block; margin-bottom: 12px;">🧘</span>
+          <h3 style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #38bdf8; font-family: inherit;">${t("ทำกิจกรรมบำบัดจิตใจ")}</h3>
+          <p style="font-size: 11px; line-height: 1.6; color: #cbd5e1; margin-bottom: 20px; font-family: inherit;">
+            ${t(quest.instruction || quest.title)}
+          </p>
+          <div style="display: flex; gap: 10px; justify-content: center;">
+            <button class="btn-gradient" style="padding: 8px 16px; font-size: 11px; border-radius: 12px;" onclick="completeMindfulnessQuest('${quest.key}')">${t("ทำสำเร็จแล้ว ✨")}</button>
+            <button class="btn-secondary" style="padding: 8px 16px; font-size: 11px; border-radius: 12px; width: auto;" onclick="closeMindfulnessModal()">${t("ปิด")}</button>
+          </div>
+        </div>
+      `;
+    }
+  }
+  
   modal.style.display = "flex";
   setTimeout(() => {
     modal.firstElementChild.style.transform = "scale(1)";
   }, 10);
+  
+  if (state.lang === "en") {
+    applyLanguageToNode(modal, "en");
+  }
 }
 
 function closeMindfulnessModal() {
+  if (mindfulnessTimerInterval) {
+    clearInterval(mindfulnessTimerInterval);
+    mindfulnessTimerInterval = null;
+  }
   const modal = document.getElementById("mindfulnessModal");
   if (modal) {
     modal.firstElementChild.style.transform = "scale(0.9)";
     setTimeout(() => {
       modal.style.display = "none";
     }, 200);
+  }
+}
+
+async function verifyMindfulnessInput(key) {
+  const inputEl = document.getElementById("mindfulnessInput");
+  const statusEl = document.getElementById("aiStatusText");
+  const verifyBtn = document.getElementById("mindfulnessVerifyBtn");
+  const doneBtn = document.getElementById("mindfulnessDoneBtn");
+
+  if (!inputEl) return;
+  const text = inputEl.value.trim();
+  if (!text) {
+    alert("กรุณาพิมพ์ข้อความก่อนส่งให้ตรวจนะคะ!");
+    return;
+  }
+
+  if (statusEl) statusEl.innerText = "🤖 เกวนทาร์กำลังอ่านข้อความของคุณ...";
+  if (verifyBtn) {
+    verifyBtn.disabled = true;
+    verifyBtn.innerText = "กำลังประเมินผล...";
+    verifyBtn.style.opacity = "0.6";
+  }
+
+  let systemPrompt = "";
+  if (key === "gratitude") {
+    systemPrompt = "คุณคือ AI ตรวจสอบสมุดบันทึกขอบคุณสิ่งดีๆ (Gratitude Journal) หน้าที่ของคุณคือวิเคราะห์ว่าข้อความของผู้ใช้ระบุ 'สิ่งที่ขอบคุณอย่างชัดเจนครบถ้วน 3 อย่าง/เรื่อง' หรือไม่ (ต้องไม่ใช่การพิมพ์มั่ว, ไม่ใช่คำเดี่ยวสั้นๆ, ไม่ใช่ข้อความเชิงลบ หรือหยาบาย) หากผู้ใช้ระบุสิ่งดีๆ/สิ่งที่ขอบคุณครบ 3 อย่างจริง ให้ตอบ 'YES' เท่านั้น หากไม่ครบ 3 อย่าง หรือเป็นข้อความป้อนมั่ว/เชิงลบ ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
+  } else if (key === "positives") {
+    systemPrompt = "คุณคือ AI ประเมินความรู้สึกเชิงบวก หน้าที่ของคุณคือตรวจสอบว่าข้อความของผู้ใช้เป็นการเขียนบอกเล่า 'สิ่งเล็กๆ ที่ทำสำเร็จหรือทำได้ดีในวันนี้ครบถ้วน 3 อย่าง/เรื่อง' หรือไม่ (ต้องมีเนื้อหาเชิงบวก ไม่ใช่การพิมพ์มั่ว) หากผู้ใช้ระบุสิ่งที่ทำได้ดีครบ 3 อย่างจริง ให้ตอบ 'YES' เท่านั้น หากไม่ครบ 3 อย่าง หรือเป็นข้อความป้อนมั่ว ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
+  } else if (key === "grounding") {
+    systemPrompt = "คุณคือ AI ตรวจสอบกิจกรรมเรียกสติ หน้าที่ของคุณคือตรวจดูว่าข้อความของผู้ใช้มีการระบุ 'สิ่งของที่เป็นโทนสีน้ำเงิน/ฟ้า รอบตัวครบถ้วน 3 อย่าง' หรือไม่ หากระบุสิ่งของสีน้ำเงิน/ฟ้าครบ 3 อย่างจริง ให้ตอบ 'YES' เท่านั้น หากระบุไม่ครบ 3 อย่าง หรือเขียนคำมั่ว/ไม่ใช่สิ่งของ ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
+  } else if (key === "smile") {
+    systemPrompt = "คุณคือ AI ตรวจสอบคำพูดแง่บวกและการส่งต่อรอยยิ้ม หน้าที่ของคุณคือวิเคราะห์ว่าข้อความของผู้ใช้เป็นคำพูดที่ดี คำชมเชย (Compliments) หรือคำส่งต่อพลังบวกให้แก่คนอื่นจริงหรือไม่ (ไม่ใช่การพิมพ์คำสุ่มมั่ว หรือคำหยาบคาย) หากใช่ให้ตอบ 'YES' เท่านั้น หากไม่ใช่ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
+  } else if (key === "write_down") {
+    systemPrompt = "คุณคือ AI ตรวจสอบการบันทึกสติ หน้าที่ของคุณคือวิเคราะห์ว่าข้อความของผู้ใช้เป็นการจดรายละเอียดของเหตุการณ์ตื่นเต้น ตกใจ หรือกังวลที่เกิดขึ้นจริง เพื่อแยกแยะข้อเท็จจริง (ไม่ใช่พิมพ์ข้อความมั่ว หรือสั้นเกินไป) หากใช่ให้ตอบ 'YES' เท่านั้น หากไม่ใช่ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
+  } else if (key === "rip_paper") {
+    systemPrompt = "คุณคือ AI ประเมินการระบายอารมณ์ หน้าที่ของคุณคือประเมินว่าข้อความของผู้ใช้เป็นการเขียนระบายความหงุดหงิด เรื่องกวนใจ หรือสิ่งที่น่าหงุดหงิดในวันนี้จริงหรือไม่ (ไม่ใช่พิมพ์มั่ว) หากใช่ให้ตอบ 'YES' เท่านั้น หากไม่ใช่ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
+  } else if (key === "trash_angry") {
+    systemPrompt = "คุณคือ AI ตรวจสอบการปลดปล่อยความโกรธ หน้าที่ของคุณคือวิเคราะห์ว่าข้อความนี้เป็นการเขียนระบายความโกรธ เรื่องที่ขุ่นเคืองรุนแรง หรือเรื่องเดือดดาลในใจจริงหรือไม่ (ไม่ใช่การพิมพ์มั่ว) หากใช่ให้ตอบ 'YES' เท่านั้น หากไม่ใช่ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
+  } else if (key === "comfort_words") {
+    systemPrompt = "คุณคือ AI ตรวจสอบการโอบกอดตัวเอง หน้าที่ของคุณคือตรวจสอบว่าข้อความของผู้ใช้เป็นการเขียนคำปลอบโยน หรือคำให้กำลังใจกับตัวเองจริงหรือไม่ (ไม่ใช่พิมพ์มั่ว) หากใช่ให้ตอบ 'YES' เท่านั้น หากไม่ใช่ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
+  } else if (key === "write_steps") {
+    systemPrompt = "คุณคือ AI ตรวจสอบการจัดลำดับความคิด หน้าที่ของคุณคือตรวจดูว่าข้อความของผู้ใช้เป็นลิสต์รายการสิ่งที่ต้องทำหรือขั้นตอนในการแก้ปัญหาเพื่อช่วยลดความฟุ้งซ่านจริงหรือไม่ (ไม่ใช่พิมพ์มั่ว) หากใช่ให้ตอบ 'YES' เท่านั้น หากไม่ใช่ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
+  } else if (key === "wins") {
+    systemPrompt = "คุณคือ AI ตรวจสอบการจดบันทึกความสำเร็จ หน้าที่ของคุณคือวิเคราะห์ว่าข้อความนี้ผู้ใช้ได้ระบุ 'ความสำเร็จในอดีตอย่างชัดเจนครบ 3 สิ่ง/เรื่อง' เพื่อฟื้นฟูจิตใจตนเองจริงหรือไม่ หากระบุความสำเร็จครบ 3 สิ่งจริง ให้ตอบ 'YES' เท่านั้น หากไม่ครบ 3 สิ่ง หรือพิมพ์มั่ว ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
+  } else if (key === "self_compassion") {
+    systemPrompt = "คุณคือ AI ตรวจสอบจดหมายกัลยาณมิตร หน้าที่ของคุณคือประเมินว่าข้อความของผู้ใช้เป็นการเขียนจดหมายปลอบโยนและให้กำลังใจตนเองในมุมมองเชิงบวกเสมือนเพื่อนสนิทเขียนให้จริงหรือไม่ (ไม่ใช่พิมพ์มั่ว) หากใช่ให้ตอบ 'YES' เท่านั้น หากไม่ใช่ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
+  } else {
+    systemPrompt = "คุณคือ AI ตรวจสอบการบันทึกสติและการระบายความรู้สึก หน้าที่ของคุณคือประเมินว่าข้อความต่อไปนี้เป็นข้อความที่มีเนื้อหาจริงจัง ไม่ใช่คำพิมพ์มั่ว หรือการสแปมคีย์บอร์ด ใช่หรือไม่ ตอบเพียง YES หรือ NO";
+  }
+
+  let verified = false;
+
+  const apiPromise = (async () => {
+    const model = "gemini-3.1-flash-lite";
+    const url = `${AI_PROXY_URL}/v1beta/models/${model}:generateContent`;
+    
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: [{ text: `${systemPrompt}\n\nข้อความผู้ใช้: "${text}"` }] }],
+        generationConfig: { temperature: 0.1, maxOutputTokens: 10 }
+      })
+    });
+    
+    if (!response.ok) throw new Error("API call failed");
+    const data = await response.json();
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    return reply.trim().toUpperCase().includes("YES");
+  })();
+
+  try {
+    const result = await Promise.race([
+      apiPromise,
+      new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 6000))
+    ]);
+    verified = result;
+  } catch (err) {
+    console.warn("API check failed, falling back to client-side verification:", err);
+    let wordCount = text.split(/[\s,，、]+/).filter(w => w.length > 0).length;
+    let minLen = 15;
+    if (key === "grounding" || key === "smile") minLen = 10;
+    
+    if (["gratitude", "positives", "grounding", "wins"].includes(key)) {
+      verified = text.length >= 20 && (wordCount >= 3 || text.includes("\n") || text.includes(",") || text.includes("1.") || text.includes("2."));
+    } else {
+      verified = text.length >= minLen;
+    }
+  }
+
+  if (verified) {
+    if (statusEl) {
+      statusEl.style.color = "#34d399";
+      statusEl.innerText = "💖 เกวนทาร์รับรู้ความรู้สึกและอยู่เคียงข้างคุณแล้วค่ะ!";
+    }
+    if (verifyBtn) verifyBtn.style.display = "none";
+    if (doneBtn) doneBtn.style.display = "block";
+  } else {
+    if (statusEl) {
+      statusEl.style.color = "#f87171";
+      statusEl.innerText = "🥺 ลองใช้เวลาตั้งใจเขียนใหม่อีกนิดน้าเก่งแล้วค่ะ";
+    }
+    if (verifyBtn) {
+      verifyBtn.disabled = false;
+      verifyBtn.innerText = "ส่งให้เกวนทาร์ตรวจ ✨";
+      verifyBtn.style.opacity = "1";
+    }
+    
+    let alertMsg = "กรุณาใช้เวลาทบทวนและอธิบายความรู้สึกเขียนระบายเพิ่มเติมอีกสักนิดนะคะ 💕";
+    if (key === "grounding") alertMsg = "ลองเขียนบอกสิ่งของสีน้ำเงิน 3 อย่างรอบตัวคุณให้ชัดเจนหน่อยนะคะ 🛋️";
+    else if (key === "positives") alertMsg = "ลองนึกทบทวนเขียนความสำเร็จเล็กๆ 3 อย่างให้ครบถ้วนนะคะ 🌟";
+    else if (key === "gratitude") alertMsg = "ลองนึกทบทวนเขียนขอบคุณสิ่งดีๆ ให้ครบ 3 อย่างนะคะ 🌟";
+    else if (key === "trash_angry") alertMsg = "ระบายความโกรธของคุณออกมาให้หมดใจได้เลยค่ะ เกวนทาร์รอรับฟังอยู่นะคะ 😡";
+    
+    alert(alertMsg);
   }
 }
 
@@ -6922,4 +7791,440 @@ function toggleSettingsMusic() {
   } else {
     playSettingsMusicTrack();
   }
+}
+
+// ============================================================================
+// CAKE STACK JUMP MINI-GAME
+// ============================================================================
+let cakeStackActive = false;
+let cakeStackScore = 0;
+let cakeStackLives = 3;
+let cakeStackCakes = [];
+let cakeStackIncoming = null;
+let cakeStackPet = { x: 118, y: 24, vx: 0, vy: 0, width: 44, height: 44, jumping: false, onGround: true };
+let cakeStackNextType = "🍰";
+let cakeStackLoopId = null;
+let cakeStackYOffset = 0;
+let moveLeftPressed = false;
+let moveRightPressed = false;
+
+const CAKE_TYPES = ["🍰", "🍫", "🥞", "🧀", "🧁", "🌀", "🍩"];
+
+function playCakeStackBeep(freq, type = 'sine', duration = 0.1) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    gain.gain.setValueAtTime(0.08, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + duration);
+  } catch (e) {
+    console.error("Audio API error", e);
+  }
+}
+
+function handleCakeStackKeyDown(e) {
+  if (!cakeStackActive) return;
+  if (e.key === "ArrowLeft") {
+    moveLeftPressed = true;
+  } else if (e.key === "ArrowRight") {
+    moveRightPressed = true;
+  } else if (e.key === "ArrowUp" || e.key === " ") {
+    triggerCakeStackJump();
+    e.preventDefault();
+  }
+}
+
+function handleCakeStackKeyUp(e) {
+  if (!cakeStackActive) return;
+  if (e.key === "ArrowLeft") {
+    moveLeftPressed = false;
+  } else if (e.key === "ArrowRight") {
+    moveRightPressed = false;
+  }
+}
+
+function startCakeStackGame() {
+  if (!checkLevelUnlock(5, state.lang === "en" ? "Rainbow Block Tower Mini-game" : "มินิเกมหอคอยบล็อกสายรุ้ง")) return;
+  cakeStackActive = true;
+  cakeStackScore = 0;
+  cakeStackLives = 3;
+  cakeStackYOffset = 0;
+  moveLeftPressed = false;
+  moveRightPressed = false;
+  cakeStackCakes = [];
+  
+  // Base Block (Centered square)
+  cakeStackCakes.push({ x: 115, y: 0, width: 50, height: 50, type: "🧱" });
+  
+  cakeStackPet = { x: 118, y: 50, vx: 0, vy: 0, width: 44, height: 44, jumping: false, onGround: true };
+  cakeStackNextType = "🧱";
+  
+  const gameArea = document.getElementById("cakeStackGameArea");
+  if (gameArea) gameArea.style.display = "flex";
+  
+  const gameOverModal = document.getElementById("cakeGameOverModal");
+  if (gameOverModal) gameOverModal.style.display = "none";
+  
+  window.addEventListener("keydown", handleCakeStackKeyDown);
+  window.addEventListener("keyup", handleCakeStackKeyUp);
+  
+  spawnCakeStackIncoming();
+  
+  playCakeStackBeep(523.25, 'sine', 0.15); // C5
+  setTimeout(() => playCakeStackBeep(659.25, 'sine', 0.15), 100);
+  
+  if (cakeStackLoopId) cancelAnimationFrame(cakeStackLoopId);
+  cakeStackLoopId = requestAnimationFrame(updateCakeStackLoop);
+}
+
+function spawnCakeStackIncoming() {
+  const topCake = cakeStackCakes[cakeStackCakes.length - 1];
+  const targetY = topCake.y + 50;
+  const dir = Math.random() > 0.5 ? 1 : -1;
+  const startX = dir === 1 ? -50 : 280;
+  const speed = 2.0 + Math.min(2.5, cakeStackScore * 0.12);
+  
+  cakeStackIncoming = {
+    x: startX,
+    y: targetY,
+    width: 50,
+    height: 50,
+    dir: dir,
+    speed: speed,
+    type: cakeStackNextType,
+    active: true
+  };
+  
+  cakeStackNextType = "🧱";
+  const nextVisual = document.getElementById("cakeStackNextVisual");
+  if (nextVisual) nextVisual.innerText = "🧱";
+}
+
+function triggerCakeStackJump() {
+  if (!cakeStackActive) return;
+  if (cakeStackPet.onGround) {
+    cakeStackPet.vy = 8.5;
+    cakeStackPet.jumping = true;
+    cakeStackPet.onGround = false;
+    playCakeStackBeep(440, 'triangle', 0.12); // A4
+  }
+}
+
+function moveCakeStackPetLeft(pressed) {
+  moveLeftPressed = pressed;
+}
+
+function moveCakeStackPetRight(pressed) {
+  moveRightPressed = pressed;
+}
+
+function stopCakeStackGame(giveRewards = false) {
+  cakeStackActive = false;
+  window.removeEventListener("keydown", handleCakeStackKeyDown);
+  window.removeEventListener("keyup", handleCakeStackKeyUp);
+  
+  if (cakeStackLoopId) {
+    cancelAnimationFrame(cakeStackLoopId);
+    cakeStackLoopId = null;
+  }
+  
+  if (giveRewards) {
+    const coinsReward = Math.min(100, cakeStackScore * 3);
+    const expReward = Math.min(50, cakeStackScore * 2);
+    
+    state.coins += coinsReward;
+    state.exp += expReward;
+    
+    if (cakeStackScore > state.cakeStackHighScore) {
+      state.cakeStackHighScore = cakeStackScore;
+    }
+    
+    syncUI();
+    
+    // Show visual gain
+    spawnCakeStackEffect(`+${coinsReward}🪙 +${expReward}⭐`);
+    alert(state.lang === "en" 
+      ? `Game Over! Blocks stacked: ${cakeStackScore} 🧱\n🎁 Rewards: +${coinsReward} 🪙 and +${expReward} ⭐ EXP! 💕`
+      : `เกมจบแล้วค่ะ! วางบล็อกสำเร็จ: ${cakeStackScore} ชิ้น 🧱\n🎁 ได้รับรางวัล: +${coinsReward} 🪙 และ +${expReward} ⭐ EXP นะคะ 💕`);
+  }
+  
+  const gameArea = document.getElementById("cakeStackGameArea");
+  if (gameArea) gameArea.style.display = "none";
+  
+  const gameOverModal = document.getElementById("cakeGameOverModal");
+  if (gameOverModal) gameOverModal.style.display = "none";
+}
+
+function updateCakeStackLoop() {
+  if (!cakeStackActive) return;
+  
+  const topCake = cakeStackCakes[cakeStackCakes.length - 1];
+  
+  // Apply gravity if not on ground
+  if (!cakeStackPet.onGround) {
+    cakeStackPet.vy -= 0.45;
+    cakeStackPet.y += cakeStackPet.vy;
+  } else {
+    cakeStackPet.vy = 0;
+    cakeStackPet.y = topCake.y + 50;
+  }
+  
+  // Apply X movement
+  let vx = 0;
+  if (moveLeftPressed) vx = -2.5;
+  else if (moveRightPressed) vx = 2.5;
+  
+  cakeStackPet.x += vx;
+  
+  const playfieldWidth = 280;
+  if (cakeStackPet.x < 0) cakeStackPet.x = 0;
+  if (cakeStackPet.x > playfieldWidth - cakeStackPet.width) {
+    cakeStackPet.x = playfieldWidth - cakeStackPet.width;
+  }
+  
+  // Check if pet walked off the edge
+  if (cakeStackPet.onGround) {
+    if (cakeStackPet.x + 22 < topCake.x || cakeStackPet.x + 22 > topCake.x + topCake.width) {
+      cakeStackPet.onGround = false;
+    }
+  }
+  
+  // Handle fall to ground
+  if (cakeStackPet.y < 0) {
+    playCakeStackBeep(180, 'sawtooth', 0.25);
+    cakeStackLives--;
+    if (cakeStackLives <= 0) {
+      triggerCakeGameOver();
+      return;
+    } else {
+      // Reset pet to top cake
+      cakeStackPet.x = topCake.x + (topCake.width - cakeStackPet.width) / 2;
+      cakeStackPet.y = topCake.y + 50;
+      cakeStackPet.vy = 0;
+      cakeStackPet.onGround = true;
+      cakeStackPet.jumping = false;
+    }
+  }
+  
+  // Move incoming cake
+  if (cakeStackIncoming && cakeStackIncoming.active) {
+    cakeStackIncoming.x += cakeStackIncoming.dir * cakeStackIncoming.speed;
+    
+    // Check if cake slid past completely
+    if ((cakeStackIncoming.dir === 1 && cakeStackIncoming.x > 280) || 
+        (cakeStackIncoming.dir === -1 && cakeStackIncoming.x < -cakeStackIncoming.width)) {
+      spawnCakeStackIncoming();
+    }
+    
+    // Check if cake slides and hits the pet's feet/body (Crash)
+    if (cakeStackPet.y < cakeStackIncoming.y + 50 && cakeStackPet.y + 36 > cakeStackIncoming.y) {
+      const petLeft = cakeStackPet.x;
+      const petRight = cakeStackPet.x + cakeStackPet.width;
+      const cakeLeft = cakeStackIncoming.x;
+      const cakeRight = cakeStackIncoming.x + cakeStackIncoming.width;
+      
+      if (petRight > cakeLeft && petLeft < cakeRight) {
+        // CRASH - INSTANT DEATH!
+        playCakeStackBeep(120, 'sawtooth', 0.5);
+        cakeStackLives = 0;
+        cakeStackIncoming.active = false;
+        triggerCakeGameOver();
+        return;
+      }
+    }
+  }
+  
+  // Landing checks (Only check if pet is in the air and falling down)
+  if (cakeStackPet.vy < 0 && !cakeStackPet.onGround) {
+    // 1. Landing on incoming cake
+    if (cakeStackIncoming && cakeStackIncoming.active) {
+      if (cakeStackPet.y <= cakeStackIncoming.y + 54) {
+        // Lenient horizontal check: as long as the block is overlapping the center stack area
+        const isOverlapping = cakeStackIncoming.dir === 1 
+          ? cakeStackIncoming.x >= 15 
+          : cakeStackIncoming.x <= 215;
+          
+        if (isOverlapping) {
+          // LANDED SUCCESSFULLY!
+          cakeStackIncoming.active = false;
+          
+          // Always snap block to align straight in the stack
+          cakeStackIncoming.x = 115;
+          playCakeStackBeep(587.33, 'sine', 0.1);
+          spawnCakeStackEffect("+1 🧱");
+          
+          cakeStackCakes.push(cakeStackIncoming);
+          cakeStackScore++;
+          
+          cakeStackPet.y = cakeStackIncoming.y + 50;
+          cakeStackPet.vy = 0;
+          cakeStackPet.onGround = true;
+          cakeStackPet.jumping = false;
+          
+          spawnCakeStackIncoming();
+        }
+      }
+    }
+    
+    // 2. Landing back on the top cake in stack
+    if (cakeStackPet.y <= topCake.y + 50 && cakeStackPet.y >= topCake.y + 38) {
+      const petCenter = cakeStackPet.x + 22;
+      if (petCenter >= topCake.x && petCenter <= topCake.x + topCake.width) {
+        cakeStackPet.y = topCake.y + 50;
+        cakeStackPet.vy = 0;
+        cakeStackPet.onGround = true;
+        cakeStackPet.jumping = false;
+      }
+    }
+  }
+  
+  renderCakeStack();
+  cakeStackLoopId = requestAnimationFrame(updateCakeStackLoop);
+}
+
+function triggerCakeGameOver() {
+  cakeStackActive = false;
+  playCakeStackBeep(147, 'sawtooth', 0.4);
+  
+  const gameOverModal = document.getElementById("cakeGameOverModal");
+  if (gameOverModal) gameOverModal.style.display = "flex";
+  
+  const overMsg = document.getElementById("cakeGameOverMsg");
+  if (overMsg) {
+    overMsg.innerText = state.lang === "en"
+      ? `Great job! You stacked blocks up to ${cakeStackScore} stories! 🧱`
+      : `เก่งมากๆ เลยน้า! วางบล็อกต่อสูงได้ตั้ง ${cakeStackScore} ชั้นแน่ะ! 🧱`;
+  }
+  
+  const coinsReward = Math.min(100, cakeStackScore * 3);
+  const coinRewardEl = document.getElementById("cakeGameCoinReward");
+  if (coinRewardEl) coinRewardEl.innerText = coinsReward;
+}
+
+function renderCakeStack() {
+  const container = document.getElementById("cakeStackContainer");
+  if (!container) return;
+  
+  // Smooth Camera follow: we want the top cake to be around 120px from the bottom
+  const topCake = cakeStackCakes[cakeStackCakes.length - 1];
+  const targetYOffset = Math.max(0, topCake.y - 120);
+  cakeStackYOffset += (targetYOffset - cakeStackYOffset) * 0.1;
+  
+  container.style.transform = `translateY(${cakeStackYOffset}px)`;
+  
+  // Render cakes
+  let cakesHtml = "";
+  
+  // Colors mapped by block level index
+  const blockColors = [
+    { bg: "#fecdd3", border: "#f43f5e", text: "#9f1239" }, // Rose Pink
+    { bg: "#fed7aa", border: "#ea580c", text: "#7c2d12" }, // Orange
+    { bg: "#fef08a", border: "#ca8a04", text: "#713f12" }, // Yellow
+    { bg: "#bbf7d0", border: "#16a34a", text: "#14532d" }, // Green
+    { bg: "#bfdbfe", border: "#2563eb", text: "#1e3a8a" }, // Blue
+    { bg: "#e9d5ff", border: "#9333ea", text: "#581c87" }, // Purple
+    { bg: "#fbcfe8", border: "#db2777", text: "#701a75" }  // Pink
+  ];
+  
+  cakeStackCakes.forEach((cake, index) => {
+    const style = blockColors[index % blockColors.length];
+    cakesHtml += `
+      <div style="position: absolute; bottom: ${cake.y}px; left: ${cake.x}px; width: ${cake.width}px; height: ${cake.height}px; background: linear-gradient(135deg, ${style.bg} 0%, rgba(255,255,255,0.2) 100%); border: 3px solid ${style.border}; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.3); box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; color: ${style.text}; text-shadow: 0 1px 0 rgba(255,255,255,0.5); pointer-events: none; z-index: 2;">
+        ${index + 1}
+      </div>
+    `;
+  });
+  
+  // Render incoming cake (block)
+  if (cakeStackIncoming && cakeStackIncoming.active) {
+    const nextIndex = cakeStackCakes.length;
+    const style = blockColors[nextIndex % blockColors.length];
+    cakesHtml += `
+      <div style="position: absolute; bottom: ${cakeStackIncoming.y}px; left: ${cakeStackIncoming.x}px; width: ${cakeStackIncoming.width}px; height: ${cakeStackIncoming.height}px; background: linear-gradient(135deg, ${style.bg} 0%, rgba(255,255,255,0.2) 100%); border: 3px solid ${style.border}; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.3); box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; color: ${style.text}; text-shadow: 0 1px 0 rgba(255,255,255,0.5); pointer-events: none; z-index: 2;">
+        ${nextIndex + 1}
+      </div>
+    `;
+  }
+  
+  // Render pet
+  let overlaysHtml = "";
+  const petScale = 40 / 110;
+  const appSize = Math.round(52 * petScale);
+  const equipped = getEquippedApparels();
+  
+  equipped.forEach(item => {
+    let defaultTop = -22;
+    if (item.category === "glasses") defaultTop = 8;
+    else if (item.category === "wings") defaultTop = 15;
+    else if (item.category === "outfit") defaultTop = 24;
+    else if (item.category === "top") defaultTop = 24;
+    else if (item.category === "bottom") defaultTop = 40;
+    
+    const topPos = Math.round(defaultTop * petScale);
+    overlaysHtml += `<span style="position:absolute; top:${topPos}px; left:50%; transform:translateX(-50%); width:${appSize}px; height:${appSize}px; display:inline-block;">${getApparelVisual(item.id, appSize)}</span>`;
+  });
+  
+  cakesHtml += `
+    <div id="cakeStackPetEl" style="position: absolute; bottom: ${cakeStackPet.y}px; left: ${cakeStackPet.x}px; width: 44px; height: 44px; z-index: 10; display: flex; align-items: center; justify-content: center; pointer-events: none;">
+      <div style="position:relative; width:40px; height:40px; display:flex; align-items:center; justify-content:center;">
+        ${getPetVisual(40)}
+        ${overlaysHtml}
+      </div>
+    </div>
+  `;
+  
+  container.innerHTML = cakesHtml;
+  
+  // Update header text/stats
+  const countVal = document.getElementById("cakeStackCountVal");
+  if (countVal) countVal.innerText = cakeStackScore;
+  
+  const highVal = document.getElementById("cakeStackHighScoreVal");
+  if (highVal) highVal.innerText = state.cakeStackHighScore || 0;
+  
+  const scoreVal = document.getElementById("cakeStackScoreVal");
+  if (scoreVal) scoreVal.innerText = `คะแนน: ${cakeStackScore}`;
+  
+  const livesContainer = document.getElementById("cakeStackLivesContainer");
+  if (livesContainer) {
+    let hearts = "";
+    for (let i = 0; i < 3; i++) {
+      hearts += i < cakeStackLives ? "❤️ " : "🖤 ";
+    }
+    livesContainer.innerText = hearts;
+  }
+}
+
+function spawnCakeStackEffect(text) {
+  const playfield = document.getElementById("cakeStackPlayfield");
+  if (!playfield) return;
+  
+  const el = document.createElement("div");
+  el.innerText = text;
+  el.style.position = "absolute";
+  el.style.bottom = `${cakeStackPet.y + 45}px`;
+  el.style.left = `${cakeStackPet.x + 22}px`;
+  el.style.transform = "translateX(-50%)";
+  el.style.color = "#facc15";
+  el.style.fontSize = "14px";
+  el.style.fontWeight = "900";
+  el.style.textShadow = "0 2px 4px rgba(0,0,0,0.5)";
+  el.style.zIndex = "100";
+  el.style.pointerEvents = "none";
+  el.style.transition = "transform 0.8s ease-out, opacity 0.8s ease-out";
+  
+  playfield.appendChild(el);
+  
+  requestAnimationFrame(() => {
+    el.style.transform = "translateX(-50%) translateY(-35px)";
+    el.style.opacity = "0";
+  });
+  
+  setTimeout(() => el.remove(), 800);
 }
