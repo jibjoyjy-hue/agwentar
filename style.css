@@ -2873,3 +2873,8 @@ input:checked + .slider:before {
   }
 }
 
+
+
+/* ปีกอยู่ด้านหลังตัวน้อง (น้องตัวมาตรฐาน) */
+.pet-outfit-stack { position: relative; z-index: 1; }
+.pet-apparel-overlay[data-cat="wings"] { z-index: 0; }

@@ -86,9 +86,9 @@ const SCREENS = [
 let state = {
   lang: "th",
   theme: "pastel",
-  petId: "Gwentar",
+  petId: "Bunny",
   petName: "Gwentar",
-  petEmoji: "🐻",
+  petEmoji: "🐰",
   petGender: "male",
   petChosen: false,
   activeScreen: "screen-1",
@@ -904,11 +904,16 @@ function loadGameState() {
       // Migration: fallback for petId in older saves
       if (!state.petId) {
         if (state.petEmoji === "🐻") {
-          state.petId = "Aimee";
+          state.petId = "Bunny";
         } else {
           const match = (typeof PET_TEMPLATES !== "undefined") ? PET_TEMPLATES.find(p => p.emoji === state.petEmoji) : null;
-          state.petId = match ? match.id : "Aimee";
+          state.petId = match ? match.id : "Bunny";
         }
+      }
+      // เอาหมีออกจากเกมแล้ว: เซฟเก่าที่เป็นหมีเปลี่ยนเป็นกระต่าย (ชื่อน้องยังเหมือนเดิม)
+      if (["aimee", "bear", "gwentar"].includes(String(state.petId || "").toLowerCase()) || state.petEmoji === "🐻") {
+        state.petId = "Bunny";
+        state.petEmoji = "🐰";
       }
       // Safeguard nested objects & arrays
       if (parsed.foods) state.foods = { ...state.foods, ...parsed.foods };
@@ -1112,27 +1117,6 @@ const APPAREL_DATABASE = [
   { id: "wing_butterfly", name: "ปีกผีเสื้อแสนหวาน", emoji: "🦋", price: 420, currency: "coins", category: "wings" },
   { id: "wing_jetpack", name: "เป้จรวดเจ็ทแพ็ค", emoji: "🚀", price: 60, currency: "gems", category: "wings" },
 
-  // Full Outfits (ชุดเซ็ตเต็มตัวที่เก็บไว้ - ยกเว้นชุดชมพู กบ ไดโนเสาร์ นางฟ้า)
-  { id: "F1", name: "เจ้าหญิงสีชมพู", emoji: "👗", price: 800, currency: "coins", category: "outfit" },
-  { id: "F2", name: "ราตรีสีน้ำเงิน", emoji: "⛵", price: 700, currency: "coins", category: "outfit" },
-  { id: "F3", name: "ชุดทานตะวัน", emoji: "🌻", price: 900, currency: "coins", category: "outfit" },
-  { id: "F5", name: "ชุดรุ้ง", emoji: "🌈", price: 850, currency: "coins", category: "outfit" },
-  { id: "F8", name: "ชุดผึ้งน้อย", emoji: "🐝", price: 850, currency: "coins", category: "outfit" },
-  { id: "F9", name: "ชุดกระต่ายมิ้นท์", emoji: "🐰", price: 750, currency: "coins", category: "outfit" },
-  { id: "F11", name: "ชุดนักบินอวกาศ", emoji: "👨‍🚀", price: 80, currency: "gems", category: "outfit" },
-  { id: "F12", name: "ชุดโจรสลัดสุดเท่", emoji: "🏴‍☠️", price: 900, currency: "coins", category: "outfit" },
-  { id: "F13", name: "ชุดนางเงือกมรกต", emoji: "🧜‍♀️", price: 950, currency: "coins", category: "outfit" },
-  { id: "F14", name: "ชุดหุ่นยนต์โรโบ", emoji: "🤖", price: 70, currency: "gems", category: "outfit" },
-  { id: "F15", name: "ชุดนางเงือกพาสเทล", emoji: "🧜‍♀️", price: 950, currency: "coins", category: "outfit" },
-  { id: "F16", name: "ชุด Onesie แมวน้อย", emoji: "🐱", price: 700, currency: "coins", category: "outfit" },
-  { id: "F17", name: "ชุด Onesie กระต่ายขาว", emoji: "🐰", price: 750, currency: "coins", category: "outfit" },
-  { id: "F18", name: "ชุด Onesie แพนด้า", emoji: "🐼", price: 800, currency: "coins", category: "outfit" },
-  { id: "F19", name: "ชุด Onesie สิงโตเจ้าป่า", emoji: "🦁", price: 850, currency: "coins", category: "outfit" },
-  { id: "F20", name: "ชุด Onesie หมีสีน้ำตาล", emoji: "🧸", price: 750, currency: "coins", category: "outfit" },
-  { id: "F21", name: "ชุด Onesie ฉลาม", emoji: "🦈", price: 900, currency: "coins", category: "outfit" },
-  { id: "F22", name: "ชุด Onesie ยูนิคอร์น", emoji: "🦄", price: 80, currency: "gems", category: "outfit" },
-  { id: "F24", name: "ชุด Onesie กระรอกน้อย", emoji: "🐿", price: 800, currency: "coins", category: "outfit" },
-  { id: "F25", name: "ชุดผีน้อยบู๋", emoji: "👻", price: 50, currency: "gems", category: "outfit" }
 ];
 
 
@@ -1625,11 +1609,21 @@ function getPetVisual(sizePx = 90) {
     return `<div class="pet-body-main" style="font-size:${finalSize - 6}px; display:inline-block; animation: petEggWobble 2s infinite ease-in-out; cursor:pointer;">🥚</div>`;
   }
 
+  // น้องตัวมาตรฐาน: ลำตัวทรงเดียวกันทุกตัว ชุดจึงพอดีทุกตัว (pets_std.js)
+  let stdKey = (state.petId || "aimee").toLowerCase(); if (stdKey === "gwentar") stdKey = "bear";
+  if (window.hasStandardPet && hasStandardPet(stdKey) && (stdKey === "aimee" || stdKey === "bear")) {
+    const outfit = ""; // ปิดระบบชุดเต็มตัวแล้ว เหลือแต่เครื่องประดับ
+    return `<span class="pet-body-img pet-outfit-stack" style="position:relative; display:inline-block; width:${finalSize}px; height:${finalSize}px; line-height:0;">${getStandardPetSvg(stdKey, finalSize, outfit)}</span>`;
+  }
+
   // ชุดเต็มตัว (F1–F25): สวมทับบนสัตว์เลี้ยงตัวเดิม แทนการเปลี่ยนเป็นรูปหมี
   const fullOutfitId = [state.equippedOutfit, state.equippedTop, state.equippedBottom]
     .find(id => id && /^F\d+$/.test(id));
   if (fullOutfitId) {
-    return `<span class="pet-outfit-stack" style="position:relative; display:inline-block; width:${finalSize}px; height:${finalSize}px; line-height:0;">${getBarePetVisual(finalSize)}${window.getOutfitSvg ? getOutfitSvg(fullOutfitId, finalSize, "wear") : ""}</span>`;
+    // ชุดกับตัวสัตว์อยู่ในกล่องเดียวกัน จึงขยับ/เด้ง/เอียงไปพร้อมกัน
+    const bare = getBarePetVisual(finalSize).replace('class="pet-body-img" style="', 'class="pet-body-inner" style="object-fit:contain; ');
+    let petKey = (state.petId || "aimee").toLowerCase(); if (petKey === "gwentar") petKey = "bear";
+    return `<span class="pet-body-img pet-outfit-stack" style="position:relative; display:inline-block; width:${finalSize}px; height:${finalSize}px; line-height:0;">${bare}${window.getOutfitSvg ? getOutfitSvg(fullOutfitId, finalSize, "wear", petKey) : ""}</span>`;
   }
   return getBarePetVisual(finalSize);
 }
@@ -1751,6 +1745,13 @@ const DEFAULT_APPAREL_OFFSETS = {
 
 // Helper to get default preset for an item
 function getApparelDefaultPreset(itemId, category) {
+  // หมี 2 มิติ (Aimee/Gwentar) ตัวสั้นกว่ารูปเดิม: แว่นอยู่สูงขึ้น ปีกอยู่ต่ำลง
+  const stdBear = ["aimee", "bear", "gwentar"].includes((state.petId || "").toLowerCase());
+  if (stdBear && DEFAULT_APPAREL_OFFSETS[itemId]) {
+    const d = DEFAULT_APPAREL_OFFSETS[itemId];
+    if (category === "glasses") return { ...d, y: itemId === "face_blush" ? 30 : itemId === "ribbon" ? d.y : 22 };
+    if (category === "wings") return { ...d, y: 72, scale: 1.25 };
+  }
   if (DEFAULT_APPAREL_OFFSETS[itemId]) {
     return DEFAULT_APPAREL_OFFSETS[itemId];
   }
@@ -1791,7 +1792,7 @@ function renderDynamicPets() {
       }
       
       const isDragTarget = (state.activeApparel === item.id) ? "active-drag-target" : "";
-      overlaysHtml += `<div class="pet-apparel-overlay ${isDragTarget}" ${offsetStyle}>${getApparelVisual(item.id, apparelSize)}</div>`;
+      overlaysHtml += `<div class="pet-apparel-overlay ${isDragTarget}" data-cat="${item.category}" ${offsetStyle}>${getApparelVisual(item.id, apparelSize)}</div>`;
     });
     
     container.innerHTML = `
@@ -2008,7 +2009,7 @@ function syncUI() {
     infoPet.innerHTML = `
       <div style="position:relative;">
         ${getPetVisual(180)}
-        ${state.activeApparel ? `<span style="position:absolute; top:${topPos}px; left:50%; transform:translateX(-50%); width:${appSize}px; height:${appSize}px; display:inline-block;">${getApparelVisual(state.activeApparel, appSize)}</span>` : ''}
+        ${state.activeApparel && !/^F\d+$/.test(state.activeApparel) && [state.equippedHat, state.equippedGlasses, state.equippedWings].includes(state.activeApparel) ? `<span style="position:absolute; top:${topPos}px; left:50%; transform:translateX(-50%); width:${appSize}px; height:${appSize}px; display:inline-block;">${getApparelVisual(state.activeApparel, appSize)}</span>` : ''}
       </div>
     `;
   }
@@ -2157,7 +2158,6 @@ const PET_TEMPLATES = [
   { id: "Cat", name: "Cat", emoji: "🐱" },
   { id: "Puppy", name: "Puppy", emoji: "🐶" },
   { id: "Penguin", name: "Penguin", emoji: "🐧" },
-  { id: "Bear", name: "Bear", emoji: "🐻" },
   { id: "Panda", name: "Panda", emoji: "🐼" },
   { id: "Fox", name: "Fox", emoji: "🦊" },
   { id: "Chick", name: "Chick", emoji: "🐥" },
@@ -2208,7 +2208,10 @@ function renderSelectPetGrid() {
   grid.innerHTML = PET_TEMPLATES.map(p => {
     const isActive = state.petEmoji === p.emoji || state.petId === p.id;
     const petLower = p.id.toLowerCase();
-    const avatarHtml = `<img src="assets/${petLower}.png?v=9" style="width: 34px; height: 34px; object-fit: contain;" onerror="this.outerHTML='${p.emoji}'">`;
+    const stdPetKey = petLower === "gwentar" ? "bear" : petLower;
+    const avatarHtml = (window.hasStandardPet && (stdPetKey === "aimee" || stdPetKey === "bear"))
+      ? `<span style="display:inline-block; width:34px; height:34px;">${getStandardPetSvg(stdPetKey, 34, "")}</span>` // น้องตัวมาตรฐาน (หมีเป็น 2 มิติ)
+      : `<img src="assets/${petLower}.png?v=9" style="width: 34px; height: 34px; object-fit: contain;" onerror="this.outerHTML='${p.emoji}'">`;
     
     let badgeHtml = "";
     if (state.petChosen) {
@@ -2411,11 +2414,26 @@ function processPetNameWithLevelCode(inputName) {
     cheatMessages.push("👗 ปลดล็อกเสื้อผ้าและเครื่องประดับทั้งหมดในตู้เสื้อผ้า!");
   }
 
+  // 4. allddent: ปลดล็อกชุดทั้งหมด + เลเวลปลดล็อกทุกฟีเจอร์ (25) + เหรียญ 100,000 + เพชร 10,000
+  if (/allddent/i.test(str)) {
+    state.unlockedApparel = APPAREL_DATABASE.map(item => item.id);
+    state.level = Math.max(state.level || 0, 25);
+    state.petChosen = true;
+    state.coins = 100000;
+    state.gems = 10000;
+    str = str.replace(/allddent/ig, "").trim();
+    cheatTriggered = true;
+    cheatMessages.push("👗 ปลดล็อกชุดทั้งหมด");
+    cheatMessages.push(`⭐ เลเวล ${state.level} (ปลดล็อกทุกห้องและทุกฟีเจอร์)`);
+    cheatMessages.push("🪙 เหรียญ 100,000");
+    cheatMessages.push("💎 เพชร 10,000");
+  }
+
   if (cheatTriggered) {
     alert(`🔮 ปลดล็อกรหัสลับสำเร็จ!\n✨ เปลี่ยนชื่อน้องเป็น "${str || state.petName}"\n${cheatMessages.join("\n")} เรียบร้อยแล้วค่ะ! 🌟`);
   }
 
-  state.petName = str || "Blob";
+  state.petName = str || state.petName || "Blob"; // พิมพ์แต่โค้ด = ชื่อเดิมไม่หาย
   saveGameState();
   syncUI();
   

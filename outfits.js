@@ -29,20 +29,24 @@
     return s + c(x, y, r * 0.5, mid);
   };
 
+  // LIMBS = true ตอนสวมบนน้องที่มีรูป: แขนขาของน้องถูกระบายสีตามชุดแล้ว จึงไม่ต้องวาดแขน/ขาแบบตายตัว
+  let LIMBS = false;
+
   // ---------- ชิ้นส่วนเดรส ----------
   const SKIRT = "M36,67 C45,70 55,70 64,67 L79,89 Q72,95 65,91 Q58,97 50,92 Q42,97 35,91 Q28,95 21,89 Z";
   const LONG_SKIRT = "M37,67 C45,70 55,70 63,67 L76,92 Q50,99 24,92 Z";
   const BODICE = "M37,52 Q50,57 63,52 L64,68 Q50,71 36,68 Z";
   const puffs = (fill, stroke) => e(33.5, 55.5, 5.6, 4.6, fill, stroke) + e(66.5, 55.5, 5.6, 4.6, fill, stroke);
-  const legs = (fill, stroke) => p("M41,90 L41,96 Q44,98 47,96 L47,91Z", fill, stroke) + p("M53,91 L53,96 Q56,98 59,96 L59,90Z", fill, stroke);
+  const legs = (fill, stroke) => LIMBS ? "" : p("M41,90 L41,96 Q44,98 47,96 L47,91Z", fill, stroke) + p("M53,91 L53,96 Q56,98 59,96 L59,90Z", fill, stroke);
 
   // ---------- ชิ้นส่วนชุด Onesie ----------
   const ONESIE =
     "M35,51 Q50,56 65,51 L67,80 Q67,88 61,89 L60,95 Q56,98 52,95 L51,89 L49,89 L48,95 Q44,98 40,95 L39,89 Q33,88 33,80 Z";
   const ARM_L = "M35,52 Q27,55 25,66 Q24,71 28,72 Q31,72 32,68 L35,60";
   const ARM_R = "M65,52 Q73,55 75,66 Q76,71 72,72 Q69,72 68,68 L65,60";
-  const onesieBase = (main, line, belly, opts = {}) =>
-    p(ARM_L, main, line) + p(ARM_R, main, line) + p(ONESIE, main, line) +
+  const onesieBase = (main, line, belly, opts = {}) => LIMBS
+    ? (belly ? e(50, 72, 9.5, 11.5, belly, "none") : "") + p("M50,55 L50,66", "none", line, 'opacity=".5"') + c(50, 58, 0.9, line) + c(50, 62, 0.9, line)
+    : p(ARM_L, main, line) + p(ARM_R, main, line) + p(ONESIE, main, line) +
     (belly ? e(50, 72, 9.5, 11.5, belly, "none") : "") +
     (opts.cuffs ? e(27.5, 70.5, 3.6, 2.6, opts.cuffs, line) + e(72.5, 70.5, 3.6, 2.6, opts.cuffs, line) +
       e(44, 95.5, 4.4, 2.2, opts.cuffs, line) + e(56, 95.5, 4.4, 2.2, opts.cuffs, line) : "") +
@@ -142,8 +146,8 @@
 
     // ชุดนักบินอวกาศ
     F11: (u) =>
-      p("M30,55 L28,80 Q28,84 32,84 L35,84 L35,55Z", "#cbd5e1", "#475569") +
-      p("M70,55 L72,80 Q72,84 68,84 L65,84 L65,55Z", "#cbd5e1", "#475569") +
+      (LIMBS ? "" : p("M30,55 L28,80 Q28,84 32,84 L35,84 L35,55Z", "#cbd5e1", "#475569") +
+      p("M70,55 L72,80 Q72,84 68,84 L65,84 L65,55Z", "#cbd5e1", "#475569")) +
       onesieBase("#f8fafc", "#475569", null, { cuffs: "#f97316" }) +
       p("M36,56 Q50,60 64,56 L64,60 Q50,64 36,60Z", "#3b82f6", "#475569") +
       `<rect x="42" y="66" width="16" height="10" rx="2" fill="#e2e8f0" stroke="#475569" stroke-width="1"/>` +
@@ -156,9 +160,9 @@
     // ชุดโจรสลัดสุดเท่
     F12: (u) =>
       `<defs><clipPath id="${u}s"><path d="M34,51 Q50,56 66,51 L67,76 L33,76Z"/></clipPath></defs>` +
-      p(ARM_L, "#fff", "#334155") + p(ARM_R, "#fff", "#334155") +
+      (LIMBS ? "" : p(ARM_L, "#fff", "#334155") + p(ARM_R, "#fff", "#334155") +
       p("M27,58 L33,57 M26,63 L33,62 M25,68 L32,67 M73,58 L67,57 M74,63 L67,62 M75,68 L68,67", "none", "#dc2626", 'stroke-width="1.8"') +
-      p("M33,76 L67,76 L66,88 L60,89 L59,96 L52,96 L50,89 L48,96 L41,96 L40,89 L34,88Z", "#1f2937", "#0f172a") +
+      p("M33,76 L67,76 L66,88 L60,89 L59,96 L52,96 L50,89 L48,96 L41,96 L40,89 L34,88Z", "#1f2937", "#0f172a")) +
       p("M34,51 Q50,56 66,51 L67,76 L33,76Z", "#fff", "#334155") +
       `<g clip-path="url(#${u}s)">${[58, 64, 70].map((y) => `<rect x="0" y="${y}" width="100" height="2.6" fill="#dc2626"/>`).join("")}</g>` +
       p("M34,51 L44,54 L42,76 L33,76Z", "#7c2d12", "#431407") + p("M66,51 L56,54 L58,76 L67,76Z", "#7c2d12", "#431407") +
@@ -176,12 +180,12 @@
     // ชุดหุ่นยนต์โรโบ
     F14: (u) =>
       `<defs>${grad(u + "a", "#e2e8f0", "#94a3b8")}</defs>` +
-      p("M33,55 L25,57 L24,72 L30,72 L31,61 L33,60Z", "#94a3b8", "#334155") +
+      (LIMBS ? "" :       p("M33,55 L25,57 L24,72 L30,72 L31,61 L33,60Z", "#94a3b8", "#334155") +
       p("M67,55 L75,57 L76,72 L70,72 L69,61 L67,60Z", "#94a3b8", "#334155") +
       p("M23,72 L31,72 L31,76 L23,76Z M69,72 L77,72 L77,76 L69,76Z", "#64748b", "#334155") +
       `<rect x="40" y="82" width="7" height="12" rx="1" fill="#94a3b8" stroke="#334155" stroke-width="1.2"/>` +
       `<rect x="53" y="82" width="7" height="12" rx="1" fill="#94a3b8" stroke="#334155" stroke-width="1.2"/>` +
-      `<rect x="38" y="93" width="10" height="4" rx="1" fill="#475569"/><rect x="52" y="93" width="10" height="4" rx="1" fill="#475569"/>` +
+      `<rect x="38" y="93" width="10" height="4" rx="1" fill="#475569"/><rect x="52" y="93" width="10" height="4" rx="1" fill="#475569"/>`) +
       `<rect x="33" y="51" width="34" height="33" rx="5" fill="url(#${u}a)" stroke="#334155" stroke-width="1.4"/>` +
       `<rect x="39" y="57" width="22" height="14" rx="2" fill="#0f172a" stroke="#334155" stroke-width="1"/>` +
       p("M41,64 L45,64 L47,60 L50,68 L52,62 L54,64 L59,64", "none", "#22d3ee", 'stroke-width="1.2"') +
@@ -280,13 +284,141 @@
         : c(33, 9, 2.4, "#fff", "#cbd5e1") + c(37.5, 7, 2, "#fff", "#cbd5e1") + c(37, 11.5, 1.8, "#fdf2f8", "#cbd5e1"));
   }
 
+  // ---------- ขนาดตัวของน้องแต่ละตัว (วัดจากรูปจริง หน่วย 0–100 ของกรอบรูป) ----------
+  // ตัว: neck = แนวคอ, bottom = ปลายเท้า, cx = กึ่งกลางลำตัว, w = ความกว้างลำตัวรวมแขน
+  // หัว: top = บนสุดของหัว (ไม่นับหู/โบว์), hx = กึ่งกลางหัว, hw = ความกว้างหัว (ไม่นับหู)
+  const PET_FIT = {
+    aimee:    { neck: 46, bottom: 76, cx: 53, w: 44, top: 6,  hx: 52, hw: 44 },
+    blob:     { neck: 56, bottom: 87, cx: 55, w: 70, top: 13, hx: 55, hw: 62 },
+    bunny:    { neck: 57, bottom: 97, cx: 55, w: 44, top: 6,  hx: 57, hw: 52 },
+    cat:      { neck: 52, bottom: 97, cx: 35, w: 54, top: 8,  hx: 36, hw: 56 },
+    puppy:    { neck: 55, bottom: 98, cx: 54, w: 52, top: 6,  hx: 57, hw: 52 },
+    penguin:  { neck: 47, bottom: 93, cx: 52, w: 66, top: 6,  hx: 54, hw: 58 },
+    bear:     { neck: 52, bottom: 91, cx: 50, w: 46, top: 12, hx: 47, hw: 46 },
+    panda:    { neck: 52, bottom: 97, cx: 49, w: 62, top: 4,  hx: 50, hw: 64 },
+    fox:      { neck: 55, bottom: 99, cx: 37, w: 56, top: 8,  hx: 38, hw: 58 },
+    chick:    { neck: 56, bottom: 92, cx: 57, w: 70, top: 12, hx: 50, hw: 60 },
+    otter:    { neck: 52, bottom: 96, cx: 52, w: 48, top: 5,  hx: 52, hw: 52 },
+    hamster:  { neck: 55, bottom: 92, cx: 47, w: 52, top: 10, hx: 47, hw: 62 },
+    dino:     { neck: 52, bottom: 97, cx: 35, w: 48, top: 6,  hx: 30, hw: 52 },
+    pig:      { neck: 55, bottom: 97, cx: 47, w: 64, top: 5,  hx: 47, hw: 64 },
+    capybara: { neck: 50, bottom: 96, cx: 48, w: 66, top: 6,  hx: 46, hw: 52 },
+    parrot:   { neck: 47, bottom: 95, cx: 48, w: 58, top: 6,  hx: 45, hw: 46 },
+    giraffe:  { neck: 52, bottom: 93, cx: 52, w: 52, top: 15, hx: 48, hw: 46 },
+    elephant: { neck: 53, bottom: 93, cx: 52, w: 54, top: 7,  hx: 52, hw: 56 },
+  };
+  const DEFAULT_FIT = { neck: 51, bottom: 96, cx: 50, w: 52, top: 6, hx: 50, hw: 48 };
+  // ชุดออกแบบไว้ที่: คอ y51 เท้า y96 กว้างรวมแขน 52 (x24–76) กึ่งกลาง x50 / ที่คาดหัวพอดีหัวกว้าง 48 วางที่ y≈10
+  function fitTransforms(petKey) {
+    const f = PET_FIT[petKey] || DEFAULT_FIT;
+    const sy = (f.bottom - f.neck) / 45;
+    const sx = Math.max(sy * 0.7, Math.min(sy * 1.8, f.w / 52));
+    const body = `matrix(${sx.toFixed(3)} 0 0 ${sy.toFixed(3)} ${(f.cx - 50 * sx).toFixed(2)} ${(f.neck - 51 * sy).toFixed(2)})`;
+    const hs = f.hw / 48;
+    const head = `matrix(${hs.toFixed(3)} 0 0 ${hs.toFixed(3)} ${(f.hx - 50 * hs).toFixed(2)} ${(f.top + 4 - 10 * hs).toFixed(2)})`;
+    // ชุดคลุมทั้งตัว (ผี): คลุมตั้งแต่เหนือหัวถึงเท้า กว้างเท่าส่วนที่กว้างที่สุดของน้อง
+    const wsx = (Math.max(f.w, f.hw) * 1.12) / 68, wsy = (f.bottom - f.top + 8) / 94, wx = (f.cx + f.hx) / 2;
+    const whole = `matrix(${wsx.toFixed(3)} 0 0 ${wsy.toFixed(3)} ${(wx - 50 * wsx).toFixed(2)} ${(f.top - 8 - 2 * wsy).toFixed(2)})`;
+    return { body, head, whole };
+  }
+
+  // ---------- ชุดคลุมแขน/ขาแค่ไหน ----------
+  // sleeve: "short" = แขนสั้น (เห็นแขนน้องช่วงล่าง), "long" = แขนยาว (ไม่เห็นแขน เหลือแค่มือ), null = ไม่มีแขน
+  // legs:   "short" = ขาสั้น, "long" = ขายาว (ไม่เห็นขา), null = ไม่คลุมขา (เช่นใส่กระโปรง)
+  // feet:   สีรองเท้า/ถุงเท้า หรือ null = เท้าเปล่า
+  const COVER = {
+    F1:  { sleeve: "short", sc: "#f9a8d4", legs: null,   lc: null,      feet: "#ec4899", line: "#be185d" },
+    F2:  { sleeve: null,    sc: null,      legs: null,   lc: null,      feet: "#93c5fd", line: "#1e3a8a" },
+    F3:  { sleeve: "short", sc: "#fef9c3", legs: null,   lc: null,      feet: "#b45309", line: "#a16207" },
+    F5:  { sleeve: "short", sc: "#ffffff", legs: null,   lc: null,      feet: "#a78bfa", line: "#6b21a8" },
+    F8:  { sleeve: "short", sc: "#fde047", legs: null,   lc: null,      feet: "#111827", line: "#111827" },
+    F9:  { sleeve: "short", sc: "#d1fae5", legs: null,   lc: null,      feet: "#f9a8d4", line: "#047857" },
+    F11: { sleeve: "long",  sc: "#f8fafc", legs: "long", lc: "#f8fafc", feet: "#f97316", line: "#475569" },
+    F12: { sleeve: "long",  sc: "#ffffff", legs: "long", lc: "#1f2937", feet: "#78350f", line: "#334155", stripes: "#dc2626" },
+    F13: { sleeve: null,    sc: null,      legs: "long", lc: "#10b981", feet: "#059669", line: "#065f46" },
+    F14: { sleeve: "long",  sc: "#94a3b8", legs: "long", lc: "#94a3b8", feet: "#475569", line: "#334155" },
+    F15: { sleeve: null,    sc: null,      legs: "long", lc: "#e9a8e0", feet: "#c4b5fd", line: "#7c3aed" },
+    F16: { sleeve: "long",  sc: "#fdba74", legs: "long", lc: "#fdba74", feet: "#fff7ed", line: "#c2410c" },
+    F17: { sleeve: "long",  sc: "#f8fafc", legs: "long", lc: "#f8fafc", feet: "#fbcfe8", line: "#94a3b8" },
+    F18: { sleeve: "long",  sc: "#1f2937", legs: "long", lc: "#1f2937", feet: "#1f2937", line: "#0f172a" },
+    F19: { sleeve: "long",  sc: "#fbbf24", legs: "long", lc: "#fbbf24", feet: "#fef3c7", line: "#a16207" },
+    F20: { sleeve: "long",  sc: "#a16207", legs: "long", lc: "#a16207", feet: "#fde68a", line: "#451a03" },
+    F21: { sleeve: "long",  sc: "#60a5fa", legs: "long", lc: "#60a5fa", feet: "#f8fafc", line: "#1e40af" },
+    F22: { sleeve: "long",  sc: "#fdf2f8", legs: "long", lc: "#fdf2f8", feet: "#c4b5fd", line: "#db2777" },
+    F24: { sleeve: "long",  sc: "#ea580c", legs: "long", lc: "#ea580c", feet: "#fed7aa", line: "#7c2d12" },
+  };
+
+  // ชุดคลุมแขน/ขาของน้องเฉพาะส่วนที่ชุดนั้นคลุมจริง โดยใช้รูปน้องเป็นแม่พิมพ์ (รูปทรงพอดีตัวทุกตัว)
+  // แขนสั้น = คลุมแค่ไหล่กับต้นแขน, แขนยาว = คลุมถึงข้อมือ, กระโปรง = ไม่คลุมขา
+  function limbLayer(u, id, petKey) {
+    const f = PET_FIT[petKey], C = COVER[id];
+    if (!f || !C) return "";
+    const img = `<image href="assets/${petKey}.png?v=9" x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>`;
+    const x0 = f.cx - f.w / 2 - 4, w = f.w + 8;
+    const top = f.neck + 1.5, span = f.bottom - f.neck;
+    const hip = f.neck + 0.66 * span, foot = f.bottom - 0.1 * span;
+    const bands = []; // [y1, y2, สี, มีขอบปลาย]
+    if (C.sleeve === "short") bands.push([top, top + 0.32 * (hip - top), C.sc, true]);
+    if (C.sleeve === "long") bands.push([top, hip - 0.1 * (hip - top), C.sc, true]);
+    if (C.legs === "short") bands.push([hip - 1, hip + 0.4 * (foot - hip), C.lc, true]);
+    if (C.legs === "long") bands.push([hip - 1, foot + 0.3, C.lc, false]);
+    if (C.feet) bands.push([foot, 110, C.feet, false]);
+    if (!bands.length) return "";
+    let fills = "", cuffs = "";
+    for (const [y1, y2, col, cuff] of bands) {
+      fills += `<rect x="0" y="${y1.toFixed(1)}" width="100" height="${(y2 - y1).toFixed(1)}" fill="${col}"/>`;
+      if (col === C.sc && C.stripes) for (let y = y1 + 4; y < y2 - 1; y += 5) fills += `<rect x="0" y="${y.toFixed(1)}" width="100" height="1.6" fill="${C.stripes}"/>`;
+      if (cuff && y2 < 100) cuffs += `<rect x="0" y="${(y2 - 1.6).toFixed(1)}" width="100" height="1.6" fill="${C.line}" opacity=".85"/>`;
+    }
+    fills += cuffs + `<rect x="0" y="${top}" width="100" height="70" fill="url(#${u}sh)"/>`;
+    // ส่วนที่ถูกคลุม (ใช้ทำเส้นขอบเฉพาะบนผ้า)
+    const covered = bands.map(([y1, y2]) => `<rect x="-10" y="${y1.toFixed(1)}" width="120" height="${(y2 - y1).toFixed(1)}"/>`).join("");
+    return `<defs>` +
+      `<mask id="${u}m" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">${img}</mask>` +
+      `<clipPath id="${u}lc">${covered}</clipPath>` +
+      `<linearGradient id="${u}fg" gradientUnits="userSpaceOnUse" x1="${(x0 - 3).toFixed(1)}" y1="0" x2="${(x0 + w + 3).toFixed(1)}" y2="0">` +
+      `<stop offset="0" stop-color="#000"/><stop offset="${(6 / (w + 6)).toFixed(3)}" stop-color="#fff"/>` +
+      `<stop offset="${(1 - 6 / (w + 6)).toFixed(3)}" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>` +
+      `<mask id="${u}fm" maskUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="130"><rect x="-10" y="-10" width="120" height="130" fill="url(#${u}fg)"/></mask>` +
+      `<linearGradient id="${u}sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".12"/></linearGradient>` +
+      `<filter id="${u}ed" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">` +
+      `<feMorphology in="SourceAlpha" operator="erode" radius="0.9" result="er"/>` +
+      `<feComposite in="SourceAlpha" in2="er" operator="out" result="rim"/>` +
+      `<feFlood flood-color="${C.line}"/><feComposite in2="rim" operator="in"/></filter>` +
+      `</defs>` +
+      `<g clip-path="url(#${u}lc)"><g mask="url(#${u}fm)"><g mask="url(#${u}m)">${fills}</g><g filter="url(#${u}ed)">${img}</g></g></g>`;
+  }
+
   let uid = 0;
-  // mode: "wear" = กรอบเต็มเท่ารูปสัตว์, "icon" = ไอคอนในร้านค้า
-  window.getOutfitSvg = function (id, sizePx, mode = "wear") {
+  // mode: "wear" = กรอบเต็มเท่ารูปสัตว์ (ปรับให้พอดีตัว petKey), "icon" = ไอคอนในร้านค้า
+  window.getOutfitSvg = function (id, sizePx, mode = "wear", petKey = "") {
     const draw = OUTFITS[id];
     if (!draw) return "";
     const u = "of" + id + "_" + uid++;
     let vb = "0 0 100 100", body = draw(u);
+    if (mode === "wear") {
+      const t = fitTransforms(petKey);
+      // วิธีใหม่: ตัดชุดตามสัดส่วนจริงของน้องตัวนั้น (outfits_fit.js)
+      const fitted = id !== "F25" && window.getFittedOutfitBody ? window.getFittedOutfitBody(u, id, petKey) : null;
+      if (fitted) {
+        body = fitted +
+          `<defs><clipPath id="${u}wh"><rect x="-20" y="-40" width="140" height="70"/></clipPath></defs>` +
+          `<g transform="${t.head}"><g clip-path="url(#${u}wh)">${draw(u + "h")}</g></g>`;
+        const style = `position:absolute; left:0; top:0; width:${sizePx}px; height:${sizePx}px; overflow:visible; pointer-events:none;`;
+        return `<svg viewBox="0 0 100 100" class="pet-outfit-svg" style="${style}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${body}</svg>`;
+      }
+      const limbs = id === "F25" ? "" : limbLayer(u, id, petKey);
+      LIMBS = !!limbs;
+      try {
+        body = id === "F25"
+          ? `<g transform="${t.whole}">${body}</g>`
+          : limbs +
+            `<defs><clipPath id="${u}wb"><rect x="-20" y="30" width="140" height="90"/></clipPath>` +
+            `<clipPath id="${u}wh"><rect x="-20" y="-40" width="140" height="70"/></clipPath></defs>` +
+            `<g transform="${t.body}"><g clip-path="url(#${u}wb)">${draw(u + "b")}</g></g>` +
+            `<g transform="${t.head}"><g clip-path="url(#${u}wh)">${draw(u + "h")}</g></g>`;
+      } finally { LIMBS = false; }
+    }
     if (mode === "icon" && id !== "F25") {
       // ไอคอน: ยกเครื่องประดับหัวลงมาไว้เหนือชุด ไม่ให้มีช่องว่างตรงหน้า
       vb = "12 10 76 90";
@@ -300,5 +432,7 @@
       : `position:absolute; left:0; top:0; width:${sizePx}px; height:${sizePx}px; overflow:visible; pointer-events:none; filter:drop-shadow(0 2px 3px rgba(0,0,0,.15));`;
     return `<svg viewBox="${vb}" class="pet-outfit-svg" style="${style}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${body}</svg>`;
   };
+  // ให้น้องตัวมาตรฐาน (pets_std.js) เรียกวาดชุดแบบเต็มตัวได้
+  window.__outfitDraw = (id, u) => (OUTFITS[id] ? OUTFITS[id](u) : "");
   window.hasOutfitSvg = (id) => !!OUTFITS[id];
 })();
