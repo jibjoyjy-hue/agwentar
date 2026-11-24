@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Link to stylesheet -->
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 
@@ -38,6 +38,7 @@
             </div>
             
             <div class="header-actions">
+              <button class="premium-btn" onclick="openPremiumModal()" title="สมาชิกพรีเมียม" aria-label="สมาชิกพรีเมียม">👑</button>
               <button class="gift-noti-btn" onclick="nav('screen-23')">🎁</button>
               <button class="gear-settings-btn" onclick="nav('screen-22')">⚙️</button>
             </div>
@@ -1167,7 +1168,12 @@
                 <span class="menu-item-label">เชิญเพื่อน</span>
                 <span class="menu-item-arrow">▶</span>
               </div>
-              <div class="menu-item-row" onclick="triggerMenuAction('แลกโค้ด')">
+              <div class="menu-item-row premium-menu-row" onclick="openPremiumModal()">
+                <span class="menu-item-icon">👑</span>
+                <span class="menu-item-label">สมัครสมาชิกพรีเมียม</span>
+                <span class="menu-item-arrow">▶</span>
+              </div>
+              <div class="menu-item-row" onclick="openRedeemCode()">
                 <span class="menu-item-icon">🎫</span>
                 <span class="menu-item-label">แลกโค้ด</span>
                 <span class="menu-item-arrow">▶</span>
@@ -1256,6 +1262,13 @@
     </div><!-- End Mobile Screen Emulator -->
     
   <!-- Bedtime Storybook Modal (นิทานฮีลใจ & อ่านหนังสือก่อนนอน) -->
+  <div id="premiumModal" class="premium-modal" style="display: none;" onclick="if (event.target === this) closePremiumModal()">
+    <div class="premium-card" role="dialog" aria-label="สมาชิกพรีเมียม">
+      <button type="button" class="premium-close" onclick="closePremiumModal()" aria-label="ปิด">✕</button>
+      <div id="premiumModalBody"></div>
+    </div>
+  </div>
+
   <div id="bedtimeStoryModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); z-index: 999; align-items: center; justify-content: center; padding: 20px;">
     <div style="width: 100%; max-width: 340px; background: linear-gradient(135deg, #1e1b4b 0%, #311b92 100%); color: #ffffff; border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.25); box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: flex; flex-direction: column; gap: 12px; position: relative;">
       
@@ -1362,6 +1375,7 @@
   <script src="outfits.js?v=9"></script>
   <script src="outfits_fit.js?v=6"></script>
   <script src="pets_std.js?v=5"></script>
-  <script src="app.js?v=51"></script>
+  <script src="premium.js?v=4"></script>
+  <script src="app.js?v=52"></script>
 </body>
 </html>

@@ -1617,8 +1617,7 @@ function getPetVisual(sizePx = 90) {
   }
 
   // ชุดเต็มตัว (F1–F25): สวมทับบนสัตว์เลี้ยงตัวเดิม แทนการเปลี่ยนเป็นรูปหมี
-  const fullOutfitId = [state.equippedOutfit, state.equippedTop, state.equippedBottom]
-    .find(id => id && /^F\d+$/.test(id));
+  const fullOutfitId = ""; // เอาระบบชุดเต็มตัวออกแล้ว
   if (fullOutfitId) {
     // ชุดกับตัวสัตว์อยู่ในกล่องเดียวกัน จึงขยับ/เด้ง/เอียงไปพร้อมกัน
     const bare = getBarePetVisual(finalSize).replace('class="pet-body-img" style="', 'class="pet-body-inner" style="object-fit:contain; ');
