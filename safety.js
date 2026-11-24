@@ -24,9 +24,12 @@ function safetyHasRisk(text) {
 // ---------- หน้าตา ----------
 (function injectSafetyStyles() {
   const css = `
-  .sf-fab { position: fixed; left: 12px; bottom: 84px; z-index: 900; border: none; border-radius: 999px;
-    padding: 8px 12px; font: 700 12px/1.2 inherit; font-family: inherit; color: #1e3a8a; background: #dbeafe;
-    box-shadow: 0 4px 14px rgba(30, 58, 138, .25); cursor: pointer; }
+  .sf-head-btn { border: none; border-radius: 999px; padding: 6px 10px; font: 700 12px/1 inherit; font-family: inherit;
+    color: #1e3a8a; background: #dbeafe; cursor: pointer; white-space: nowrap; }
+  .sf-fab { position: fixed; z-index: 900; width: 38px; height: 38px; border: none; border-radius: 50%;
+    top: calc((100vh - var(--app-h, 100vh)) / 2 + env(safe-area-inset-top, 0px) + 12px);
+    right: calc((100vw - var(--app-w, 100vw)) / 2 + 12px);
+    font-size: 18px; background: #dbeafe; box-shadow: 0 4px 14px rgba(30, 58, 138, .25); cursor: pointer; }
   .sf-overlay { position: fixed; inset: 0; z-index: 3000; display: none; align-items: center; justify-content: center;
     background: rgba(15, 23, 42, .6); backdrop-filter: blur(6px); padding: 16px; }
   .sf-overlay.is-open { display: flex; }
@@ -150,16 +153,33 @@ function startSafetyBreathing() {
 }
 
 // ปุ่ม "ฉันไม่โอเค" กดได้ทุกหน้า
+// หน้าที่มีแถบหัวแอป: ปุ่มอยู่ในแถบหัว / หน้าอื่น: ปุ่มกลมเล็กมุมขวาบน
 document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("safetyFab")) return;
-  const b = document.createElement("button");
-  b.type = "button";
-  b.id = "safetyFab";
-  b.className = "sf-fab";
-  b.textContent = "💙 ฉันไม่โอเค";
-  b.setAttribute("aria-label", "ฉันเครียดหรือไม่โอเค เปิดหน้าช่วยเหลือ");
-  b.addEventListener("click", () => openSafetyHelp("button"));
-  document.body.appendChild(b);
+  const open = () => openSafetyHelp("button");
+  const actions = document.querySelector("#appHeader .header-actions");
+  if (actions) {
+    const hb = document.createElement("button");
+    hb.type = "button";
+    hb.className = "sf-head-btn";
+    hb.textContent = "💙 ไม่โอเค";
+    hb.setAttribute("aria-label", "ฉันเครียดหรือไม่โอเค เปิดหน้าช่วยเหลือ");
+    hb.addEventListener("click", open);
+    actions.insertBefore(hb, actions.firstChild);
+  }
+  const fab = document.createElement("button");
+  fab.type = "button";
+  fab.id = "safetyFab";
+  fab.className = "sf-fab";
+  fab.textContent = "💙";
+  fab.title = "ฉันไม่โอเค";
+  fab.setAttribute("aria-label", "ฉันเครียดหรือไม่โอเค เปิดหน้าช่วยเหลือ");
+  fab.addEventListener("click", open);
+  document.body.appendChild(fab);
+  const header = document.getElementById("appHeader");
+  const sync = () => { fab.style.display = header && header.style.display !== "none" && actions ? "none" : ""; };
+  sync();
+  if (header) new MutationObserver(sync).observe(header, { attributes: true, attributeFilter: ["style"] });
 });
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeSafetyHelp();
