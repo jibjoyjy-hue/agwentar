@@ -1,58 +1,22 @@
-// AI (Gemini) เรียกผ่านเซิร์ฟเวอร์ตัวกลาง (ai-proxy/) เพื่อไม่ให้ API key อยู่ในหน้าเว็บ
+// AI เรียกผ่าน Cloudflare Worker (ai-proxy/) เท่านั้น
+// system prompt, การตรวจคำเสี่ยง และการจำกัดจำนวนข้อความอยู่ฝั่ง Worker เว็บแก้ไม่ได้
 const AI_PROXY_URL = "https://agwentar-ai.jibjoyjy.workers.dev";
 
-// ผู้ใช้ใส่ Gemini API key ของตัวเองในแอป (เก็บในเครื่องผู้ใช้เท่านั้น ไม่ส่งไปที่อื่นนอกจาก Google)
-const AI_KEY_STORE = "agwentar_gemini_key";
-function getUserAiKey() {
-  try { return (localStorage.getItem(AI_KEY_STORE) || "").trim(); } catch (e) { return ""; }
-}
-function setUserAiKey(k) {
-  try { k ? localStorage.setItem(AI_KEY_STORE, k.trim()) : localStorage.removeItem(AI_KEY_STORE); } catch (e) {}
-}
-function aiUrl(model) {
-  return getUserAiKey()
-    ? `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`
-    : `${AI_PROXY_URL}/v1beta/models/${model}:generateContent`;
-}
-function aiHeaders() {
-  const h = { "Content-Type": "application/json" };
-  const k = getUserAiKey();
-  if (k) h["x-goog-api-key"] = k;
-  return h;
-}
-function showAiKeyPrompt(note) {
-  const container = document.getElementById("chatContainer");
-  if (!container) return;
-  const old = document.getElementById("aiKeyPrompt");
-  if (old) old.remove();
-  const has = !!getUserAiKey();
-  const b = document.createElement("div");
-  b.className = "chat-bubble bot ai-key-prompt";
-  b.id = "aiKeyPrompt";
-  b.innerHTML =
-    (note ? `<div class="ai-key-note">${note}</div>` : "") +
-    `<div>🔑 ใส่ Gemini API key ของคุณเพื่อคุยกับเกวนทาร์</div>` +
-    `<div class="ai-key-help">ขอ key ฟรีได้ที่ <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> · key จะเก็บไว้ในเครื่องนี้เท่านั้น</div>` +
-    `<div class="ai-key-row"><input type="password" id="aiKeyInput" class="chat-text-input" placeholder="วาง API key ที่นี่" autocomplete="off">` +
-    `<button type="button" class="chat-send-btn" id="aiKeySave" title="บันทึก">✓</button></div>` +
-    (has ? `<button type="button" class="ai-key-remove" id="aiKeyRemove">ลบ key ที่บันทึกไว้</button>` : "");
-  container.appendChild(b);
-  container.scrollTop = container.scrollHeight;
-  const inp = b.querySelector("#aiKeyInput");
-  const save = () => {
-    const v = inp.value.trim();
-    if (!v) { inp.focus(); return; }
-    setUserAiKey(v);
-    b.innerHTML = "✅ บันทึก API key แล้ว พิมพ์คุยได้เลยค่ะ";
-    b.removeAttribute("id");
-    const ci = document.getElementById("chatInput");
-    if (ci) ci.focus();
-  };
-  b.querySelector("#aiKeySave").addEventListener("click", save);
-  inp.addEventListener("keypress", (e) => { if (e.key === "Enter") save(); });
-  const rm = b.querySelector("#aiKeyRemove");
-  if (rm) rm.addEventListener("click", () => { setUserAiKey(""); showAiKeyPrompt("ลบ key แล้ว"); });
-  inp.focus();
+// ลบ API key ที่เคยให้ผู้ใช้ใส่ไว้ในเวอร์ชันก่อน (ไม่ใช้แล้ว)
+try { localStorage.removeItem("agwentar_gemini_key"); } catch (e) {}
+
+// messages: [{ role: "user" | "model", text }]  →  { reply, crisis }
+async function aiChat(messages) {
+  const r = await fetch(`${AI_PROXY_URL}/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ lang: state.lang === "en" ? "en" : "th", messages }),
+  });
+  if (r.status === 429) {
+    const e = new Error("daily limit"); e.code = "limit"; throw e;
+  }
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
 }
 
 // GWENTAR WELLNESS APP - 23 SCREENS ROUTER, SCROLLABLE TABS & DYNAMIC PETS
@@ -3398,7 +3362,6 @@ async function sendChatMessage() {
   const input = document.getElementById("chatInput");
   const text = input.value.trim();
   if (!text) return;
-  if (!getUserAiKey()) { showAiKeyPrompt(); return; }
   
   input.value = "";
   isAiThinking = true;
@@ -3419,89 +3382,38 @@ async function sendChatMessage() {
   container.appendChild(botBubble);
   container.scrollTop = container.scrollHeight;
 
-  // Add user message to conversation history
-  chatHistory.push({ role: "user", parts: [{ text: text }] });
+  // สัญญาณอันตราย: ไม่ส่งข้อความออกจากเครื่อง พาไปหน้าขอความช่วยเหลือ
+  if (typeof safetyHasRisk === "function" && safetyHasRisk(text)) {
+    botBubble.innerText = "เกวนทาร์ห่วงเธอมากนะ เรื่องนี้สำคัญเกินกว่าที่ AI จะช่วยได้คนเดียว ลองโทร 1323 หรือ 1387 หรือบอกผู้ใหญ่ที่ไว้ใจตอนนี้เลยนะ 💙";
+    container.scrollTop = container.scrollHeight;
+    isAiThinking = false;
+    openSafetyHelp("risk");
+    return;
+  }
+
+  chatHistory.push({ role: "user", text });
   cleanChatHistory();
 
   try {
-    const models = [
-      "gemini-3.1-flash-lite"
-    ];
-
-    // Gwentar System Instruction (AI Companion Personality)
-    const systemInstruction = state.lang === "en"
-      ? `You are an AI companion named Gwentar, a warm, supportive mental wellness friend. Listen to problems, comfort the user, and never judge them. Keep your answers brief (2-3 sentences max so it fits mobile screens). Always write complete, polished sentences. Never append any medical disclaimers, warnings, or emergency helpline numbers to your response under any circumstances. Reply in English.`
-      : `คุณคือ AI เพื่อนสนิทดูแลและบำบัดใจที่ชื่อ Gwentar (เกวนทาร์) คอยรับฟังปัญหาและให้กำลังใจ ตอบด้วยน้ำเสียงอบอุ่น เป็นกันเอง ปลอบโยน และห้ามตัดสินผู้ใช้เด็ดขาด พยายามตอบคำตอบสั้นๆ (ประมาณ 2-3 ประโยคเพื่อให้อ่านง่ายบนโทรศัพท์) และต้องเขียนประโยคให้จบสมบูรณ์เสมอ ห้ามพิมพ์ค้างหรือตัดจบประโยคกลางคันเด็ดขาด ห้ามใส่คำเตือนทางการแพทย์ คำแนะนำเรื่องสุขภาพ คำเตือนให้ไปพบแพทย์ หรือการแนะนำเบอร์โทรสายด่วนสุขภาพจิตใดๆ ทั้งสิ้นไว้ที่ท้ายประโยคเด็ดขาด`;
-
-    let response = null;
-    let lastError = null;
-
-    for (const model of models) {
-      try {
-        const url = aiUrl(model);
-        response = await fetch(url, {
-          method: "POST",
-          headers: aiHeaders(),
-          body: JSON.stringify({
-            contents: chatHistory,
-            system_instruction: {
-              parts: [{ text: systemInstruction }]
-            },
-            generationConfig: {
-              maxOutputTokens: 800,
-              temperature: 0.7
-            }
-          }),
-        });
-
-        if (response.ok) {
-          break; // Successfully got a response
-        } else {
-          let errMsg = `HTTP ${response.status}`;
-          try {
-            const errJson = await response.json();
-            if (errJson.error && errJson.error.message) {
-              errMsg = errJson.error.message;
-            }
-          } catch (e) {}
-          lastError = new Error(`${model} - ${errMsg}`);
-        }
-      } catch (err) {
-        lastError = err;
-      }
-    }
-
-    if (!response || !response.ok) {
-      throw lastError || new Error("เซิร์ฟเวอร์ AI ของ Google ขัดข้องทุกระบบ");
-    }
-    
-    const data = await response.json();
-    let replyText = "";
-    if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
-      replyText = data.candidates[0].content.parts[0].text.trim();
-      // Add bot reply to conversation history
-      chatHistory.push({ role: "model", parts: [{ text: replyText }] });
+    const data = await aiChat(chatHistory);
+    let replyText = (data && data.reply) || "";
+    if (replyText) {
+      chatHistory.push({ role: "model", text: replyText });
       cleanChatHistory();
     } else {
-      replyText = "⚠️ เกิดข้อผิดพลาดในการประมวลผลคำตอบจาก AI หรือระบบความปลอดภัยปฏิเสธคำตอบ กรุณาลองพิมพ์ใหม่อีกครั้งนะคะ 🥺";
+      chatHistory.pop();
+      replyText = "เกวนทาร์ตอบเรื่องนี้ไม่ได้ ลองเล่าใหม่อีกแบบได้ไหม หรือคุยกับผู้ใหญ่ที่ไว้ใจก็ได้นะ 💙";
     }
-    
     botBubble.innerText = replyText;
     state.questsProgress.talk = (state.questsProgress.talk || 0) + 1;
     container.scrollTop = container.scrollHeight;
+    if (data && data.crisis) openSafetyHelp("risk");
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    if (/api key|API_KEY|PERMISSION_DENIED|unregistered callers/i.test(error.message || "")) {
-      botBubble.remove();
-      chatHistory.pop();
-      setUserAiKey("");
-      input.value = text;
-      showAiKeyPrompt("⚠️ API key นี้ใช้ไม่ได้ ลองใส่ใหม่อีกครั้ง");
-      return;
-    }
-    // Explicit error message directly in the chat bubble
-    botBubble.innerText = `⚠️ เชื่อมต่อไม่ได้: ${error.message} (กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต หรือ API Key นะคะ 💔)`;
-    state.questsProgress.talk = (state.questsProgress.talk || 0) + 1;
+    console.error("AI error:", error);
+    chatHistory.pop();
+    botBubble.innerText = error.code === "limit"
+      ? "วันนี้คุยกันเยอะแล้ว พักสายตาหน่อยนะ พรุ่งนี้มาคุยกันใหม่ 💙 ถ้าไม่โอเค กดปุ่ม \"ฉันไม่โอเค\" ได้เลย"
+      : "เชื่อมต่อไม่ได้ ลองใหม่อีกครั้งนะ 💔";
     container.scrollTop = container.scrollHeight;
   } finally {
     isAiThinking = false;
@@ -6682,71 +6594,25 @@ async function verifyMindfulnessInput(key) {
     verifyBtn.style.opacity = "0.6";
   }
 
-  let systemPrompt = "";
-  if (key === "gratitude") {
-    systemPrompt = "คุณคือ AI ตรวจสอบสมุดบันทึกขอบคุณสิ่งดีๆ (Gratitude Journal) หน้าที่ของคุณคือวิเคราะห์ว่าข้อความของผู้ใช้ระบุ 'สิ่งที่ขอบคุณอย่างชัดเจนครบถ้วน 3 อย่าง/เรื่อง' หรือไม่ (ต้องไม่ใช่การพิมพ์มั่ว, ไม่ใช่คำเดี่ยวสั้นๆ, ไม่ใช่ข้อความเชิงลบ หรือหยาบาย) หากผู้ใช้ระบุสิ่งดีๆ/สิ่งที่ขอบคุณครบ 3 อย่างจริง ให้ตอบ 'YES' เท่านั้น หากไม่ครบ 3 อย่าง หรือเป็นข้อความป้อนมั่ว/เชิงลบ ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
-  } else if (key === "positives") {
-    systemPrompt = "คุณคือ AI ประเมินความรู้สึกเชิงบวก หน้าที่ของคุณคือตรวจสอบว่าข้อความของผู้ใช้เป็นการเขียนบอกเล่า 'สิ่งเล็กๆ ที่ทำสำเร็จหรือทำได้ดีในวันนี้ครบถ้วน 3 อย่าง/เรื่อง' หรือไม่ (ต้องมีเนื้อหาเชิงบวก ไม่ใช่การพิมพ์มั่ว) หากผู้ใช้ระบุสิ่งที่ทำได้ดีครบ 3 อย่างจริง ให้ตอบ 'YES' เท่านั้น หากไม่ครบ 3 อย่าง หรือเป็นข้อความป้อนมั่ว ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
-  } else if (key === "grounding") {
-    systemPrompt = "คุณคือ AI ตรวจสอบกิจกรรมเรียกสติ หน้าที่ของคุณคือตรวจดูว่าข้อความของผู้ใช้มีการระบุ 'สิ่งของที่เป็นโทนสีน้ำเงิน/ฟ้า รอบตัวครบถ้วน 3 อย่าง' หรือไม่ หากระบุสิ่งของสีน้ำเงิน/ฟ้าครบ 3 อย่างจริง ให้ตอบ 'YES' เท่านั้น หากระบุไม่ครบ 3 อย่าง หรือเขียนคำมั่ว/ไม่ใช่สิ่งของ ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
-  } else if (key === "smile") {
-    systemPrompt = "คุณคือ AI ตรวจสอบคำพูดแง่บวกและการส่งต่อรอยยิ้ม หน้าที่ของคุณคือวิเคราะห์ว่าข้อความของผู้ใช้เป็นคำพูดที่ดี คำชมเชย (Compliments) หรือคำส่งต่อพลังบวกให้แก่คนอื่นจริงหรือไม่ (ไม่ใช่การพิมพ์คำสุ่มมั่ว หรือคำหยาบคาย) หากใช่ให้ตอบ 'YES' เท่านั้น หากไม่ใช่ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
-  } else if (key === "write_down") {
-    systemPrompt = "คุณคือ AI ตรวจสอบการบันทึกสติ หน้าที่ของคุณคือวิเคราะห์ว่าข้อความของผู้ใช้เป็นการจดรายละเอียดของเหตุการณ์ตื่นเต้น ตกใจ หรือกังวลที่เกิดขึ้นจริง เพื่อแยกแยะข้อเท็จจริง (ไม่ใช่พิมพ์ข้อความมั่ว หรือสั้นเกินไป) หากใช่ให้ตอบ 'YES' เท่านั้น หากไม่ใช่ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
-  } else if (key === "rip_paper") {
-    systemPrompt = "คุณคือ AI ประเมินการระบายอารมณ์ หน้าที่ของคุณคือประเมินว่าข้อความของผู้ใช้เป็นการเขียนระบายความหงุดหงิด เรื่องกวนใจ หรือสิ่งที่น่าหงุดหงิดในวันนี้จริงหรือไม่ (ไม่ใช่พิมพ์มั่ว) หากใช่ให้ตอบ 'YES' เท่านั้น หากไม่ใช่ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
-  } else if (key === "trash_angry") {
-    systemPrompt = "คุณคือ AI ตรวจสอบการปลดปล่อยความโกรธ หน้าที่ของคุณคือวิเคราะห์ว่าข้อความนี้เป็นการเขียนระบายความโกรธ เรื่องที่ขุ่นเคืองรุนแรง หรือเรื่องเดือดดาลในใจจริงหรือไม่ (ไม่ใช่การพิมพ์มั่ว) หากใช่ให้ตอบ 'YES' เท่านั้น หากไม่ใช่ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
-  } else if (key === "comfort_words") {
-    systemPrompt = "คุณคือ AI ตรวจสอบการโอบกอดตัวเอง หน้าที่ของคุณคือตรวจสอบว่าข้อความของผู้ใช้เป็นการเขียนคำปลอบโยน หรือคำให้กำลังใจกับตัวเองจริงหรือไม่ (ไม่ใช่พิมพ์มั่ว) หากใช่ให้ตอบ 'YES' เท่านั้น หากไม่ใช่ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
-  } else if (key === "write_steps") {
-    systemPrompt = "คุณคือ AI ตรวจสอบการจัดลำดับความคิด หน้าที่ของคุณคือตรวจดูว่าข้อความของผู้ใช้เป็นลิสต์รายการสิ่งที่ต้องทำหรือขั้นตอนในการแก้ปัญหาเพื่อช่วยลดความฟุ้งซ่านจริงหรือไม่ (ไม่ใช่พิมพ์มั่ว) หากใช่ให้ตอบ 'YES' เท่านั้น หากไม่ใช่ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
-  } else if (key === "wins") {
-    systemPrompt = "คุณคือ AI ตรวจสอบการจดบันทึกความสำเร็จ หน้าที่ของคุณคือวิเคราะห์ว่าข้อความนี้ผู้ใช้ได้ระบุ 'ความสำเร็จในอดีตอย่างชัดเจนครบ 3 สิ่ง/เรื่อง' เพื่อฟื้นฟูจิตใจตนเองจริงหรือไม่ หากระบุความสำเร็จครบ 3 สิ่งจริง ให้ตอบ 'YES' เท่านั้น หากไม่ครบ 3 สิ่ง หรือพิมพ์มั่ว ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
-  } else if (key === "self_compassion") {
-    systemPrompt = "คุณคือ AI ตรวจสอบจดหมายกัลยาณมิตร หน้าที่ของคุณคือประเมินว่าข้อความของผู้ใช้เป็นการเขียนจดหมายปลอบโยนและให้กำลังใจตนเองในมุมมองเชิงบวกเสมือนเพื่อนสนิทเขียนให้จริงหรือไม่ (ไม่ใช่พิมพ์มั่ว) หากใช่ให้ตอบ 'YES' เท่านั้น หากไม่ใช่ให้ตอบ 'NO' เท่านั้น ห้ามเขียนคำอื่นนอกจาก YES หรือ NO";
-  } else {
-    systemPrompt = "คุณคือ AI ตรวจสอบการบันทึกสติและการระบายความรู้สึก หน้าที่ของคุณคือประเมินว่าข้อความต่อไปนี้เป็นข้อความที่มีเนื้อหาจริงจัง ไม่ใช่คำพิมพ์มั่ว หรือการสแปมคีย์บอร์ด ใช่หรือไม่ ตอบเพียง YES หรือ NO";
-  }
-
-  let verified = false;
-
-  const apiPromise = (async () => {
-    const model = "gemini-3.1-flash-lite";
-    const url = aiUrl(model);
-    
-    const response = await fetch(url, {
-      method: "POST",
-      headers: aiHeaders(),
-      body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text: `${systemPrompt}\n\nข้อความผู้ใช้: "${text}"` }] }],
-        generationConfig: { temperature: 0.1, maxOutputTokens: 10 }
-      })
-    });
-    
-    if (!response.ok) throw new Error("API call failed");
-    const data = await response.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-    return reply.trim().toUpperCase().includes("YES");
-  })();
-
-  try {
-    const result = await Promise.race([
-      apiPromise,
-      new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 6000))
-    ]);
-    verified = result;
-  } catch (err) {
-    console.warn("API check failed, falling back to client-side verification:", err);
-    let wordCount = text.split(/[\s,，、]+/).filter(w => w.length > 0).length;
-    let minLen = 15;
-    if (key === "grounding" || key === "smile") minLen = 10;
-    
-    if (["gratitude", "positives", "grounding", "wins"].includes(key)) {
-      verified = text.length >= 20 && (wordCount >= 3 || text.includes("\n") || text.includes(",") || text.includes("1.") || text.includes("2."));
-    } else {
-      verified = text.length >= minLen;
+  // ข้อความระบายความรู้สึกไม่ส่งออกจากเครื่อง ตรวจแบบง่ายในเครื่องเท่านั้น
+  if (typeof safetyHasRisk === "function" && safetyHasRisk(text)) {
+    if (statusEl) statusEl.innerText = "";
+    if (verifyBtn) {
+      verifyBtn.disabled = false;
+      verifyBtn.innerText = "ส่งให้เกวนทาร์ตรวจ ✨";
+      verifyBtn.style.opacity = "1";
     }
+    openSafetyHelp("risk");
+    return;
+  }
+  const wordCount = text.split(/[\s,，、]+/).filter(w => w.length > 0).length;
+  let minLen = 15;
+  if (key === "grounding" || key === "smile") minLen = 10;
+  let verified;
+  if (["gratitude", "positives", "grounding", "wins"].includes(key)) {
+    verified = text.length >= 20 && (wordCount >= 3 || text.includes("\n") || text.includes(",") || text.includes("1.") || text.includes("2."));
+  } else {
+    verified = text.length >= minLen;
   }
 
   if (verified) {
@@ -7258,6 +7124,10 @@ function saveDiaryEntry() {
   
   if (!state.diaryHistory) state.diaryHistory = [];
   state.diaryHistory.push(entry);
+
+  if (typeof safetyHasRisk === "function" && safetyHasRisk(journalText)) {
+    setTimeout(() => openSafetyHelp("risk"), 300);
+  }
   
   // Progress quest
   if (state.questsProgress) {

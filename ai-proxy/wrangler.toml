@@ -1,3 +1,9 @@
 name = "agwentar-ai"
 main = "worker.js"
 compatibility_date = "2026-11-01"
+
+# จำกัดจำนวนข้อความต่อวัน: สร้าง KV แล้วใส่ id ที่ได้ แล้วลบเครื่องหมาย # ออก
+#   npx wrangler kv namespace create RATE
+# [[kv_namespaces]]
+# binding = "RATE"
+# id = "<ใส่ id ที่ได้>"
