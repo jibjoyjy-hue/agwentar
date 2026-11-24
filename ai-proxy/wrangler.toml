@@ -7,3 +7,10 @@ compatibility_date = "2026-11-01"
 # [[kv_namespaces]]
 # binding = "RATE"
 # id = "<ใส่ id ที่ได้>"
+
+# พรีเมียม: สร้าง KV แล้วใส่ id ที่ได้ แล้วลบเครื่องหมาย # ออก
+#   npx wrangler kv namespace create PREMIUM
+#   npx wrangler secret put ADMIN_TOKEN      (ตั้งรหัสยาว ๆ ไว้ใช้ในหน้าแอดมิน)
+# [[kv_namespaces]]
+# binding = "PREMIUM"
+# id = "<ใส่ id ที่ได้>"

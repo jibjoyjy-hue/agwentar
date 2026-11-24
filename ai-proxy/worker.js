@@ -9,7 +9,16 @@
 // - จำกัดจำนวนข้อความต่อวันต่อเครื่อง (ใช้ KV ชื่อ RATE ถ้าผูกไว้ ถ้าไม่ผูกจะจำกัดแบบคร่าว ๆ ในหน่วยความจำ)
 // - ไม่บันทึกข้อความของผู้ใช้ เก็บแค่ตัวนับที่ผูกกับค่าแฮชของ IP (ไม่เก็บ IP จริง) และหมดอายุใน 2 วัน
 //
-// รายการคำเสี่ยงต้องตรงกับ safety.js ในเว็บ และต้องให้ที่ปรึกษาทางคลินิกตรวจก่อนเปิดใช้จริง
+// รายการคำเสี่ยงต้องตรงกับ js/features/safety.js และต้องให้ที่ปรึกษาทางคลินิกตรวจก่อนเปิดใช้จริง
+//
+// พรีเมียม (ใช้ KV ชื่อ PREMIUM, secret ADMIN_TOKEN):
+//   POST /premium/redeem  { code, startAfter? }        -> { ok, start, end }  (จากเว็บเกม)
+//   POST /premium/ticket  { code, hospital }           -> { ok, ticket }      (จากเว็บเกม)
+//   POST /admin/codes     { count?, note? }            -> { codes: [...] }    (หน้าแอดมิน + ADMIN_TOKEN)
+//   GET  /admin/codes                                  -> { items: [...] }
+//   GET  /admin/lookup?q=PRM-XXXX-XXXX | GWT-XXXX-XXXX -> { code, record }
+//   POST /admin/ticket    { ticket, status }           -> { ok }  status: "used" | "cancelled"
+// ไม่เก็บชื่อหรือข้อมูลส่วนตัวของเด็ก ช่อง note ให้แอดมินใส่เลขอ้างอิงการชำระเงินเท่านั้น
 
 const ALLOWED_ORIGINS = [
   "https://jibjoyjy-hue.github.io",
@@ -93,24 +102,24 @@ function json(status, obj, origin) {
 
 // ---- จำกัดจำนวนครั้ง ----
 const memCounts = new Map();   // สำรองเมื่อไม่ได้ผูก KV (นับแยกตาม instance จึงคร่าว ๆ)
-async function clientKey(req, env) {
+async function clientKey(req, env, kind) {
   const ip = req.headers.get("CF-Connecting-IP") || "unknown";
   const day = new Date().toISOString().slice(0, 10);
   const data = new TextEncoder().encode(`${env.RATE_SALT || "agwentar"}|${ip}`);
   const hash = await crypto.subtle.digest("SHA-256", data);
   const hex = [...new Uint8Array(hash)].slice(0, 12).map(b => b.toString(16).padStart(2, "0")).join("");
-  return `rl:${day}:${hex}`;
+  return `${kind}:${day}:${hex}`;
 }
-async function takeQuota(req, env) {
-  const key = await clientKey(req, env);
+async function takeQuota(req, env, kind = "rl", limit = DAILY_LIMIT) {
+  const key = await clientKey(req, env, kind);
   if (env.RATE) {
     const n = Number(await env.RATE.get(key)) || 0;
-    if (n >= DAILY_LIMIT) return false;
+    if (n >= limit) return false;
     await env.RATE.put(key, String(n + 1), { expirationTtl: 172800 });
     return true;
   }
   const n = memCounts.get(key) || 0;
-  if (n >= DAILY_LIMIT) return false;
+  if (n >= limit) return false;
   memCounts.set(key, n + 1);
   if (memCounts.size > 5000) memCounts.clear();
   return true;
@@ -128,15 +137,173 @@ function parseMessages(body) {
   return msgs;
 }
 
-export { hasRisk, normalize, parseMessages };   // ใช้ทดสอบ
+// ---- พรีเมียม ----
+const CODE_ALPHA = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const MAX_REDEMPTIONS = 3;          // ใช้โค้ดเดิมซ้ำได้ (เช่น ล้างข้อมูลเกม เปลี่ยนเครื่อง) ไม่เกิน 3 ครั้ง
+const FREE_VISITS = 2;
+const REDEEM_TRIES_PER_DAY = 10;
+
+function randomChars(n) {
+  const r = new Uint8Array(n); crypto.getRandomValues(r);
+  return [...r].map(v => CODE_ALPHA[v % 32]).join("");
+}
+function normCode(raw, prefix) {
+  const c = String(raw || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (c.length !== 11 || !c.startsWith(prefix)) return null;
+  const body = c.slice(3);
+  if ([...body].some(ch => !CODE_ALPHA.includes(ch))) return null;
+  return `${prefix}-${body.slice(0, 4)}-${body.slice(4)}`;
+}
+function addYear(iso) { const d = new Date(iso); d.setFullYear(d.getFullYear() + 1); return d.toISOString(); }
+async function kvGet(env, key) { const v = await env.PREMIUM.get(key); return v ? JSON.parse(v) : null; }
+async function kvPut(env, key, obj) { await env.PREMIUM.put(key, JSON.stringify(obj)); }
+
+async function premiumRedeem(body, env) {
+  const code = normCode(body.code, "PRM");
+  if (!code) return [400, { error: "bad_code" }];
+  const rec = await kvGet(env, `code:${code}`);
+  if (!rec) return [404, { error: "not_found" }];
+  if (rec.revoked) return [403, { error: "revoked" }];
+  const now = new Date();
+  if (!rec.start) {
+    let start = now;
+    const after = body.startAfter ? new Date(body.startAfter) : null;
+    if (after && after > now && after - now < 400 * 864e5) start = after;   // ต่ออายุต่อจากของเดิม
+    rec.start = start.toISOString();
+    rec.end = addYear(rec.start);
+  }
+  if (new Date(rec.end) <= now) return [403, { error: "expired", end: rec.end }];
+  if ((rec.redemptions || 0) >= MAX_REDEMPTIONS) return [403, { error: "too_many" }];
+  rec.redemptions = (rec.redemptions || 0) + 1;
+  rec.lastRedeemedAt = now.toISOString();
+  await kvPut(env, `code:${code}`, rec);
+  const used = (rec.tickets || []).filter(t => t.status !== "cancelled").length;
+  return [200, { ok: true, code, start: rec.start, end: rec.end, visitsLeft: Math.max(0, FREE_VISITS - used) }];
+}
+
+async function premiumTicket(body, env) {
+  const code = normCode(body.code, "PRM");
+  if (!code) return [400, { error: "bad_code" }];
+  const rec = await kvGet(env, `code:${code}`);
+  if (!rec || !rec.start || rec.revoked) return [404, { error: "not_found" }];
+  if (new Date(rec.end) <= new Date()) return [403, { error: "expired" }];
+  rec.tickets = rec.tickets || [];
+  const used = rec.tickets.filter(t => t.status !== "cancelled").length;
+  if (used >= FREE_VISITS) return [403, { error: "no_visits" }];
+  const hospital = String(body.hospital || "").slice(0, 80);
+  if (!hospital) return [400, { error: "bad_hospital" }];
+  const ticket = { id: `GWT-${randomChars(4)}-${randomChars(4)}`, hospital, issued: new Date().toISOString(), expires: rec.end, status: "issued", no: used + 1 };
+  rec.tickets.push(ticket);
+  await kvPut(env, `code:${code}`, rec);
+  await env.PREMIUM.put(`ticket:${ticket.id}`, code);
+  return [200, { ok: true, ticket, visitsLeft: FREE_VISITS - used - 1 }];
+}
+
+function isAdmin(req, env) {
+  const h = req.headers.get("Authorization") || "";
+  return !!env.ADMIN_TOKEN && h === `Bearer ${env.ADMIN_TOKEN}`;
+}
+
+async function adminRoute(req, env, url) {
+  const p = url.pathname;
+  if (req.method === "POST" && p === "/admin/codes") {
+    const body = await req.json().catch(() => ({}));
+    const count = Math.min(Math.max(Number(body.count) || 1, 1), 20);
+    const note = String(body.note || "").slice(0, 60);
+    const codes = [];
+    for (let i = 0; i < count; i++) {
+      let code;
+      do { code = `PRM-${randomChars(4)}-${randomChars(4)}`; } while (await env.PREMIUM.get(`code:${code}`));
+      await kvPut(env, `code:${code}`, { created: new Date().toISOString(), note, redemptions: 0, tickets: [] });
+      codes.push(code);
+    }
+    return [200, { codes }];
+  }
+  if (req.method === "GET" && p === "/admin/codes") {
+    const items = [];
+    let cursor;
+    do {
+      const r = await env.PREMIUM.list({ prefix: "code:", cursor });
+      for (const k of r.keys) items.push({ code: k.name.slice(5), ...(await kvGet(env, k.name)) });
+      cursor = r.list_complete ? null : r.cursor;
+    } while (cursor && items.length < 1000);
+    items.sort((a, b) => String(b.created).localeCompare(String(a.created)));
+    return [200, { items }];
+  }
+  if (req.method === "GET" && p === "/admin/lookup") {
+    const q = url.searchParams.get("q") || "";
+    let code = normCode(q, "PRM");
+    const t = normCode(q, "GWT");
+    if (!code && t) code = await env.PREMIUM.get(`ticket:${t}`);
+    if (!code) return [404, { error: "not_found" }];
+    const record = await kvGet(env, `code:${code}`);
+    return record ? [200, { code, record }] : [404, { error: "not_found" }];
+  }
+  if (req.method === "POST" && p === "/admin/ticket") {
+    const body = await req.json().catch(() => ({}));
+    const id = normCode(body.ticket, "GWT");
+    const status = ["used", "cancelled", "issued"].includes(body.status) ? body.status : null;
+    if (!id || !status) return [400, { error: "bad_request" }];
+    const code = await env.PREMIUM.get(`ticket:${id}`);
+    const rec = code && await kvGet(env, `code:${code}`);
+    const t = rec && (rec.tickets || []).find(x => x.id === id);
+    if (!t) return [404, { error: "not_found" }];
+    t.status = status; t.updated = new Date().toISOString();
+    await kvPut(env, `code:${code}`, rec);
+    return [200, { ok: true, code, ticket: t }];
+  }
+  if (req.method === "POST" && p === "/admin/revoke") {
+    const body = await req.json().catch(() => ({}));
+    const code = normCode(body.code, "PRM");
+    const rec = code && await kvGet(env, `code:${code}`);
+    if (!rec) return [404, { error: "not_found" }];
+    rec.revoked = !!body.revoked; await kvPut(env, `code:${code}`, rec);
+    return [200, { ok: true }];
+  }
+  return [404, { error: "not found" }];
+}
+
+function adminCors() {
+  return {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Max-Age": "86400",
+  };
+}
+
+export { hasRisk, normalize, parseMessages, normCode };   // ใช้ทดสอบ
 
 export default {
   async fetch(req, env) {
+    const url = new URL(req.url);
+
+    // หน้าแอดมิน (เปิดจากไฟล์ในเครื่องแอดมิน) ใช้ ADMIN_TOKEN แทนการตรวจ origin
+    if (url.pathname.startsWith("/admin/")) {
+      if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: adminCors() });
+      const send = (st, obj) => new Response(JSON.stringify(obj), { status: st, headers: { "Content-Type": "application/json; charset=utf-8", ...adminCors() } });
+      if (!env.PREMIUM) return send(500, { error: "PREMIUM KV not bound" });
+      if (!isAdmin(req, env)) return send(401, { error: "unauthorized" });
+      const [st, obj] = await adminRoute(req, env, url);
+      return send(st, obj);
+    }
+
     const origin = req.headers.get("Origin") || "";
     if (!isAllowedOrigin(origin)) return json(403, { error: "origin not allowed" });
     if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors(origin) });
     if (req.method !== "POST") return json(405, { error: "POST only" }, origin);
-    if (new URL(req.url).pathname !== "/chat") return json(404, { error: "not found" }, origin);
+
+    if (url.pathname === "/premium/redeem" || url.pathname === "/premium/ticket") {
+      if (!env.PREMIUM) return json(500, { error: "PREMIUM KV not bound" }, origin);
+      if (url.pathname === "/premium/redeem" && !(await takeQuota(req, env, "redeem", REDEEM_TRIES_PER_DAY))) {
+        return json(429, { error: "too_many_tries" }, origin);
+      }
+      const body = await req.json().catch(() => ({}));
+      const [st, obj] = url.pathname === "/premium/redeem" ? await premiumRedeem(body, env) : await premiumTicket(body, env);
+      return json(st, obj, origin);
+    }
+
+    if (url.pathname !== "/chat") return json(404, { error: "not found" }, origin);
 
     const raw = await req.text();
     if (raw.length > MAX_BODY) return json(413, { error: "request too large" }, origin);

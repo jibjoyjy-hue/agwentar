@@ -32,3 +32,24 @@ ai-proxy/             Cloudflare Worker สำหรับคุยกับ AI
 - ลำดับไฟล์ CSS มีผล ไฟล์หลังทับไฟล์ก่อน
 - รายการคำเสี่ยงอยู่ 2 ที่ ต้องแก้ให้ตรงกัน: `js/features/safety.js` และ `ai-proxy/worker.js`
 - `premium_codes.html` เป็นหน้าแอดมิน อยู่ใน `.gitignore` ห้ามอัปขึ้นเว็บ
+
+## ตั้งค่า Cloudflare Worker (ai-proxy/)
+
+ทำครั้งแรกครั้งเดียว ในโฟลเดอร์ `ai-proxy`:
+
+```
+npx wrangler kv namespace create RATE        # จำกัดจำนวนข้อความ AI / จำนวนครั้งกรอกโค้ด
+npx wrangler kv namespace create PREMIUM     # ทะเบียนโค้ดพรีเมียมและตั๋วพบจิตแพทย์
+npx wrangler secret put GEMINI_API_KEY
+npx wrangler secret put ADMIN_TOKEN          # รหัสสำหรับหน้าแอดมิน ตั้งให้ยาวและเดายาก
+```
+
+ใส่ id ของ KV ทั้งสองใน `wrangler.toml` (มีตัวอย่างไว้) แล้ว `npx wrangler deploy`
+ต้อง deploy Worker ก่อนอัปเว็บเวอร์ชันใหม่ทุกครั้ง
+
+## พรีเมียม
+
+- แอดมินเปิด `premium_codes.html` (อยู่ในเครื่องแอดมินเท่านั้น) ใส่ URL ของ Worker และ ADMIN_TOKEN
+- กด "ออกโค้ด" ระบบสร้างโค้ดและบันทึกในทะเบียนที่ Worker แล้วคัดลอกข้อความส่งลูกค้าทางไลน์
+- ลูกค้ากรอกโค้ดในเกม Worker ตรวจและเริ่มนับ 1 ปี กรอกโค้ดเดิมซ้ำได้ไม่เกิน 3 ครั้ง (ล้างข้อมูล/เปลี่ยนเครื่อง)
+- รับตั๋วพบจิตแพทย์ได้ 2 ครั้งต่อโค้ด โรงพยาบาลหรือแอดมินค้นหาเลขตั๋ว `GWT-…` ในหน้าแอดมินแล้วกด "ใช้แล้ว"

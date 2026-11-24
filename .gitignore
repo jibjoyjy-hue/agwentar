@@ -1,5 +1,5 @@
 # หน้าแอดมินสร้างโค้ดพรีเมียม: ห้าม commit / ห้ามขึ้นเว็บ
-premium_codes.html
+premium_codes*.html
 # ไฟล์ใหญ่ที่ไม่ใช่ส่วนของเว็บ
 *.mp4
 # Cloudflare Worker

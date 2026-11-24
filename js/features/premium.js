@@ -7,35 +7,51 @@ const PREMIUM_FREE_VISITS_PER_YEAR = 2;
 const PREMIUM_LINE_URL = "https://line.me/ti/p/XI8CFsVN3h"; // ลิงก์แอดไลน์แอดมิน (จาก QR)
 const PREMIUM_LINE_QR = "assets/premium/line_qr.jpg";
 
-// ---------- โค้ดพรีเมียม: PRM-XXXX-YYYY (YYYY = ตัวตรวจที่คำนวณจาก XXXX) ----------
-// ต้องตรงกับหน้าสร้างโค้ดของแอดมิน (agwentar_admin/premium_codes.html)
-const PRM_ALPHA = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-const PRM_SALT = "gw-prm-2569-k7";
-function prmCheck(payload) {
-  let h = 0x811c9dc5;
-  const str = PRM_SALT + "|" + payload;
-  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
-  let out = "";
-  for (let i = 0; i < 4; i++) { out += PRM_ALPHA[h % 32]; h = Math.floor(h / 32); }
-  return out;
+// ---------- โค้ดพรีเมียม: PRM-XXXX-XXXX ----------
+// โค้ดสร้างและตรวจที่ Cloudflare Worker (ai-proxy/worker.js) เท่านั้น เกมไม่มีวิธีสร้างโค้ดเอง
+// แอดมินออกโค้ดจากหน้า premium_codes.html
+function premiumApiUrl(path) {
+  return (typeof AI_PROXY_URL === "string" ? AI_PROXY_URL : "https://agwentar-ai.jibjoyjy.workers.dev") + path;
+}
+async function premiumPost(path, body) {
+  const r = await fetch(premiumApiUrl(path), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const data = await r.json().catch(() => ({}));
+  return { status: r.status, data };
 }
 function normalizePremiumCode(raw) {
   const c = String(raw || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
   return c.length === 11 && c.startsWith("PRM") ? `PRM-${c.slice(3, 7)}-${c.slice(7)}` : String(raw || "").trim().toUpperCase();
 }
+const PREMIUM_ERRORS = {
+  bad_code: "รูปแบบโค้ดไม่ถูกต้อง ตรวจตัวอักษรอีกครั้ง",
+  not_found: "ไม่พบโค้ดนี้ ตรวจตัวอักษรอีกครั้ง หรือทักแอดมินทางไลน์",
+  expired: "โค้ดนี้หมดอายุแล้ว",
+  revoked: "โค้ดนี้ถูกยกเลิกแล้ว ทักแอดมินทางไลน์",
+  too_many: "โค้ดนี้ถูกใช้ครบจำนวนเครื่องแล้ว ทักแอดมินทางไลน์",
+  too_many_tries: "ลองกรอกโค้ดหลายครั้งเกินไป ลองใหม่พรุ่งนี้นะ",
+};
 // คืน { ok, msg }
-function redeemPremiumCode(raw) {
+async function redeemPremiumCode(raw) {
   const code = normalizePremiumCode(raw);
-  const m = code.match(/^PRM-([A-Z2-9]{4})-([A-Z2-9]{4})$/);
-  if (!m || prmCheck(m[1]) !== m[2]) return { ok: false, msg: "โค้ดไม่ถูกต้อง ตรวจตัวอักษรอีกครั้ง หรือทักแอดมินทางไลน์" };
-  state.premiumCodesUsed = state.premiumCodesUsed || [];
-  if (state.premiumCodesUsed.includes(code)) return { ok: false, msg: "โค้ดนี้ถูกใช้ไปแล้ว" };
-  const from = isPremiumMember() ? new Date(state.premium.end) : new Date();
-  const end = new Date(from); end.setFullYear(end.getFullYear() + 1);
-  state.premium = { plan: "yearly", start: isPremiumMember() ? state.premium.start : new Date().toISOString(), end: end.toISOString(), code };
-  state.premiumCodesUsed.push(code);
+  if (!/^PRM-[A-Z2-9]{4}-[A-Z2-9]{4}$/.test(code)) return { ok: false, msg: PREMIUM_ERRORS.bad_code };
+  let res;
+  try {
+    res = await premiumPost("/premium/redeem", {
+      code,
+      startAfter: isPremiumMember() && state.premium.code !== code ? state.premium.end : undefined,
+    });
+  } catch (e) {
+    return { ok: false, msg: "เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง" };
+  }
+  if (!res.data.ok) return { ok: false, msg: PREMIUM_ERRORS[res.data.error] || "ใช้โค้ดไม่ได้ ทักแอดมินทางไลน์" };
+  state.premium = { plan: "yearly", start: res.data.start, end: res.data.end, code: res.data.code };
+  state.premiumCodesUsed = (state.premiumCodesUsed || []).filter(c => c !== res.data.code).concat(res.data.code);
   premiumSave();
-  return { ok: true, msg: `เปิดใช้พรีเมียมแล้ว ถึง ${pDate(end)}` };
+  return { ok: true, msg: `เปิดใช้พรีเมียมแล้ว ถึง ${pDate(res.data.end)}` };
 }
 
 const PREMIUM_BENEFITS = [
@@ -84,12 +100,6 @@ function premiumSave() {
 function premiumUpdateBadge() {
   const btn = document.querySelector(".premium-btn");
   if (btn) btn.classList.toggle("is-member", isPremiumMember());
-}
-function premiumNewCode() {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let s = "";
-  for (let i = 0; i < 8; i++) s += chars[Math.floor(Math.random() * chars.length)] + (i === 3 ? "-" : "");
-  return "GWT-" + s;
 }
 
 function renderPremiumModal() {
@@ -159,6 +169,7 @@ function renderPremiumModal() {
           </label>`).join("")}
       </div>
       <button type="button" class="premium-cta" data-act="claim" ${premiumPickedHospital ? "" : "disabled"}>🎫 รับตั๋วฟรี</button>
+      ${premiumCodeMsg ? `<div class="premium-code-msg">${premiumCodeMsg}</div>` : ""}
       <button type="button" class="premium-link" data-act="toMember">ย้อนกลับ</button>${demo}`;
   } else if (premiumView === "ticket") {
     box.innerHTML = hero("รับตั๋วเรียบร้อย", "แสดงตั๋วนี้ที่จุดลงทะเบียนของโรงพยาบาล") + ticketHtml(premiumLastTicket, false) + `
@@ -189,9 +200,14 @@ function premiumAction(act) {
   else if (act === "toRedeem") premiumView = "redeem";
   else if (act === "redeem") {
     const inp = document.getElementById("premiumCodeInput");
-    const r = redeemPremiumCode(inp ? inp.value : "");
-    if (r.ok) { premiumCodeMsg = ""; premiumView = "done"; }
-    else premiumCodeMsg = "⚠️ " + r.msg;
+    const btn = document.querySelector('[data-act="redeem"]');
+    if (btn) { btn.disabled = true; btn.textContent = "กำลังตรวจ..."; }
+    redeemPremiumCode(inp ? inp.value : "").then(r => {
+      if (r.ok) { premiumCodeMsg = ""; premiumView = "done"; }
+      else premiumCodeMsg = "⚠️ " + r.msg;
+      renderPremiumModal();
+    });
+    return;
   }
   else if (act === "toInfo") premiumView = "info";
   else if (act === "toMember") premiumView = "member";
@@ -199,15 +215,21 @@ function premiumAction(act) {
   else if (act === "claim") {
     const h = PREMIUM_HOSPITALS.find(x => x.id === premiumPickedHospital);
     if (!h || !premiumVisitsLeft()) return;
-    const t = {
-      code: premiumNewCode(), hospital: h.name, area: h.area,
-      issued: new Date().toISOString(), expires: state.premium.end,
-      no: premiumTicketsThisTerm().length + 1,
-    };
-    state.psyTickets = (state.psyTickets || []).concat(t);
-    premiumLastTicket = t;
-    premiumSave();
-    premiumView = "ticket";
+    premiumPost("/premium/ticket", { code: state.premium.code, hospital: h.name }).then(res => {
+      if (!res.data.ok) {
+        premiumCodeMsg = res.data.error === "no_visits" ? "⚠️ ใช้สิทธิ์พบจิตแพทย์ครบแล้วในปีนี้" : "⚠️ รับตั๋วไม่ได้ ทักแอดมินทางไลน์";
+        renderPremiumModal();
+        return;
+      }
+      const tk = res.data.ticket;
+      const t = { code: tk.id, hospital: h.name, area: h.area, issued: tk.issued, expires: tk.expires, no: tk.no };
+      state.psyTickets = (state.psyTickets || []).concat(t);
+      premiumLastTicket = t;
+      premiumSave();
+      premiumView = "ticket";
+      renderPremiumModal();
+    }).catch(() => { premiumCodeMsg = "⚠️ เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง"; renderPremiumModal(); });
+    return;
   }
   renderPremiumModal();
 }
