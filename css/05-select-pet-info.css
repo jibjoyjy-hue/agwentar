@@ -1,0 +1,156 @@
+/* 05-select-pet-info.css: หน้าเลือกสัตว์เลี้ยง และข้อมูลสัตว์เลี้ยง */
+/* SCREEN 2: Select Pet */
+.select-pet-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.pet-select-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: 16px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.pet-select-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+.pet-select-card.active {
+  border-color: var(--primary);
+  background: rgba(167, 139, 250, 0.08);
+  box-shadow: 0 0 10px rgba(167, 139, 250, 0.15);
+}
+.pet-select-avatar {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+.pet-select-card span {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+/* SCREEN 3: Pet Info */
+.info-avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 15px;
+}
+.large-pet-avatar {
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, #e0e7ff 0%, #f472b6 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80px;
+  box-shadow: 0 8px 20px rgba(244, 114, 182, 0.2);
+}
+.info-char-name {
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.gender-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.gender-pill {
+  flex: 1;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  padding: 6px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.gender-pill.active.male {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+.gender-pill.active.female {
+  background: #fdf2f8;
+  border-color: #ec4899;
+  color: #ec4899;
+}
+.info-stat-bar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.info-stat-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.info-stat-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.info-bar-container {
+  height: 10px;
+  background: #f1f5f9;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+.info-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+.info-bar-fill.hp { background: var(--color-hp); }
+.info-bar-fill.energy { background: var(--color-energy); }
+.info-bar-fill.exp { background: linear-gradient(90deg, #818cf8, #c084fc); }
+
+.info-details-card {
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.info-detail-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--border-color);
+}
+.info-detail-line:last-child {
+  border-bottom: none;
+}
+.info-detail-key {
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.info-detail-val {
+  font-weight: 600;
+  color: var(--text-primary);
+}

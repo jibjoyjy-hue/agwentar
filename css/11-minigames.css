@@ -1,0 +1,77 @@
+/* 11-minigames.css: มินิเกม */
+/* SCREEN 15: Mini Games */
+.game-item-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.game-item-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+.game-details {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.game-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.game-highscore {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* Coin Catcher Styles */
+.catcher-ctrl-btn {
+  transition: transform 0.1s ease, filter 0.2s ease;
+}
+.catcher-ctrl-btn:active {
+  transform: scale(0.95);
+  filter: brightness(0.9);
+}
+
+.falling-item {
+  position: absolute;
+  font-size: 28px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 8;
+  transform-origin: center;
+  will-change: transform;
+}
+
+@keyframes itemCatchSparkle {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: scale(1.6) rotate(45deg); opacity: 0; }
+}
+
+@keyframes catcherSplash {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15, 0.85); }
+  100% { transform: scale(1); }
+}
+
+.catcher-splash-active {
+  animation: catcherSplash 0.15s ease-out;
+}
+
+@keyframes floatCloud {
+  0% { transform: translateX(-50px); }
+  50% { transform: translateX(200px); }
+  100% { transform: translateX(380px); }
+}

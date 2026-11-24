@@ -1,0 +1,84 @@
+/* 16-premium.css: สมาชิกพรีเมียม */
+.premium-btn {
+  background: linear-gradient(135deg, #c4b5fd, #8b5cf6);
+  border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 16px; line-height: 1;
+  cursor: pointer; box-shadow: 0 2px 6px rgba(139, 92, 246, .4); transition: transform .2s ease;
+}
+.premium-btn:hover { transform: scale(1.1); }
+.premium-menu-row { background: linear-gradient(135deg, #fffbeb, #fef3c7); border-color: #fcd34d !important; }
+.premium-menu-row .menu-item-label { color: #b45309; font-weight: 700; }
+.premium-modal {
+  position: fixed; inset: 0; z-index: 1000; background: rgba(30, 27, 75, .55); backdrop-filter: blur(6px);
+  align-items: center; justify-content: center; padding: 16px;
+}
+.premium-card {
+  position: relative; width: 100%; max-width: 340px; max-height: 90vh; overflow-y: auto;
+  background: var(--bg-card); color: var(--text-primary); border-radius: 24px; padding: 20px 18px 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .25); font-family: var(--font-thai);
+}
+.premium-close {
+  position: absolute; top: 10px; right: 12px; border: none; background: rgba(0, 0, 0, .06);
+  width: 28px; height: 28px; border-radius: 50%; cursor: pointer; color: inherit;
+}
+.premium-hero { text-align: center; padding: 6px 0 12px; }
+.premium-crown { font-size: 44px; filter: drop-shadow(0 4px 8px rgba(245, 158, 11, .4)); }
+.premium-title { font-size: 20px; font-weight: 800; background: linear-gradient(135deg, #f59e0b, #a855f7); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.premium-sub { font-size: 12px; opacity: .75; margin-top: 2px; }
+.premium-price { display: inline-block; margin-top: 10px; padding: 6px 14px; border-radius: 999px; background: #fef3c7; color: #92400e; font-weight: 700; font-size: 14px; }
+.premium-price.is-pending { background: #f3f4f6; color: #6b7280; font-weight: 600; font-size: 12px; }
+.premium-list { list-style: none; margin: 4px 0 14px; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.premium-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; padding: 8px 10px; border-radius: 14px; background: rgba(167, 139, 250, .1); }
+.premium-list small { opacity: .75; font-size: 11px; }
+.premium-li-icon { font-size: 20px; line-height: 1.2; }
+.premium-cta {
+  width: 100%; border: none; border-radius: 16px; padding: 12px; font-size: 14px; font-weight: 700; cursor: pointer;
+  font-family: inherit; color: #fff; background: linear-gradient(135deg, #f59e0b, #a855f7); box-shadow: 0 6px 14px rgba(168, 85, 247, .3);
+}
+.premium-cta:disabled { background: #d1fae5; color: #047857; box-shadow: none; cursor: default; }
+.premium-cta:focus-visible, .premium-btn:focus-visible, .premium-close:focus-visible { outline: 2px solid #a855f7; outline-offset: 2px; }
+.premium-note { text-align: center; font-size: 11px; opacity: .65; margin-top: 8px; }
+
+/* ===== พรีเมียม: สมัคร / เลือกโรงพยาบาล / ตั๋ว ===== */
+.premium-btn.is-member { background: linear-gradient(135deg, #fde68a, #f59e0b); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #f59e0b; }
+.premium-price-wrap { text-align: center; margin: -4px 0 12px; }
+.premium-demo { margin-top: 10px; text-align: center; font-size: 10.5px; color: #92400e; background: #fffbeb; border: 1px dashed #fcd34d; border-radius: 10px; padding: 6px 8px; }
+.premium-link { display: block; width: 100%; margin-top: 8px; background: none; border: none; color: #7c3aed; font-family: inherit; font-size: 13px; cursor: pointer; padding: 6px; }
+.premium-link.danger { color: #dc2626; font-size: 12px; }
+.premium-text { font-size: 13px; text-align: center; margin: 0 0 12px; line-height: 1.6; }
+.premium-summary { display: flex; flex-direction: column; gap: 6px; background: rgba(167, 139, 250, .1); border-radius: 14px; padding: 10px 12px; margin-bottom: 12px; font-size: 13px; }
+.premium-summary div { display: flex; justify-content: space-between; gap: 8px; }
+.premium-summary span { opacity: .7; }
+.premium-visits { display: flex; align-items: center; gap: 12px; background: linear-gradient(135deg, #ede9fe, #fef3c7); border-radius: 16px; padding: 12px 14px; margin-bottom: 12px; font-size: 13px; }
+.premium-visits-num { font-size: 32px; font-weight: 800; color: #7c3aed; font-variant-numeric: tabular-nums; line-height: 1; }
+.premium-visits-num small { font-size: 14px; opacity: .6; }
+.premium-section { font-size: 12px; font-weight: 700; margin: 14px 0 6px; opacity: .75; }
+.premium-hospitals { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.premium-hospital { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1.5px solid #e9d5ff; border-radius: 14px; cursor: pointer; font-size: 13px; }
+.premium-hospital small { opacity: .7; font-size: 11px; }
+.premium-hospital input { margin-top: 3px; accent-color: #8b5cf6; }
+.premium-hospital.is-picked { border-color: #8b5cf6; background: rgba(139, 92, 246, .08); }
+.premium-ticket { position: relative; border-radius: 16px; padding: 12px 14px; margin-bottom: 12px; color: #fff;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899); box-shadow: 0 8px 18px rgba(139, 92, 246, .3); }
+.premium-ticket::before, .premium-ticket::after { content: ""; position: absolute; top: 50%; width: 16px; height: 16px; margin-top: -8px; border-radius: 50%; background: var(--bg-card); }
+.premium-ticket::before { left: -8px; } .premium-ticket::after { right: -8px; }
+.premium-ticket-top { display: flex; justify-content: space-between; font-size: 12px; opacity: .95; }
+.premium-ticket-tag { background: rgba(255, 255, 255, .25); border-radius: 999px; padding: 1px 8px; }
+.premium-ticket-hosp { font-size: 17px; font-weight: 800; margin-top: 6px; }
+.premium-ticket-meta { font-size: 11px; opacity: .9; }
+.premium-ticket-code { margin: 10px 0 6px; padding: 8px; text-align: center; border: 1.5px dashed rgba(255, 255, 255, .7); border-radius: 10px; font: 700 18px/1 ui-monospace, Menlo, Consolas, monospace; letter-spacing: 2px; }
+.premium-ticket.is-small { padding: 10px 12px; }
+.premium-ticket.is-small .premium-ticket-hosp { font-size: 14px; }
+.premium-ticket.is-small .premium-ticket-code { font-size: 14px; margin: 6px 0 4px; }
+
+/* ===== พรีเมียม: สมัครผ่าน LINE / แลกโค้ด ===== */
+.premium-qr { display: flex; justify-content: center; margin: 2px 0 10px; }
+.premium-qr img { width: 170px; height: 170px; border-radius: 14px; border: 1px solid #e5e7eb; background: #fff; padding: 6px; }
+.premium-line-btn { display: block; text-align: center; text-decoration: none; background: #06c755; color: #fff; font-weight: 700; font-size: 14px; border-radius: 14px; padding: 10px; margin-bottom: 12px; }
+.premium-line-btn:focus-visible { outline: 2px solid #047857; outline-offset: 2px; }
+.premium-steps { margin: 0 0 12px; padding-left: 20px; font-size: 12.5px; line-height: 1.6; display: flex; flex-direction: column; gap: 2px; }
+.premium-code-label { display: block; font-size: 12px; font-weight: 700; margin: 4px 0 6px; }
+.premium-code-row { display: flex; gap: 6px; }
+.premium-code-input { flex: 1; min-width: 0; border: 1.5px solid #d8b4fe; border-radius: 12px; padding: 9px 10px; font: 700 14px/1 ui-monospace, Menlo, Consolas, monospace; letter-spacing: 1px; text-transform: uppercase; color: inherit; background: transparent; }
+.premium-code-input:focus { outline: none; border-color: #8b5cf6; }
+.premium-code-btn { border: none; border-radius: 12px; padding: 0 14px; background: #8b5cf6; color: #fff; font-family: inherit; font-weight: 700; cursor: pointer; }
+.premium-code-msg { margin-top: 6px; font-size: 12px; color: #dc2626; }

@@ -1,0 +1,308 @@
+/* 07-rooms.css: ห้องต่าง ๆ ห้องอาหาร สวน ห้องแต่งตัว */
+/* SCREEN 5-10: Rooms common info panel */
+.room-info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  padding: 8px 14px;
+  border: 1px solid var(--border-color);
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.room-info-stats {
+  display: flex;
+  gap: 10px;
+}
+.room-timer {
+  font-family: var(--font-eng);
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.room-visual-area {
+  height: 440px;
+  background: radial-gradient(circle, #fbcfe8 0%, #e0e7ff 100%);
+  border-radius: 20px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border: 1.5px solid var(--border-color);
+  margin-bottom: 12px;
+}
+.room-visual-area .dynamic-pet-display {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  transition: left 0.7s cubic-bezier(0.25, 1, 0.5, 1), top 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 15;
+}
+#screen-1 {
+  background: url('../assets/livingroom.png') no-repeat center/cover !important;
+}
+#screen-2 {
+  background: url('../assets/select_pet_bg.png') no-repeat center/cover !important;
+}
+#screen-5 .room-visual-area {
+  background: url('../assets/bedroom.png') no-repeat center/cover !important;
+}
+#screen-6 {
+  background: url('../assets/dining.png') no-repeat center/cover !important;
+}
+#screen-6.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+#screen-7 .room-visual-area {
+  background: url('../assets/bathroom.png') no-repeat center/cover !important;
+}
+#screen-8 .room-visual-area {
+  background: url('../assets/garden.png') no-repeat center/cover !important;
+}
+#screen-9 .room-visual-area {
+  background: url('../assets/bright_dressup.png') no-repeat center/cover !important;
+}
+#screen-10 .room-visual-area {
+  background: url('../assets/toyroom.png') no-repeat center/cover !important;
+}
+.sleeping-pet {
+  font-size: 70px;
+  animation: sleepPulse 3s infinite ease-in-out;
+}
+@keyframes sleepPulse {
+  0%, 100% { transform: scale(1) rotate(-5deg); opacity: 0.9; }
+  50% { transform: scale(1.05) rotate(5deg); opacity: 1; }
+}
+.sleep-particles {
+  position: absolute;
+  top: 30%;
+  right: 35%;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-secondary);
+  animation: zzzAnim 2s infinite linear;
+}
+@keyframes zzzAnim {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.8); }
+  50% { opacity: 1; }
+  100% { opacity: 0; transform: translate(15px, -20px) scale(1.2); }
+}
+
+.room-action-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.room-act-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+.room-act-btn.active, .room-act-btn:hover {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.furniture-scroll-list {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+}
+.furniture-card {
+  flex: 0 0 70px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: 14px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+.furn-icon {
+  font-size: 24px;
+}
+.furniture-card span {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* SCREEN 6: Dining room food grid */
+.dining-food-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.food-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.food-card:hover {
+  border-color: var(--primary);
+  background: var(--bg-app);
+}
+.food-card-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.food-emoji { font-size: 22px; }
+.food-info { display: flex; flex-direction: column; }
+.food-name { font-size: 11px; font-weight: 700; color: var(--text-primary); }
+.food-stat { font-size: 8px; font-weight: 500; color: var(--text-muted); }
+.food-qty {
+  font-family: var(--font-eng);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: rgba(167, 139, 250, 0.1);
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+
+/* SCREEN 8: Garden */
+.garden-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.garden-item-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.garden-flower-icon {
+  font-size: 24px;
+}
+.garden-flower-details {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.garden-flower-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.garden-flower-lvl {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.garden-progress-bar {
+  height: 6px;
+  background: #f1f5f9;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.garden-progress-fill {
+  height: 100%;
+  background: #4ade80;
+}
+.garden-qty-text {
+  font-family: var(--font-eng);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* SCREEN 9: Dressing */
+.dressing-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+.dressing-tab {
+  white-space: nowrap;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.dressing-tab.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: transparent;
+}
+#screen-9 {
+  overflow-y: hidden !important;
+}
+#screen-9 .room-visual-area {
+  height: 240px !important;
+  margin-bottom: 8px;
+}
+.dressing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px;
+  margin-top: 8px;
+}
+.dressing-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  position: relative;
+}
+.dressing-card.equipped::after {
+  content: '✓';
+  position: absolute;
+  top: 4px; right: 4px;
+  background: #4ade80;
+  color: white;
+  font-size: 8px;
+  font-weight: bold;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dressing-emoji { font-size: 24px; }
+.dressing-name { font-size: 9px; font-weight: 600; color: var(--text-primary); text-align: center; }

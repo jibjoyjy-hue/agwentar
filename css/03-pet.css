@@ -1,0 +1,225 @@
+/* 03-pet.css: ตัวสัตว์เลี้ยงและท่าทาง */
+/* ==========================================================================
+   DYNAMIC PET SYSTEM STYLING
+   ========================================================================== */
+.dynamic-pet-display {
+  width: 180px;
+  height: 180px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+.dynamic-pet-display:active {
+  cursor: grabbing;
+}
+
+/* The actual pet body wrapper */
+.pet-character-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+/* The main icon emoji or container representing the pet */
+.pet-body-main {
+  font-size: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,0.15));
+}
+.pet-body-img {
+  object-fit: contain;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: petIdleBounce 3.5s infinite ease-in-out;
+}
+@keyframes petIdleBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+/* State-specific active pet animations */
+[data-state="sleeping"] .pet-body-img {
+  animation: petSleepBreathing 4.5s infinite ease-in-out !important;
+}
+[data-state="eating"] .pet-body-img {
+  animation: petEatingWobble 1.2s infinite ease-in-out !important;
+}
+[data-state="bathing"] .pet-body-img {
+  animation: petBathingFloat 2.5s infinite ease-in-out !important;
+}
+@keyframes petSleepBreathing {
+  0%, 100% { opacity: 0.92; }
+  50% { opacity: 1; }
+}
+@keyframes petEatingWobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+@keyframes petBathingFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+.pet-character-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+.room-visual-area .pet-character-wrapper {
+  transform: translateY(40px);
+}
+.home-pet-section .pet-character-wrapper {
+  transform: translateY(45px);
+}
+.pet-character-wrapper::before {
+  content: '';
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -2;
+  pointer-events: none;
+}
+.pet-character-wrapper:hover .pet-body-img {
+  transform: translateY(-8px) scale(1.06);
+}
+.pet-character-wrapper:active .pet-body-img {
+  transform: scale(0.96);
+}
+
+/* 3D floor shadow underneath the pet character */
+.pet-3d-floor-shadow {
+  display: none;
+}
+
+/* Apparel accessory overlay on the pet */
+.pet-apparel-overlay {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 52px;
+  z-index: 10;
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,0.18));
+  pointer-events: none;
+}
+
+/* State-based animations and styles */
+[data-state="idle"] .pet-character-wrapper {
+  animation: petWiggleDance 0.5s infinite alternate ease-in-out;
+}
+[data-state="sleeping"] .pet-character-wrapper {
+  transform: rotate(-75deg) translate(-10px, 15px);
+  opacity: 0.85;
+}
+[data-state="eating"] .pet-character-wrapper {
+  animation: petEat 0.5s infinite alternate ease-in-out;
+}
+[data-state="bathing"] .pet-character-wrapper {
+  animation: petBath 2s infinite ease-in-out;
+}
+[data-state="garden"] .pet-character-wrapper {
+  animation: petGarden 2.5s infinite alternate ease-in-out;
+}
+[data-state="dressing"] .pet-character-wrapper {
+  animation: petDressing 4s infinite ease-in-out;
+}
+[data-state="playing"] .pet-character-wrapper {
+  animation: petPlay 1s infinite alternate ease-in-out;
+}
+[data-state="bond"] .pet-character-wrapper {
+  animation: petBond 1.5s infinite alternate ease-in-out;
+}
+
+/* Keyframe animations for pets */
+@keyframes petWiggleDance {
+  0% { transform: scale(1) rotate(0deg) translateY(0); }
+  50% { transform: scale(1.06, 0.94) rotate(-6deg) translateY(-5px); }
+  100% { transform: scale(0.94, 1.06) rotate(6deg) translateY(-14px); }
+}
+@keyframes petIdle {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.02); }
+}
+@keyframes petEat {
+  0% { transform: scale(1) translateY(0); }
+  100% { transform: scale(1.08) translateY(-14px); }
+}
+@keyframes petBath {
+  0%, 100% { transform: rotate(-5deg) translateY(0); }
+  50% { transform: rotate(5deg) translateY(-6px); }
+}
+@keyframes petGarden {
+  0%, 100% { transform: scale(1) translateX(0); }
+  50% { transform: scale(1.03) translateX(6px); }
+}
+@keyframes petDressing {
+  0%, 100% { transform: scale(1) rotate(0); }
+  50% { transform: scale(1.05) rotate(3deg); }
+}
+@keyframes petPlay {
+  0% { transform: translateY(0) rotate(-10deg); }
+  100% { transform: translateY(-16px) rotate(10deg); }
+}
+@keyframes petBond {
+  0% { transform: scale(1); filter: drop-shadow(0 8px 12px rgba(244,114,182,0.2)); }
+  100% { transform: scale(1.08) translateY(-10px); filter: drop-shadow(0 12px 18px rgba(244,114,182,0.4)); }
+}
+
+/* Custom room scene enhancements */
+.room-scene-table {
+  width: 150px;
+  height: 25px;
+  background: #fbd5c0;
+  border: 2px solid #fdba74;
+  border-radius: 12px;
+  position: absolute;
+  bottom: 25px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 1;
+}
+.room-scene-tub {
+  width: 170px;
+  height: 60px;
+  background: #f8fafc;
+  border: 3px solid #cbd5e1;
+  border-radius: 0 0 40px 40px;
+  position: absolute;
+  bottom: 20px;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.room-scene-tub::before {
+  content: '🫧🫧';
+  position: absolute;
+  top: -12px;
+  font-size: 16px;
+}
+.tub-water {
+  width: 100%;
+  height: 20px;
+  background: rgba(56, 189, 248, 0.4);
+  position: absolute;
+  top: 0;
+  border-radius: 0;
+  z-index: 4;
+}

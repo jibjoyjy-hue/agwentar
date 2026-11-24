@@ -1,0 +1,177 @@
+/* 01-base.css: ตัวแปรสี ฟอนต์ ธีม และ reset */
+/* ==========================================================================
+   CSS RESET & VARIABLES
+   ========================================================================== */
+:root {
+  /* Color Palette - Premium Pastel Light Theme */
+  --bg-app: #f5f3ff; /* Soft pastel purple background */
+  --bg-app-gradient: linear-gradient(180deg, #f5f3ff 0%, #fae8ff 100%);
+  --bg-card: #ffffff;
+  --bg-header: #ffffff;
+  --border-color: rgba(167, 139, 250, 0.2);
+  --border-focus: rgba(167, 139, 250, 0.6);
+  
+  --text-primary: #312e81; /* Dark indigo */
+  --text-secondary: #6366f1; /* Muted indigo */
+  --text-muted: #94a3b8;
+  
+  /* Status Colors */
+  --color-hp: #f472b6; /* Pastel pink */
+  --color-hp-bg: rgba(244, 114, 182, 0.15);
+  --color-energy: #fbbf24;
+  --color-energy-bg: rgba(251, 191, 36, 0.15);
+  --color-coin: #fbbf24;
+  --color-gem: #38bdf8;
+  
+  /* Interactive Colors */
+  --primary: #a78bfa; /* Pastel purple primary */
+  --primary-hover: #8b5cf6;
+  --primary-glow: rgba(167, 139, 250, 0.4);
+  --secondary: rgba(167, 139, 250, 0.1);
+  --secondary-hover: rgba(167, 139, 250, 0.2);
+  
+  /* Fonts */
+  --font-thai: 'Prompt', sans-serif;
+  --font-eng: 'Inter', sans-serif;
+  
+  /* Layout Size */
+  --phone-width: 390px;
+  --phone-height: 812px;
+  --nav-height: 82px; /* slightly taller for scrollable tabs */
+}
+
+/* Theme Overrides */
+/* Theme Overrides */
+html[data-theme="light"] {
+  --bg-app: #fffbeb;
+  --bg-app-gradient: linear-gradient(180deg, #fffbeb 0%, #ffedd5 100%);
+  --bg-card: #ffffff;
+  --bg-header: #ffffff;
+  --text-primary: #7c2d12;
+  --text-secondary: #c2410c;
+  --text-muted: #94a3b8;
+  --primary: #fda4af;
+  --primary-hover: #f43f5e;
+  --primary-glow: rgba(244, 63, 94, 0.4);
+  --border-color: rgba(194, 65, 12, 0.15);
+  --border-focus: rgba(194, 65, 12, 0.4);
+  --secondary: rgba(244, 63, 94, 0.08);
+  --secondary-hover: rgba(244, 63, 94, 0.15);
+}
+html[data-theme="pastel"] {
+  --bg-app: #f5f3ff;
+  --bg-app-gradient: linear-gradient(180deg, #f5f3ff 0%, #fae8ff 100%);
+  --bg-card: #ffffff;
+  --bg-header: #ffffff;
+  --text-primary: #4c1d95;
+  --text-secondary: #7c3aed;
+  --text-muted: #94a3b8;
+  --primary: #c084fc;
+  --primary-hover: #a855f7;
+  --primary-glow: rgba(168, 85, 247, 0.4);
+  --border-color: rgba(124, 58, 237, 0.15);
+  --border-focus: rgba(124, 58, 237, 0.4);
+  --secondary: rgba(168, 85, 247, 0.08);
+  --secondary-hover: rgba(168, 85, 247, 0.15);
+}
+html[data-theme="dark"] {
+  --bg-app: #0f172a;
+  --bg-app-gradient: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  --bg-card: #1e293b;
+  --bg-header: #1e293b;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+  --primary: #ff7597;
+  --primary-hover: #f43f5e;
+  --primary-glow: rgba(244, 63, 94, 0.4);
+  --border-color: rgba(148, 163, 184, 0.2);
+  --border-focus: rgba(148, 163, 184, 0.6);
+  --secondary: rgba(244, 63, 94, 0.15);
+  --secondary-hover: rgba(244, 63, 94, 0.25);
+}
+html[data-theme="forest"] {
+  --bg-app: #f0fdf4;
+  --bg-app-gradient: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
+  --bg-card: #ffffff;
+  --bg-header: #ffffff;
+  --text-primary: #14532d;
+  --text-secondary: #16a34a;
+  --text-muted: #94a3b8;
+  --primary: #86efac;
+  --primary-hover: #22c55e;
+  --primary-glow: rgba(34, 197, 94, 0.4);
+  --border-color: rgba(22, 163, 74, 0.15);
+  --border-focus: rgba(22, 163, 74, 0.4);
+  --secondary: rgba(34, 197, 94, 0.08);
+  --secondary-hover: rgba(34, 197, 94, 0.15);
+}
+html[data-theme="sky"] {
+  --bg-app: #f0f9ff;
+  --bg-app-gradient: linear-gradient(180deg, #bae6fd 0%, #fae8ff 100%);
+  --bg-card: #ffffff;
+  --bg-header: #ffffff;
+  --text-primary: #0c4a6e;
+  --text-secondary: #0284c7;
+  --text-muted: #94a3b8;
+  --primary: #7dd3fc;
+  --primary-hover: #0ea5e9;
+  --primary-glow: rgba(14, 165, 233, 0.4);
+  --border-color: rgba(2, 132, 199, 0.15);
+  --border-focus: rgba(2, 132, 199, 0.4);
+  --secondary: rgba(14, 165, 233, 0.08);
+  --secondary-hover: rgba(14, 165, 233, 0.15);
+}
+html[data-theme="galaxy"] {
+  --bg-app: #090514;
+  --bg-app-gradient: linear-gradient(180deg, #090514 0%, #1e1b4b 100%);
+  --bg-card: #120e2e;
+  --bg-header: #120e2e;
+  --text-primary: #faf5ff;
+  --text-secondary: #d8b4fe;
+  --text-muted: #818cf8;
+  --primary: #c084fc;
+  --primary-hover: #a855f7;
+  --primary-glow: rgba(168, 85, 247, 0.4);
+  --border-color: rgba(129, 140, 248, 0.2);
+  --border-focus: rgba(129, 140, 248, 0.5);
+  --secondary: rgba(168, 85, 247, 0.1);
+  --secondary-hover: rgba(168, 85, 247, 0.2);
+}
+
+/* Theme Card Styling */
+.theme-card:hover .theme-preview {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+}
+.theme-card.active .theme-preview {
+  border-color: #ff7597 !important;
+  box-shadow: 0 0 15px rgba(255, 117, 151, 0.45) !important;
+}
+.theme-card.active .theme-check-icon {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+}
+.theme-card.active .theme-card-label {
+  color: var(--text-primary) !important;
+  font-weight: 800 !important;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: #cbd5e1;
+  color: var(--text-primary);
+  font-family: var(--font-thai);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+  padding: 20px;
+}

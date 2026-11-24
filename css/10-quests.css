@@ -1,0 +1,107 @@
+/* 10-quests.css: เควส */
+/* SCREEN 14: Quests */
+.quest-tabs {
+  display: flex;
+  background: rgba(167, 139, 250, 0.1);
+  padding: 4px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+.quest-tab {
+  flex: 1;
+  text-align: center;
+  padding: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary);
+  cursor: pointer;
+  border-radius: 8px;
+}
+.quest-tab.active {
+  background: var(--bg-card);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.quest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.quest-item {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.quest-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.quest-check {
+  font-size: 14px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-weight: bold;
+}
+.quest-check.done {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: transparent;
+}
+.quest-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.quest-title { font-size: 11px; font-weight: 700; color: var(--text-primary); }
+.quest-rewards { font-size: 9px; font-weight: 600; color: var(--text-muted); }
+.quest-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+.quest-progress-txt {
+  font-family: var(--font-eng);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+.quest-claim-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.quest-bonus-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  padding: 10px 12px;
+}
+.quest-bonus-left {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

@@ -1,0 +1,282 @@
+/* 14-bottom-nav.css: แถบเมนูล่าง */
+/* ==========================================================================
+   BOTTOM NAVIGATION BAR (Horizontally Scrollable Tabs)
+   ========================================================================== */
+.app-bottom-nav.scrollable-tabs {
+  position: absolute;
+  bottom: 8px;
+  left: 4%;
+  width: 92%;
+  height: 54px;
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  align-items: center;
+  padding: 0 12px;
+  gap: 12px;
+  z-index: 1000;
+  border-radius: 27px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.app-bottom-nav.scrollable-tabs::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.app-bottom-nav.scrollable-tabs {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollable-tabs .nav-tab {
+  flex: 0 0 auto; /* prevent shrinking! */
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 4px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.2s ease;
+  height: 48px;
+  box-shadow: none;
+}
+.scrollable-tabs .nav-tab:hover {
+  background: transparent;
+  transform: scale(1.08);
+}
+.scrollable-tabs .nav-tab.active {
+  background: transparent;
+  color: var(--primary);
+  box-shadow: none;
+  transform: scale(1.1);
+}
+.scrollable-tabs .nav-icon {
+  font-size: 16px;
+}
+.scrollable-tabs .nav-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.room-hotspot {
+  display: none !important;
+}
+@keyframes hotspotPulse {
+  0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.85); }
+  70% { box-shadow: 0 0 0 8px rgba(250, 204, 21, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
+}
+
+
+/* Floating speech bubble from pet */
+.pet-speech-bubble {
+  position: absolute;
+  bottom: 110px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  background: rgba(15, 23, 42, 0.85);
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: 14px;
+  font-family: var(--font-thai);
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  z-index: 30;
+}
+.pet-speech-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+}
+
+/* Interactive Room Action Visual Animations */
+.toothbrush-effect {
+  position: absolute;
+  font-size: 28px;
+  z-index: 22;
+  pointer-events: none;
+  animation: brushTeethMotion 0.8s infinite ease-in-out;
+}
+@keyframes brushTeethMotion {
+  0%, 100% { transform: translate(-10px, 0) rotate(0deg); }
+  50% { transform: translate(15px, -5px) rotate(-15deg); }
+}
+
+.sponge-effect {
+  position: absolute;
+  font-size: 28px;
+  z-index: 22;
+  pointer-events: none;
+  animation: spongeCleanMotion 0.8s infinite ease-in-out;
+}
+@keyframes spongeCleanMotion {
+  0%, 100% { transform: translate(-15px, -10px) scale(1); }
+  50% { transform: translate(15px, 10px) scale(1.1); }
+}
+
+.floating-particle {
+  position: absolute;
+  font-size: 14px;
+  z-index: 21;
+  pointer-events: none;
+  animation: particleFloatUp 1.8s forwards ease-out;
+}
+@keyframes particleFloatUp {
+  0% { transform: translateY(0) scale(0.5); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-80px) translateX(var(--drift, 10px)) scale(1.2); opacity: 0; }
+}
+
+.rain-particle {
+  position: absolute;
+  font-size: 12px;
+  z-index: 21;
+  pointer-events: none;
+  animation: particleRainDown 1.5s forwards linear;
+}
+@keyframes particleRainDown {
+  0% { transform: translateY(-50px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(180px); opacity: 0; }
+}
+
+.flying-food {
+  position: absolute;
+  font-size: 26px;
+  z-index: 22;
+  pointer-events: none;
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.watering-can-effect {
+  position: absolute;
+  font-size: 32px;
+  z-index: 22;
+  pointer-events: none;
+  animation: pourWaterMotion 1.5s forwards ease-in-out;
+}
+@keyframes pourWaterMotion {
+  0% { transform: rotate(0deg); opacity: 0; }
+  20% { transform: rotate(-30deg); opacity: 1; }
+  80% { transform: rotate(-30deg); opacity: 1; }
+  100% { transform: rotate(0deg); opacity: 0; }
+}
+
+/* Posture transforms for room pets */
+.dynamic-pet-display[data-state="standing"] .pet-character-wrapper {
+  transform: translateY(40px) rotate(0deg) scale(1) !important;
+}
+.dynamic-pet-display[data-state="sitting"] .pet-character-wrapper {
+  transform: translateY(52px) scaleY(0.88) scaleX(1.02) rotate(0deg) !important;
+}
+.dynamic-pet-display[data-state="sleeping"] .pet-character-wrapper {
+  transform: translateY(45px) rotate(-75deg) translate(-22px, 16px) scale(1) !important;
+}
+
+/* Game Bubble Styles (Larger Balloons) */
+.game-bubble-elem {
+  position: absolute;
+  font-size: 54px;
+  cursor: pointer;
+  user-select: none;
+  animation: gameBubbleRise 2.8s linear forwards;
+  z-index: 60;
+}
+
+@keyframes gameBubbleRise {
+  0% { top: 100%; transform: scale(0.8) rotate(0deg); opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: -20px; transform: scale(1.1) rotate(15deg); opacity: 0; }
+}
+
+/* Shop bought / locked apparel styles */
+.bought-item {
+  opacity: 0.55;
+  pointer-events: none;
+  background: var(--bg-card) !important;
+  border: 1px dashed var(--border-color) !important;
+}
+.locked-apparel {
+  opacity: 0.65;
+  background: rgba(15, 23, 42, 0.04) !important;
+  border: 1px dashed var(--border-color) !important;
+}
+
+/* Card Flip styles for reveal game */
+.reveal-card-outer {
+  background-color: transparent;
+  width: 100%;
+  height: 120px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+.reveal-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  border-radius: 12px;
+}
+.reveal-card-inner.flipped {
+  transform: rotateY(180deg);
+}
+.reveal-card-front, .reveal-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.reveal-card-front {
+  background: linear-gradient(135deg, var(--primary-light) 0%, #ffc2d1 100%);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 20px;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+.reveal-card-back {
+  background-size: cover;
+  background-position: center;
+  transform: rotateY(180deg);
+  border: 1.5px solid var(--primary-light);
+}
+
+/* Modal slide up animation */
+@keyframes slideUpModal {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(0); }
+}
+
+/* ==========================================================================

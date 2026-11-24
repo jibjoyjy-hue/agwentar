@@ -1,0 +1,157 @@
+/* 15-misc.css: ปรับขนาดแบบเดิม การลากชุด แอนิเมชันกินอาหาร และอื่น ๆ */
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 768px) {
+  body {
+    padding: 0;
+    align-items: stretch;
+    background: none;
+  }
+  .preview-layout {
+    gap: 0;
+  }
+  .phone-frame {
+    width: 100%;
+    height: 100vh;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .phone-notch {
+    display: none;
+  }
+}
+
+/* Posture Specific Animation Control */
+.dynamic-pet-display[data-state="standing"] .pet-body-img,
+.dynamic-pet-display[data-state="sitting"] .pet-body-img {
+  animation: none !important;
+}
+
+.posture-btn.active {
+  background: var(--primary) !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 10px rgba(167, 139, 250, 0.3);
+}
+
+@keyframes petEggWobble {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-8deg) scale(1.02); }
+  75% { transform: rotate(8deg) scale(1.02); }
+}
+
+#petDressingContainer .pet-apparel-overlay {
+  pointer-events: none !important;
+  user-select: none;
+  touch-action: none;
+}
+#petDressingContainer .pet-apparel-overlay.active-drag-target {
+  pointer-events: auto !important;
+  cursor: grab;
+  outline: 2px dashed #38bdf8;
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+#petDressingContainer .pet-apparel-overlay.active-drag-target:active {
+  cursor: grabbing;
+}
+
+/* Food Item Eating Animation Container */
+.eating-food-overlay {
+  position: absolute;
+  left: 50%;
+  top: 64%;
+  transform: translate(-50%, -50%);
+  z-index: 35;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  animation: foodPopIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.eating-food-emoji {
+  font-size: 56px;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+  animation: foodNomNom 1.3s ease-in-out forwards;
+}
+
+@keyframes foodPopIn {
+  0% {
+    transform: translate(-50%, -20%) scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.35);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes foodNomNom {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  20% {
+    transform: scale(0.9) rotate(-14deg);
+  }
+  40% {
+    transform: scale(0.72) rotate(14deg);
+  }
+  60% {
+    transform: scale(0.5) rotate(-10deg);
+  }
+  80% {
+    transform: scale(0.25) rotate(10deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+/* Munching Pet Wobble */
+@keyframes petMunchBouncing {
+  0% { transform: scale(1) translateY(0); }
+  25% { transform: scale(1.1, 0.9) translateY(4px); }
+  50% { transform: scale(0.92, 1.08) translateY(-10px); }
+  75% { transform: scale(1.06, 0.94) translateY(2px); }
+  100% { transform: scale(1) translateY(0); }
+}
+
+.pet-munching {
+  animation: petMunchBouncing 0.4s ease-in-out 3 !important;
+}
+
+/* Floating Nom Crumbs / Sparkles */
+.nom-crumb-particle {
+  position: absolute;
+  font-size: 20px;
+  pointer-events: none;
+  animation: crumbFloat 1s ease-out forwards;
+  z-index: 40;
+}
+
+@keyframes crumbFloat {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(0.2);
+    opacity: 0;
+  }
+}
+
+
+
+/* ปีกอยู่ด้านหลังตัวน้อง (น้องตัวมาตรฐาน) */
+.pet-outfit-stack { position: relative; z-index: 1; }
+.pet-apparel-overlay[data-cat="wings"] { z-index: 0; }
+
+
+/* ===== สมาชิกพรีเมียม ===== */

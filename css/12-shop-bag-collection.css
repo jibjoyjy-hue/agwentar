@@ -1,0 +1,362 @@
+/* 12-shop-bag-collection.css: ร้านค้า กระเป๋า สมุดสะสม ความสำเร็จ */
+/* SCREEN 16: Shop */
+.shop-tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+.shop-tab {
+  flex-shrink: 0;
+  white-space: nowrap;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.shop-tab.active {
+  background: transparent;
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
+}
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.shop-item-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  position: relative;
+}
+.shop-item-emoji {
+  font-size: 24px;
+}
+.shop-item-name {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+}
+.shop-item-price {
+  font-family: var(--font-eng);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: rgba(167, 139, 250, 0.1);
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+/* SCREEN 17: Bag */
+.bag-tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+.bag-tab {
+  flex-shrink: 0;
+  white-space: nowrap;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.bag-tab.active {
+  background: transparent;
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
+}
+.bag-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.bag-item-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.bag-item-emoji {
+  font-size: 24px;
+}
+.bag-item-qty {
+  font-family: var(--font-eng);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+/* SCREEN 18: Collection Book */
+.collection-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.collection-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  padding: 12px 14px;
+}
+.collection-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.collection-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.collection-progress-txt {
+  font-family: var(--font-eng);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+.collection-sub-bar {
+  height: 6px;
+  background: #f1f5f9;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.collection-sub-fill {
+  height: 100%;
+  background: var(--primary);
+}
+
+/* SCREEN 19: Achievement */
+.achieve-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.achieve-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.achieve-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-grow: 1;
+}
+.achieve-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.achieve-desc {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+.achieve-progress-bar {
+  height: 4px;
+  background: #f1f5f9;
+  border-radius: 2px;
+  margin-top: 4px;
+  max-width: 140px;
+  overflow: hidden;
+}
+.achieve-progress-fill {
+  height: 100%;
+  background: var(--primary);
+}
+.achieve-claim-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.achieve-claim-btn.claimed {
+  background: #f1f5f9;
+  color: var(--text-muted);
+  cursor: default;
+}
+
+/* SCREEN 20: Bond */
+.bond-header-card {
+  background: var(--bg-card);
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.bond-lvl-txt {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.bond-bar-container {
+  width: 100%;
+  height: 10px;
+  background: #f1f5f9;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+.bond-bar-fill {
+  width: 87.5%;
+  height: 100%;
+  background: #f472b6;
+}
+
+.bond-illustration-area {
+  height: 200px;
+  background: url('../assets/bond_bg.png') no-repeat center/cover;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 12px;
+  border: 1.5px solid var(--border-color);
+}
+.bond-speech {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.bond-actions-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+/* SCREEN 21: Evolution */
+.evolution-flow-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 0;
+  position: relative;
+}
+.evolution-flow-container::after {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 20px;
+  right: 20px;
+  height: 3px;
+  background: var(--border-color);
+  z-index: 1;
+}
+.evolution-stage-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  z-index: 2;
+  flex: 1;
+}
+.stage-circle {
+  width: 48px;
+  height: 48px;
+  background: var(--bg-card);
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.stage-circle.active {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.stage-name {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.stage-req {
+  font-size: 8px;
+  color: var(--text-muted);
+}
+
+.evolution-buttons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.evolve-stage-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.evolve-btn-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.evolve-stage-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.evolve-stage-desc {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+.evolve-price-pill {
+  font-family: var(--font-eng);
+  font-size: 10px;
+  font-weight: 700;
+  color: #d97706;
+  background: #fffbeb;
+  padding: 4px 10px;
+  border-radius: 8px;
+}

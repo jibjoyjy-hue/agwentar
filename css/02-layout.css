@@ -1,0 +1,284 @@
+/* 02-layout.css: โครงหน้าแอป แถบหัว พื้นที่เนื้อหา */
+/* ==========================================================================
+   DESKTOP PREVIEW LAYOUT (Only showing emulator)
+   ========================================================================== */
+.preview-layout {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  max-width: 1200px;
+  width: 100%;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   MOBILE EMULATOR FRAME
+   ========================================================================== */
+.phone-frame {
+  width: var(--phone-width);
+  height: var(--phone-height);
+  background-color: #0d0e1a;
+  border: 12px solid #23253a;
+  border-radius: 40px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(129, 140, 248, 0.15);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.phone-notch {
+  width: 140px;
+  height: 24px;
+  background-color: #23253a;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  z-index: 1000;
+  transition: background-color 0.4s ease;
+}
+
+/* Theme border colors only when playing Coin Catcher mini-game */
+.phone-frame.catcher-active {
+  border-color: var(--primary);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px var(--primary-glow);
+}
+.phone-frame.catcher-active .phone-notch {
+  background-color: var(--primary);
+}
+
+/* ==========================================================================
+   APP CONTAINER
+   ========================================================================== */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background: var(--bg-app-gradient);
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   HEADER SECTION
+   ========================================================================== */
+.app-header {
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border-color);
+  padding: 34px 14px 10px 14px; /* extra top padding for notch */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(167, 139, 250, 0.05);
+}
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.profile-info {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 8px;
+}
+.avatar-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e0e7ff;
+  border: 1.5px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.mini-blob-svg {
+  width: 80%;
+  height: 80%;
+}
+.name-lvl {
+  display: flex;
+  flex-direction: column;
+}
+.char-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.lvl-badge {
+  font-family: var(--font-eng);
+  font-size: 10px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gift-noti-btn, .gear-settings-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
+  transition: transform 0.2s ease;
+}
+.gift-noti-btn:hover, .gear-settings-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Status counters */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+.status-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-eng);
+  font-size: 9px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+}
+.stat-icon {
+  font-size: 11px;
+  z-index: 2;
+}
+.stat-val {
+  flex-grow: 1;
+  text-align: center;
+  color: var(--text-primary);
+  z-index: 2;
+}
+.add-stat-btn {
+  width: 14px;
+  height: 14px;
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+.status-hp-bg {
+  position: absolute;
+  top: 0; left: 0; height: 100%; width: 92%;
+  background: rgba(244, 114, 182, 0.15);
+}
+.status-energy-bg {
+  position: absolute;
+  top: 0; left: 0; height: 100%; width: 84%;
+  background: rgba(251, 191, 36, 0.15);
+}
+
+/* ==========================================================================
+   MAIN CONTENTS AREA
+   ========================================================================== */
+.app-main-content {
+  flex-grow: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.screen {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 14px;
+  padding-bottom: calc(var(--nav-height) + 14px);
+}
+.screen.active {
+  display: flex;
+}
+
+/* Custom Standard Screen Header */
+.screen-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+.screen-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.screen-back-btn, .screen-close-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.screen-back-btn:hover, .screen-close-btn:hover {
+  background: rgba(167, 139, 250, 0.1);
+}
+
+/* Common Components */
+.card {
+  background: var(--bg-card);
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  padding: 14px;
+  box-shadow: 0 4px 15px rgba(167, 139, 250, 0.04);
+  margin-bottom: 12px;
+}
+.btn-gradient {
+  background: linear-gradient(135deg, var(--primary) 0%, #c084fc 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(167, 139, 250, 0.2);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(167, 139, 250, 0.3);
+}

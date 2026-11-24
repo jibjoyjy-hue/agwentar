@@ -1,0 +1,62 @@
+/* 06-house-map.css: หน้าบ้าน (แผนที่ห้อง) */
+/* SCREEN 4: Pet House (Map / Floating Bubbles) */
+.house-map-container {
+  flex-grow: 1;
+  background: url('../assets/playground.png') no-repeat center/cover;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid var(--border-color);
+  min-height: 480px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+}
+.map-room-bubble {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1.5px solid var(--border-color);
+  border-radius: 12px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary);
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+.map-room-bubble:hover {
+  transform: scale(1.05);
+  border-color: var(--primary);
+  background: var(--bg-card);
+}
+.bubble-thumbnail {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid var(--border-color);
+}
+.map-pet-standing {
+  position: absolute;
+  bottom: 8%;
+  right: 15%;
+  z-index: 10;
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,0.2));
+  animation: mapPetBounce 2s infinite alternate ease-in-out;
+}
+@keyframes mapPetBounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-6px); }
+}
+
+/* Map bubble node positions */
+.node-bedroom { top: 12%; left: 12%; }
+.node-dining { top: 10%; right: 12%; }
+.node-living { top: 38%; left: 10%; }
+.node-bathroom { top: 34%; right: 10%; }
+.node-garden { bottom: 32%; left: 12%; }
+.node-activity { bottom: 12%; left: 15%; }
+.node-dressing { bottom: 25%; right: 12%; }
