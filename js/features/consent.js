@@ -7,7 +7,7 @@
 
 const CONSENT_VERSION = 1;
 // ชื่อผู้ให้บริการ AI ที่ใช้จริง (ใส่เมื่อเลือกแล้ว) และลิงก์นโยบายความเป็นส่วนตัวของแอป (ถ้ามี)
-const CONSENT_AI_PROVIDER = "";
+const CONSENT_AI_PROVIDER = "Google Gemini";
 const CONSENT_PRIVACY_URL = "";
 
 function consentNeeded() {
