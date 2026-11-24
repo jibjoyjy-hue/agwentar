@@ -58,7 +58,9 @@ function saveGameState() {
       // สมาชิกพรีเมียม (เดิมไม่ได้บันทึก ทำให้สิทธิ์หายเมื่อเปิดแอปใหม่)
       premium: state.premium || null,
       premiumCodesUsed: state.premiumCodesUsed || [],
-      psyTickets: state.psyTickets || []
+      psyTickets: state.psyTickets || [],
+      // ความยินยอมผู้ปกครอง (js/features/consent.js)
+      consent: state.consent || null
     };
     localStorage.setItem(SAVE_KEY, JSON.stringify(dataToSave));
   } catch (e) {

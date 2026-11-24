@@ -180,8 +180,14 @@ function syncUI() {
 
   const shooterBadge = document.getElementById("shooterUnlockBadge");
   if (shooterBadge) {
-    shooterBadge.innerText = state.level >= 15 ? "✨ ปลดล็อกแล้ว! (คะแนนสูงสุด: 680)" : "🔒 ปลดล็อกเมื่อถึง เลเวล 15";
+    shooterBadge.innerText = state.level >= 15 ? "✨ ปลดล็อกแล้ว!" : "🔒 ปลดล็อกเมื่อถึง เลเวล 15";
     shooterBadge.style.color = state.level >= 15 ? "#4ade80" : "#f87171";
+  }
+
+  const gardenBadge = document.getElementById("gardenUnlockBadge");
+  if (gardenBadge) {
+    gardenBadge.innerText = state.level >= 25 ? "✨ ปลดล็อกแล้ว!" : "🔒 ปลดล็อกเมื่อถึง เลเวล 25";
+    gardenBadge.style.color = state.level >= 25 ? "#4ade80" : "#f87171";
   }
 
   const cakeBadge = document.getElementById("cakeStackUnlockBadge");

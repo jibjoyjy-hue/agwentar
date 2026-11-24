@@ -50,7 +50,7 @@ function getNeighbors(r, c) {
 }
 
 function startBallShooterGame() {
-  if (!checkLevelUnlock(15, "มินิเกมยิงอารมณ์บับเบิ้ล")) return;
+  if (!checkLevelUnlock(15, "มินิเกมลูกบอลอารมณ์")) return;
   shooterScore = 0;
   shooterAngle = -Math.PI / 2;
   isShooterGameRunning = true;
@@ -176,20 +176,7 @@ function runShooterLoop(canvas, ctx) {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   
   // Draw deadline warning line (red dashed)
-  ctx.beginPath();
-  ctx.setLineDash([4, 4]);
-  ctx.moveTo(0, 290);
-  ctx.lineTo(canvas.width, 290);
-  ctx.strokeStyle = "#ef4444";
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.setLineDash([]);
-  
-  // Draw deadline label text
-  ctx.fillStyle = "#ef4444";
-  ctx.font = "bold 9px sans-serif";
-  ctx.textAlign = "right";
-  ctx.fillText("DEADLINE ⚠️", canvas.width - 10, 282);
+  // ไม่มีเส้นเดดไลน์: เกมนี้ไม่มีการแพ้ (ข้อ 14)
   
   // Update flying ball
   if (currentShotBall && currentShotBall.isFlying) {
@@ -275,8 +262,13 @@ function runShooterLoop(canvas, ctx) {
         }
       }
       if (crossed) {
-        stopBallShooterGame(true);
-        return;
+        // ลูกบอลลงมาถึงด้านล่าง: ปล่อยลูกที่อยู่ต่ำสุดให้ลอยขึ้นฟ้า แล้วเล่นต่อได้ ไม่มีการแพ้
+        for (let r = 0; r < 8; r++) {
+          for (let c = 0; c < 8; c++) {
+            const b = shooterGrid[r][c];
+            if (b && getBubbleCoords(r, c).y >= 250) { shooterAddFloater(r, c, b); shooterGrid[r][c] = null; }
+          }
+        }
       }
       
       // Load next ball
@@ -284,6 +276,9 @@ function runShooterLoop(canvas, ctx) {
     }
   }
   
+  // ลูกบอลที่ถูกปล่อย ลอยขึ้นและจางหายไป
+  shooterDrawFloaters(ctx);
+
   // Draw ceiling grid bubbles (staggered)
   for (let r = 0; r < 8; r++) {
     for (let c = 0; c < 8; c++) {
@@ -407,8 +402,9 @@ function checkBubbleShooterMatches(startR, startC, targetColor) {
   }
   
   if (matches.length >= 3) {
-    // Pop them!
+    // ปล่อยให้ลอยขึ้นฟ้า ทุกอารมณ์ได้คะแนนเท่ากัน
     matches.forEach(([r, c]) => {
+      shooterAddFloater(r, c, shooterGrid[r][c]);
       shooterGrid[r][c] = null;
     });
     shooterScore += matches.length * 30;
@@ -452,6 +448,7 @@ function dropOrphanBubbles() {
   for (let r = 0; r < 8; r++) {
     for (let c = 0; c < 8; c++) {
       if (shooterGrid[r][c] && !visited[`${r},${c}`]) {
+        shooterAddFloater(r, c, shooterGrid[r][c]);
         shooterGrid[r][c] = null;
         shooterScore += 15; // bonus points for dropping
       }
@@ -471,14 +468,30 @@ function stopBallShooterGame(completed = true) {
     const coinsEarned = Math.min(200, Math.floor(shooterScore / 2));
     state.coins += coinsEarned;
     
-    if (shooterScore > shooterHighScore) {
-      shooterHighScore = shooterScore;
-      document.getElementById("highScoreShooter").innerText = `คะแนนสูงสุด: ${shooterHighScore.toLocaleString()}`;
-    }
-    
+    if (shooterScore > shooterHighScore) shooterHighScore = shooterScore;
     syncUI();
-    alert(`🎉 เล่นจบแล้ว! คุณเคลียร์ลูกบอลอารมณ์ได้ ${shooterScore} คะแนน ได้รับรางวัล +${coinsEarned} เหรียญทอง 🪙`);
-  } else {
-    alert("ออกจากการเล่นเกมยิงลูกบอลแล้วค่ะ");
+    if (coinsEarned > 0) alert(`🎈 ปล่อยลูกบอลอารมณ์ลอยไปได้ ${shooterScore} คะแนน ได้รับ +${coinsEarned} เหรียญทอง 🪙`);
   }
+}
+
+
+// ---- ลูกบอลที่ลอยขึ้นฟ้า (แทนการ "ระเบิด") ----
+let shooterFloaters = [];
+function shooterAddFloater(r, c, bubble) {
+  if (!bubble) return;
+  const p = getBubbleCoords(r, c);
+  shooterFloaters.push({ x: p.x, y: p.y, color: bubble.color, emoji: bubble.emoji, life: 1, drift: (Math.random() - 0.5) * 0.6 });
+}
+function shooterDrawFloaters(ctx) {
+  const r = (typeof shooterCellWidth === "number" ? shooterCellWidth : 32) / 2 - 1;
+  shooterFloaters = shooterFloaters.filter(f => f.life > 0);
+  shooterFloaters.forEach(f => {
+    f.y -= 1.6; f.x += f.drift; f.life -= 0.012;
+    ctx.globalAlpha = Math.max(0, f.life);
+    ctx.beginPath(); ctx.arc(f.x, f.y, r, 0, Math.PI * 2); ctx.fillStyle = f.color; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(f.x, f.y + r); ctx.lineTo(f.x, f.y + r + 10); ctx.strokeStyle = "rgba(255,255,255,0.5)"; ctx.lineWidth = 1; ctx.stroke();
+    ctx.font = `${Math.round(r * 1.3)}px sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(f.emoji, f.x, f.y + 0.5);
+    ctx.globalAlpha = 1;
+  });
 }

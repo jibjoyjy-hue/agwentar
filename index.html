@@ -14,8 +14,8 @@
   <link rel="stylesheet" href="css/03-pet.css?v=61">
   <link rel="stylesheet" href="css/04-common-furniture.css?v=61">
   <link rel="stylesheet" href="css/05-select-pet-info.css?v=61">
-  <link rel="stylesheet" href="css/06-house-map.css?v=61">
-  <link rel="stylesheet" href="css/07-rooms.css?v=61">
+  <link rel="stylesheet" href="css/06-house-map.css?v=62">
+  <link rel="stylesheet" href="css/07-rooms.css?v=62">
   <link rel="stylesheet" href="css/08-mood-chat.css?v=62">
   <link rel="stylesheet" href="css/09-diary-vent.css?v=61">
   <link rel="stylesheet" href="css/10-quests.css?v=61">
@@ -728,16 +728,16 @@
 
             <div class="game-item-card" onclick="startBallShooterGame()">
               <div class="game-details">
-                <span class="game-name">😠 ยิงอารมณ์บับเบิ้ล (Bubble Shooter)</span>
+                <span class="game-name">🎈 ลูกบอลอารมณ์ (จับคู่ 3 ลูกแล้วปล่อยให้ลอย)</span>
                 <span class="game-highscore" id="shooterUnlockBadge">🔒 ปลดล็อกที่ Lv.15</span>
               </div>
               <span style="font-size:18px;">▶</span>
             </div>
 
-            <div class="game-item-card" onclick="startCakeStackGame()">
+            <div class="game-item-card" onclick="nav('screen-8'); startGardenFarmGame()">
               <div class="game-details">
-                <span class="game-name">🧱 หอคอยบล็อกสายรุ้ง (Block Stack Jump)</span>
-                <span class="game-highscore" id="cakeStackUnlockBadge">🔒 ปลดล็อกที่ Lv.5</span>
+                <span class="game-name">🌱 ปลูกสวน (หว่านเมล็ด รอผักโต แล้วเก็บเมื่อไหร่ก็ได้)</span>
+                <span class="game-highscore" id="gardenUnlockBadge">🔒 ปลดล็อกที่ Lv.25</span>
               </div>
               <span style="font-size:18px;">▶</span>
             </div>
@@ -764,7 +764,7 @@
                 <div style="font-size: 13px;">คะแนน: <span id="shooterScoreVal">0</span></div>
               </div>
               <canvas id="shooterCanvas" style="width: 100%; flex-grow: 1; background: #090a0f; border-radius: 16px; margin: 10px 0; border: 1px solid rgba(255, 255, 255, 0.05); touch-action: none;"></canvas>
-              <div style="font-size: 11px; text-align: center; color: #94a3b8; margin-bottom: 10px; font-weight: 700;">💡 แตะที่หน้าจอเพื่อเล็งและยิงจับคู่อารมณ์สีเดียวกัน!</div>
+              <div style="font-size: 11px; text-align: center; color: #94a3b8; margin-bottom: 10px; font-weight: 700;">💡 แตะเพื่อส่งลูกบอลไปจับคู่สีเดียวกัน 3 ลูก แล้วปล่อยให้ลอยขึ้นฟ้า ทุกอารมณ์มีคุณค่าเท่ากัน</div>
             </div>
 
             <!-- Active Game Overlay: Coloring Book -->
@@ -1158,6 +1158,11 @@
                 <span class="menu-item-label">แลกโค้ด</span>
                 <span class="menu-item-arrow">▶</span>
               </div>
+              <div class="menu-item-row" onclick="openConsentSettings()">
+                <span class="menu-item-icon">🛡️</span>
+                <span class="menu-item-label">ความเป็นส่วนตัว และการคุยกับ AI</span>
+                <span class="menu-item-arrow">▶</span>
+              </div>
               <div class="menu-item-row" onclick="triggerMenuAction('ช่วยเหลือ')">
                 <span class="menu-item-icon">❓</span>
                 <span class="menu-item-label">ช่วยเหลือ</span>
@@ -1356,21 +1361,22 @@
   <script src="js/data/outfits_fit.js?v=61"></script>
   <script src="js/data/pets_std.js?v=61"></script>
   <script src="js/features/premium.js?v=62"></script>
-  <script src="js/features/safety.js?v=61"></script>
+  <script src="js/features/safety.js?v=62"></script>
+  <script src="js/features/consent.js?v=1"></script>
   <script src="js/core/ai.js?v=61"></script>
   <script src="js/core/state.js?v=61"></script>
   <script src="js/core/i18n.js?v=61"></script>
-  <script src="js/core/storage.js?v=62"></script>
+  <script src="js/core/storage.js?v=63"></script>
   <script src="js/core/router.js?v=61"></script>
   <script src="js/pets/pet-visual.js?v=61"></script>
-  <script src="js/core/sync-ui.js?v=61"></script>
+  <script src="js/core/sync-ui.js?v=62"></script>
   <script src="js/screens/select-pet.js?v=61"></script>
   <script src="js/core/bindings.js?v=62"></script>
   <script src="js/pets/care-food.js?v=61"></script>
   <script src="js/screens/dressing.js?v=61"></script>
   <script src="js/screens/rooms.js?v=61"></script>
   <script src="js/screens/garden.js?v=61"></script>
-  <script src="js/screens/chat.js?v=61"></script>
+  <script src="js/screens/chat.js?v=62"></script>
   <script src="js/games/minigames-common.js?v=61"></script>
   <script src="js/screens/shop-bag.js?v=61"></script>
   <script src="js/games/spot-diff.js?v=61"></script>
@@ -1379,7 +1385,7 @@
   <script src="js/screens/assessment.js?v=1"></script>
   <script src="js/pets/posture-effects.js?v=61"></script>
   <script src="js/screens/bedroom.js?v=61"></script>
-  <script src="js/games/ball-shooter.js?v=61"></script>
+  <script src="js/games/ball-shooter.js?v=62"></script>
   <script src="js/games/coloring.js?v=61"></script>
   <script src="js/games/reveal-emotion.js?v=61"></script>
   <script src="js/screens/quests.js?v=61"></script>

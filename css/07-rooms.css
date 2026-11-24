@@ -306,3 +306,6 @@
 }
 .dressing-emoji { font-size: 24px; }
 .dressing-name { font-size: 9px; font-weight: 600; color: var(--text-primary); text-align: center; }
+
+/* ธีมมืด: แถบข้อมูลห้องพื้นสีเข้ม */
+html[data-theme="dark"] .room-info-bar { background: rgba(30, 41, 59, 0.88); }

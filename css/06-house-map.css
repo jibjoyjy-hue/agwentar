@@ -60,3 +60,6 @@
 .node-garden { bottom: 32%; left: 12%; }
 .node-activity { bottom: 12%; left: 15%; }
 .node-dressing { bottom: 25%; right: 12%; }
+
+/* ธีมมืด: ป้ายห้องพื้นทึบสีเข้ม ตัวหนังสือจึงไม่กลืนกับพื้น */
+html[data-theme="dark"] .map-room-bubble { background: rgba(30, 41, 59, 0.92); }

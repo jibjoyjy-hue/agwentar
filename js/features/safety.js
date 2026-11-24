@@ -27,7 +27,7 @@ function safetyHasRisk(text) {
   .sf-head-btn { border: none; border-radius: 999px; padding: 6px 10px; font: 700 12px/1 inherit; font-family: inherit;
     color: #1e3a8a; background: #dbeafe; cursor: pointer; white-space: nowrap; }
   .sf-fab { position: fixed; z-index: 900; width: 38px; height: 38px; border: none; border-radius: 50%;
-    top: calc((100vh - var(--app-h, 100vh)) / 2 + env(safe-area-inset-top, 0px) + 12px);
+    bottom: calc((100vh - var(--app-h, 100vh)) / 2 + env(safe-area-inset-bottom, 0px) + 74px);
     right: calc((100vw - var(--app-w, 100vw)) / 2 + 12px);
     font-size: 18px; background: #dbeafe; box-shadow: 0 4px 14px rgba(30, 58, 138, .25); cursor: pointer; }
   .sf-overlay { position: fixed; inset: 0; z-index: 3000; display: none; align-items: center; justify-content: center;
@@ -153,7 +153,7 @@ function startSafetyBreathing() {
 }
 
 // ปุ่ม "ฉันไม่โอเค" กดได้ทุกหน้า
-// หน้าที่มีแถบหัวแอป: ปุ่มอยู่ในแถบหัว / หน้าอื่น: ปุ่มกลมเล็กมุมขวาบน
+// หน้าที่มีแถบหัวแอป: ปุ่มอยู่ในแถบหัว / หน้าอื่น: ปุ่มกลมเล็กมุมขวาล่าง เหนือแถบเมนู
 document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("safetyFab")) return;
   const open = () => openSafetyHelp("button");

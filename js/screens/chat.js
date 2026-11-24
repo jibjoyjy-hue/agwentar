@@ -122,6 +122,16 @@ async function sendChatMessage() {
   const input = document.getElementById("chatInput");
   const text = input.value.trim();
   if (!text) return;
+  if (typeof aiAllowed === "function" && !aiAllowed()) {
+    if (typeof safetyHasRisk === "function" && safetyHasRisk(text)) { openSafetyHelp("risk"); return; }
+    const c = document.getElementById("chatContainer");
+    const b = document.createElement("div");
+    b.className = "chat-bubble bot";
+    b.innerText = "ตอนนี้ยังคุยกับ AI ไม่ได้ เพราะผู้ปกครองยังไม่ได้อนุญาต ขอให้ผู้ปกครองเปิด เมนูเพิ่มเติม → ความเป็นส่วนตัว และการคุยกับ AI นะ 💙";
+    c.appendChild(b);
+    c.scrollTop = c.scrollHeight;
+    return;
+  }
   
   input.value = "";
   isAiThinking = true;
