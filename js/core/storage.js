@@ -51,7 +51,14 @@ function saveGameState() {
       lastDiaryDate: state.lastDiaryDate,
       diaryHistory: state.diaryHistory || [],
       ownedFurniture: state.ownedFurniture || ["wall_none", "floor_none", "table_none"],
-      placedFurniture: state.placedFurniture || { wall: "wall_none", floor: "floor_none", table: "table_none" }
+      placedFurniture: state.placedFurniture || { wall: "wall_none", floor: "floor_none", table: "table_none" },
+      // แบบประเมิน (เก็บในเครื่องเท่านั้น)
+      ageBand: state.ageBand || "",
+      assessmentHistory: state.assessmentHistory || [],
+      // สมาชิกพรีเมียม (เดิมไม่ได้บันทึก ทำให้สิทธิ์หายเมื่อเปิดแอปใหม่)
+      premium: state.premium || null,
+      premiumCodesUsed: state.premiumCodesUsed || [],
+      psyTickets: state.psyTickets || []
     };
     localStorage.setItem(SAVE_KEY, JSON.stringify(dataToSave));
   } catch (e) {

@@ -207,9 +207,7 @@ function processPetNameWithLevelCode(inputName) {
 
 
 
-  // Screen 11: Mood Test Event Listeners
-  document.getElementById("btnNextQuestion").addEventListener("click", handleNextMoodQuestion);
-  document.getElementById("btnRestartMoodTest").addEventListener("click", initMoodTest);
+  // Screen 11: แบบประเมิน (ปุ่มต่าง ๆ ผูกใน js/screens/assessment.js)
 
   // Screen 11: Chatbot Tabs
   document.getElementById("tabMoodTest").addEventListener("click", () => {

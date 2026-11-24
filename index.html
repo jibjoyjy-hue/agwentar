@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="css/05-select-pet-info.css?v=61">
   <link rel="stylesheet" href="css/06-house-map.css?v=61">
   <link rel="stylesheet" href="css/07-rooms.css?v=61">
-  <link rel="stylesheet" href="css/08-mood-chat.css?v=61">
+  <link rel="stylesheet" href="css/08-mood-chat.css?v=62">
   <link rel="stylesheet" href="css/09-diary-vent.css?v=61">
   <link rel="stylesheet" href="css/10-quests.css?v=61">
   <link rel="stylesheet" href="css/11-minigames.css?v=61">
@@ -542,54 +542,18 @@
           <section class="screen" id="screen-11">
             <div class="screen-header">
               <button class="screen-back-btn" onclick="nav('screen-1')">←</button>
-              <div class="screen-title">ทดสอบอารมณ์ + AI</div>
+              <div class="screen-title">แบบประเมิน + AI</div>
               <div style="width: 28px;"></div>
             </div>
             
             <div class="mood-ai-tabs">
-              <div class="mood-ai-tab active" id="tabMoodTest">แบบทดสอบอารมณ์</div>
+              <div class="mood-ai-tab active" id="tabMoodTest">แบบประเมิน</div>
               <div class="mood-ai-tab" id="tabJoyAi">Gwentar AI</div>
             </div>
             
             <!-- Tab Contents 1: Mood Test -->
             <div class="mood-test-content" id="moodTestView">
-              <!-- Question Mode -->
-              <div id="moodQuestionContainer" style="display: flex; flex-direction: column; gap: 15px; width: 100%;">
-                <div class="card mood-question-box">
-                  <div class="mood-q-num" id="qNum">ข้อ 1/10</div>
-                  <div class="mood-q-text" id="qText">ตื่นนอนวันนี้ คุณรู้สึกอย่างไร?</div>
-                </div>
-                
-                <div class="mood-choices-list" id="qChoices">
-                  <!-- Choices will be rendered dynamically by JavaScript -->
-                </div>
-                
-                <button class="btn-gradient" style="width: 100%;" id="btnNextQuestion">ต่อไป</button>
-              </div>
-
-              <!-- Results Mode -->
-              <div id="moodTestResultView" style="display: none; flex-direction: column; gap: 15px; width: 100%;">
-                <div class="card result-header-card" style="text-align: center; background: linear-gradient(135deg, #818cf8, #f472b6); color: white; padding: 16px; border-radius: 20px;">
-                  <h3 style="margin: 0 0 5px 0; font-size: 16px;">วิเคราะห์อารมณ์ของคุณวันนี้</h3>
-                  <p style="font-size: 11px; opacity: 0.9; margin: 0;">คำแนะนำเพื่อหัวใจที่แข็งแรงจาก Gwentar</p>
-                </div>
-                
-                <div class="card result-detail-card" style="padding: 16px; border-radius: 20px;">
-                  <h4 id="resultMoodTitle" style="margin: 0 0 8px 0; font-size: 14px; color: var(--primary);">😊 วิเคราะห์อารมณ์</h4>
-                  <p id="resultMoodDesc" style="font-size: 12px; line-height: 1.6; color: var(--text-secondary); margin: 0;">
-                    คำอธิบายผสมผสานอารมณ์ของคุณ...
-                  </p>
-                </div>
-
-                <div class="card" style="padding: 16px; border-radius: 20px;">
-                  <h4 style="margin: 0 0 10px 0; font-size: 13px;">คะแนนอารมณ์ของคุณ</h4>
-                  <div id="resultMoodScores" style="display: flex; flex-direction: column; gap: 8px;">
-                    <!-- dynamically rendered bars -->
-                  </div>
-                </div>
-
-                <button class="btn-gradient" style="width: 100%;" id="btnRestartMoodTest">ทำแบบทดสอบอีกครั้ง</button>
-              </div>
+              <div id="assessmentRoot" class="asm-root"></div>
             </div>
             
             <!-- Tab Contents 2: AI Chatbot -->
@@ -1396,12 +1360,12 @@
   <script src="js/core/ai.js?v=61"></script>
   <script src="js/core/state.js?v=61"></script>
   <script src="js/core/i18n.js?v=61"></script>
-  <script src="js/core/storage.js?v=61"></script>
+  <script src="js/core/storage.js?v=62"></script>
   <script src="js/core/router.js?v=61"></script>
   <script src="js/pets/pet-visual.js?v=61"></script>
   <script src="js/core/sync-ui.js?v=61"></script>
   <script src="js/screens/select-pet.js?v=61"></script>
-  <script src="js/core/bindings.js?v=61"></script>
+  <script src="js/core/bindings.js?v=62"></script>
   <script src="js/pets/care-food.js?v=61"></script>
   <script src="js/screens/dressing.js?v=61"></script>
   <script src="js/screens/rooms.js?v=61"></script>
@@ -1412,7 +1376,7 @@
   <script src="js/games/spot-diff.js?v=61"></script>
   <script src="js/games/food-match.js?v=61"></script>
   <script src="js/screens/misc.js?v=61"></script>
-  <script src="js/screens/mood-test.js?v=61"></script>
+  <script src="js/screens/assessment.js?v=1"></script>
   <script src="js/pets/posture-effects.js?v=61"></script>
   <script src="js/screens/bedroom.js?v=61"></script>
   <script src="js/games/ball-shooter.js?v=61"></script>
