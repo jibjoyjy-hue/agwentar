@@ -18,6 +18,9 @@ const PET_STAGES = [
   { id: "adult", name: "โตแล้ว",   minLevel: 25 },
 ];
 
+// รูปไข่ที่ใช้กับสัตว์ทุกตัว (ถ้าสัตว์ตัวไหนมี egg.png ของตัวเอง จะใช้ของตัวเองก่อน)
+const PET_EGG_ART = "assets/pets/egg.png";
+
 // รูปที่วาดเสร็จแล้ว: ชื่อสัตว์ (ตัวพิมพ์เล็ก) -> รายชื่อร่างที่มีไฟล์
 const PET_STAGE_ART = {
   // bunny: ["egg", "baby"],
@@ -30,7 +33,9 @@ function getPetStage(level = state.level) {
 }
 function petStageArt(petKey, stageId) {
   const list = PET_STAGE_ART[petKey];
-  return list && list.includes(stageId) ? `assets/pets/${petKey}/${stageId}.png` : "";
+  if (list && list.includes(stageId)) return `assets/pets/${petKey}/${stageId}.png`;
+  if (stageId === "egg" && PET_EGG_ART) return PET_EGG_ART;
+  return "";
 }
 function eggQuestsLeft() {
   return Math.max(0, EGG_QUESTS_TO_HATCH - (state.eggQuestsDone || 0));

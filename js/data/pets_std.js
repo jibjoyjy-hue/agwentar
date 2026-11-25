@@ -138,7 +138,7 @@
     if (!H || !L) return "";
     const u = "sp" + uid++;
     const hp = L.vectorHead ? { top: 7 } : headPlace(H);
-    const head = L.vectorHead ? bearHead(L, u) : `<image href="assets/pethead/${petKey}.png?v=3" x="${hp.x.toFixed(2)}" y="${hp.y.toFixed(2)}" width="${(100 * hp.s).toFixed(2)}" height="${(100 * hp.s).toFixed(2)}" preserveAspectRatio="xMidYMid meet"/>`;
+    const head = L.vectorHead ? bearHead(L, u) : `<image href="assets/pethead/${petKey}.png?v=4" x="${hp.x.toFixed(2)}" y="${hp.y.toFixed(2)}" width="${(100 * hp.s).toFixed(2)}" height="${(100 * hp.s).toFixed(2)}" preserveAspectRatio="xMidYMid meet"/>`;
     let under = "", over = "";
     const draw = outfitId && window.__outfitDraw ? (k) => window.__outfitDraw(outfitId, k) : null;
     if (draw) {

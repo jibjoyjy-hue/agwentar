@@ -57,7 +57,7 @@ function renderSelectPetGrid() {
     const stdPetKey = petLower === "gwentar" ? "bear" : petLower;
     const avatarHtml = (window.hasStandardPet && (stdPetKey === "aimee" || stdPetKey === "bear"))
       ? `<span style="display:inline-block; width:34px; height:34px;">${getStandardPetSvg(stdPetKey, 34, "")}</span>` // น้องตัวมาตรฐาน (หมีเป็น 2 มิติ)
-      : `<img src="assets/${petLower}.png?v=9" style="width: 34px; height: 34px; object-fit: contain;" onerror="this.outerHTML='${p.emoji}'">`;
+      : `<img src="assets/${petLower}.png?v=10" style="width: 34px; height: 34px; object-fit: contain;" onerror="this.outerHTML='${p.emoji}'">`;
     
     let badgeHtml = "";
     if (state.petChosen) {
