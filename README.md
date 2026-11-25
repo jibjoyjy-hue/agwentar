@@ -35,6 +35,10 @@ ai-proxy/             Cloudflare Worker สำหรับคุยกับ AI
 
 ## ตั้งค่า Cloudflare Worker (ai-proxy/)
 
+วิธีง่าย: ดับเบิลคลิก `ai-proxy/setup.bat` สคริปต์จะล็อกอิน สร้าง KV ใส่ id ใน `wrangler.toml` ถามค่า secret ที่ยังไม่มี deploy และทดสอบให้เอง
+
+หรือทำเองทีละคำสั่ง:
+
 ทำครั้งแรกครั้งเดียว ในโฟลเดอร์ `ai-proxy`:
 
 ```
