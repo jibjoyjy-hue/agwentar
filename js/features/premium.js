@@ -34,8 +34,28 @@ const PREMIUM_ERRORS = {
   too_many: "โค้ดนี้ถูกใช้ครบจำนวนเครื่องแล้ว ทักแอดมินทางไลน์",
   too_many_tries: "ลองกรอกโค้ดหลายครั้งเกินไป ลองใหม่พรุ่งนี้นะ",
 };
+// ---- โค้ดทดลอง (ชั่วคราว) ----
+// พิมพ์ iamaimee ในช่องแลกโค้ด = พรีเมียมทดลอง PREMIUM_TRIAL_DAYS วัน ตรวจในเครื่องเท่านั้น
+// ได้ธีมพิเศษและสิทธิ์อื่นในแอป แต่รับตั๋วพบจิตแพทย์ไม่ได้ (ตั๋วออกจาก server ด้วยโค้ดจริงเท่านั้น)
+// โค้ดนี้อยู่ในไฟล์ที่ใครก็เปิดดูได้ เลิกทดลองเมื่อไหร่ให้ตั้ง PREMIUM_TRIAL_CODE = ""
+const PREMIUM_TRIAL_CODE = "iamaimee";
+const PREMIUM_TRIAL_DAYS = 7;
+function isPremiumTrial() {
+  return !!(state.premium && state.premium.trial);
+}
+function redeemPremiumTrial() {
+  if (isPremiumMember() && !isPremiumTrial()) return { ok: false, msg: "คุณเป็นสมาชิกพรีเมียมอยู่แล้ว" };
+  const end = new Date(Date.now() + PREMIUM_TRIAL_DAYS * 864e5);
+  state.premium = { plan: "trial", trial: true, start: new Date().toISOString(), end: end.toISOString(), code: "TRIAL" };
+  premiumSave();
+  return { ok: true, msg: `เปิดพรีเมียมทดลองแล้ว ถึง ${pDate(end)}` };
+}
+
 // คืน { ok, msg }
 async function redeemPremiumCode(raw) {
+  if (PREMIUM_TRIAL_CODE && String(raw || "").trim().toLowerCase().replace(/\s+/g, "") === PREMIUM_TRIAL_CODE) {
+    return redeemPremiumTrial();
+  }
   const code = normalizePremiumCode(raw);
   if (!/^PRM-[A-Z2-9]{4}-[A-Z2-9]{4}$/.test(code)) return { ok: false, msg: PREMIUM_ERRORS.bad_code };
   let res;
@@ -92,6 +112,7 @@ function premiumTicketsThisTerm() {
   return (state.psyTickets || []).filter(t => new Date(t.issued) >= yearStart);
 }
 function premiumVisitsLeft() {
+  if (isPremiumTrial()) return 0;   // โค้ดทดลองไม่มีสิทธิ์พบจิตแพทย์
   return Math.max(0, PREMIUM_FREE_VISITS_PER_YEAR - premiumTicketsThisTerm().length);
 }
 function premiumSave() {
@@ -147,17 +168,20 @@ function renderPremiumModal() {
       <button type="button" class="premium-link" data-act="toLine">ยังไม่มีโค้ด? สมัครผ่าน LINE</button>`;
   } else if (premiumView === "done") {
     box.innerHTML = hero("เปิดใช้พรีเมียมแล้ว! 🎉", `เป็นสมาชิกถึง ${pDate(state.premium.end)}`) + `
-      <p class="premium-text">ตอนนี้คุณพบจิตแพทย์ได้ฟรี <b>${PREMIUM_FREE_VISITS_PER_YEAR} ครั้ง</b> ในปีนี้ เลือกโรงพยาบาลเพื่อรับตั๋วได้เลย</p>
-      <button type="button" class="premium-cta" data-act="toPick">🩺 เลือกโรงพยาบาลรับตั๋ว</button>
+      ${isPremiumTrial()
+        ? `<p class="premium-text">ลองใช้ธีมพิเศษได้ที่ ตั้งค่า → ธีม (โค้ดทดลองรับตั๋วพบจิตแพทย์ไม่ได้)</p>`
+        : `<p class="premium-text">ตอนนี้คุณพบจิตแพทย์ได้ฟรี <b>${PREMIUM_FREE_VISITS_PER_YEAR} ครั้ง</b> ในปีนี้ เลือกโรงพยาบาลเพื่อรับตั๋วได้เลย</p>
+      <button type="button" class="premium-cta" data-act="toPick">🩺 เลือกโรงพยาบาลรับตั๋ว</button>`}
       <button type="button" class="premium-link" data-act="toMember">ไว้ทีหลัง</button>`;
   } else if (premiumView === "member") {
     const left = premiumVisitsLeft(), tickets = premiumTicketsThisTerm();
-    box.innerHTML = hero("คุณเป็นสมาชิกพรีเมียม", `หมดอายุ ${pDate(state.premium.end)}`) + `
+    box.innerHTML = hero(isPremiumTrial() ? "พรีเมียมทดลอง" : "คุณเป็นสมาชิกพรีเมียม", `หมดอายุ ${pDate(state.premium.end)}`) + `
+      ${isPremiumTrial() ? `<div class="premium-text">โค้ดทดลองใช้ธีมพิเศษและสิทธิ์ในแอปได้ แต่รับตั๋วพบจิตแพทย์ไม่ได้ ต้องใช้โค้ดจริงจากแอดมิน</div>` : ""}
       <div class="premium-visits">
         <div class="premium-visits-num">${left}<small>/${PREMIUM_FREE_VISITS_PER_YEAR}</small></div>
         <div>สิทธิ์พบจิตแพทย์ฟรีที่เหลือในปีนี้</div>
       </div>
-      <button type="button" class="premium-cta" data-act="toPick" ${left ? "" : "disabled"}>${left ? "🩺 เลือกโรงพยาบาลรับตั๋ว" : "ใช้สิทธิ์ครบแล้วในปีนี้"}</button>
+      <button type="button" class="premium-cta" data-act="toPick" ${left ? "" : "disabled"}>${left ? "🩺 เลือกโรงพยาบาลรับตั๋ว" : isPremiumTrial() ? "ต้องใช้โค้ดจริงจากแอดมิน" : "ใช้สิทธิ์ครบแล้วในปีนี้"}</button>
       ${tickets.length ? `<div class="premium-section">ตั๋วของฉัน</div>` + tickets.slice().reverse().map(t => ticketHtml(t, true)).join("") : ""}
       <div class="premium-text" style="margin-top:12px">ต่ออายุ: ทักแอดมินทางไลน์ แล้วกรอกโค้ดใหม่ ระยะเวลาจะต่อจากวันหมดอายุเดิม</div>
       <button type="button" class="premium-link" data-act="toLine">ติดต่อแอดมิน / ต่ออายุ</button>${demo}`;
