@@ -59,6 +59,7 @@ const PREMIUM_BENEFITS = [
   { icon: "💎", title: "เพชรฟรีทุกเดือน", desc: "รับเพชรเข้ากระเป๋าอัตโนมัติทุกเดือน" },
   { icon: "🤖", title: "คุยกับเกวนทาร์ได้มากขึ้น", desc: "แชต AI ได้ยาวขึ้นและบ่อยขึ้น" },
   { icon: "👑", title: "ตราพรีเมียม", desc: "มีมงกุฎเล็ก ๆ ข้างชื่อน้อง" },
+  { icon: "🎨", title: "ธีมพิเศษ", desc: "เปลี่ยนสีแอปได้ 6 แบบ ทั้งธีมมืด ป่า ท้องฟ้า และกาแล็กซี" },
 ];
 
 // โรงพยาบาลตัวอย่าง (ชื่อสมมุติ) — เปลี่ยนเป็นโรงพยาบาลที่ร่วมโครงการจริงได้ภายหลัง
@@ -100,6 +101,7 @@ function premiumSave() {
 function premiumUpdateBadge() {
   const btn = document.querySelector(".premium-btn");
   if (btn) btn.classList.toggle("is-member", isPremiumMember());
+  if (typeof applyThemeAccess === "function") applyThemeAccess();
 }
 
 function renderPremiumModal() {

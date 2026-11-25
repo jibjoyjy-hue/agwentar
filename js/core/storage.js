@@ -81,6 +81,8 @@ function loadGameState() {
     const parsed = JSON.parse(rawData);
     if (parsed && typeof parsed === "object") {
       Object.assign(state, parsed);
+      // ธีมพิเศษใช้ได้เฉพาะสมาชิกพรีเมียม (ตรวจอีกครั้งตอนโหลดหน้าใน applyThemeAccess)
+      if (state.theme && !themeAllowed(state.theme)) state.theme = DEFAULT_THEME;
       // Apply theme immediately on load
       if (state.theme) {
         document.documentElement.setAttribute("data-theme", state.theme);
@@ -138,6 +140,22 @@ function loadGameState() {
   }
 }
 
+// ---- ธีม: ผู้ใช้ทั่วไปใช้ธีมเริ่มต้น ธีมอื่นเป็นสิทธิ์พรีเมียม ----
+const DEFAULT_THEME = "pastel";
+function themeAllowed(themeName) {
+  return themeName === DEFAULT_THEME || (typeof isPremiumMember === "function" && isPremiumMember());
+}
+// แสดงกุญแจบนการ์ดธีมที่ยังใช้ไม่ได้ และกลับไปธีมเริ่มต้นถ้าพรีเมียมหมดอายุ
+function applyThemeAccess() {
+  document.querySelectorAll(".theme-card").forEach(card => {
+    const locked = !themeAllowed(card.getAttribute("data-theme-id"));
+    card.classList.toggle("theme-locked", locked);
+    card.title = locked ? "ธีมพิเศษสำหรับสมาชิกพรีเมียม" : "";
+  });
+  if (state.theme && !themeAllowed(state.theme)) changeAppTheme(DEFAULT_THEME);
+}
+document.addEventListener("DOMContentLoaded", () => setTimeout(applyThemeAccess, 300));
+
 function changeAppTheme(themeName) {
   // Gracefully migrate legacy theme names
   const legacyMap = {
@@ -148,6 +166,10 @@ function changeAppTheme(themeName) {
   };
   if (legacyMap[themeName]) {
     themeName = legacyMap[themeName];
+  }
+  if (!themeAllowed(themeName)) {
+    if (typeof openPremiumModal === "function") openPremiumModal("info");
+    themeName = DEFAULT_THEME;
   }
 
   state.theme = themeName;
