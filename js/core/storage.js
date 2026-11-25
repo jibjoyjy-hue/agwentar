@@ -60,7 +60,8 @@ function saveGameState() {
       premiumCodesUsed: state.premiumCodesUsed || [],
       psyTickets: state.psyTickets || [],
       // ความยินยอมผู้ปกครอง (js/features/consent.js)
-      consent: state.consent || null
+      consent: state.consent || null,
+      eggQuestsDone: state.eggQuestsDone || 0
     };
     localStorage.setItem(SAVE_KEY, JSON.stringify(dataToSave));
   } catch (e) {

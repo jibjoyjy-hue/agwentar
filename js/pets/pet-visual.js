@@ -16,8 +16,17 @@ function getPetVisual(sizePx = 90) {
   const scale = getPetScale();
   const finalSize = Math.round(sizePx * scale);
   
-  if (state.level === 0) {
-    return `<div class="pet-body-main" style="font-size:${finalSize - 6}px; display:inline-block; animation: petEggWobble 2s infinite ease-in-out; cursor:pointer;">🥚</div>`;
+  // ร่างตามเลเวล (js/pets/pet-stages.js)
+  let stageKey = (state.petId || "aimee").toLowerCase(); if (stageKey === "gwentar") stageKey = "bear";
+  const stage = typeof getPetStage === "function" ? getPetStage() : { id: state.level === 0 ? "egg" : "baby" };
+  const stageArt = typeof petStageArt === "function" ? petStageArt(stageKey, stage.id) : "";
+  if (stageArt) {
+    const anim = stage.id === "egg" ? " animation: petEggWobble 2s infinite ease-in-out; cursor:pointer;" : "";
+    return `<img src="${stageArt}" class="pet-body-img pet-stage-${stage.id}" style="width:${finalSize}px; height:${finalSize}px; object-fit:contain;${anim}" alt="${state.petName}">`;
+  }
+  if (stage.id === "egg") {
+    return typeof getEggSvg === "function" ? getEggSvg(finalSize - 6)
+      : `<div class="pet-body-main" style="font-size:${finalSize - 6}px; display:inline-block; animation: petEggWobble 2s infinite ease-in-out; cursor:pointer;">🥚</div>`;
   }
 
   // น้องตัวมาตรฐาน: ลำตัวทรงเดียวกันทุกตัว ชุดจึงพอดีทุกตัว (pets_std.js)
@@ -301,9 +310,10 @@ function updatePetBubbleText() {
   if (!bubbleEl) return;
 
   if (state.level === 0) {
+    const left = typeof eggQuestsLeft === "function" ? eggQuestsLeft() : 2;
     const eggQuotes = [
-      "ดุ๊กดิ๊กๆ... หนูอยากออกไปเล่นข้างนอกแย้วง่า! 🥚",
-      "จิ้มหนูจิ! หนูอยากฟักออกมาหาปะป๊ามะม๊าแย้ว! ✨",
+      `ดุ๊กดิ๊กๆ... ทำเควสอีก ${left} อัน หนูจะฟักออกมาแล้วน้า! 🥚`,
+      `ช่วยหนูทำเควสอีก ${left} อันนะ หนูอยากออกมาเจอแล้ว! ✨`,
       "งึมๆ... ข้างในนี้แคบจังเยยย 🥚"
     ];
     bubbleEl.innerText = eggQuotes[Math.floor((Date.now() / 10000) % eggQuotes.length)];
@@ -335,7 +345,8 @@ function updatePetBubbleText() {
       "ปะป๊ามะม๊ากลับมาแว้วหรอคะ! หนูคิดถึงปะป๊ามะม๊าที่สุดเยยย 💙",
       "ปะป๊ามะม๊ากลับมาแว้วหรอคะ! หนูคิดถึงปะป๊ามะม๊าที่สุดเยยย"
     ];
-    if (defaultTexts.includes(currentText) || currentText === "") {
+    // ข้อความตอนเป็นไข่ (มี 🥚 หรือคำว่า ฟัก) ก็เปลี่ยนเป็นข้อความปกติหลังฟัก
+    if (defaultTexts.includes(currentText) || currentText === "" || /🥚|ฟัก/.test(currentText)) {
       const normalQuotes = [
         "รักปะป๊ามะม๊าที่สุดในโลกเยย! กอดหนูหน่อยจิ! 💕",
         "วันนี้เหนื่อยป่าว? หนูจะคอยเป็นกำลังใจให้ปะป๊ามะม๊าเอง! 🌸",

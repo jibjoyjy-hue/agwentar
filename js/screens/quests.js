@@ -468,6 +468,7 @@ function claimDailyQuest(questKey) {
   state.exp += expReward;
   
   alert(`🎉 รับรางวัลเควสสำเร็จ! ได้รับ +${coinsReward}🪙  +${expReward}⭐`);
+  if (typeof petStageOnQuestClaimed === "function") petStageOnQuestClaimed();
   checkLevelUp();
   renderDailyQuests();
 }

@@ -1,0 +1,72 @@
+/* 18-menu-theme.css: แถบเมนูทั้งหมด พื้นขาว ตัวอักษรน้ำเงิน ไอคอนชมพู (ใช้ทุกธีม โหลดหลัง 17)
+   ไอคอนเป็น SVG ใส่โดย js/features/menu-icons.js และใช้สี currentColor */
+:root {
+  --menu-bg: #ffffff;
+  --menu-text: #1e40af;        /* น้ำเงิน */
+  --menu-text-muted: #3b82f6;
+  --menu-icon: #ec4899;        /* ชมพู */
+  --menu-icon-soft: #fce7f3;
+  --menu-border: #fbcfe8;
+}
+
+/* ---------- แถบหัวแอป ---------- */
+.app-header {
+  background: var(--menu-bg) !important;
+  border-bottom: 1px solid var(--menu-border);
+  box-shadow: 0 2px 12px rgba(236, 72, 153, 0.08);
+}
+.app-header .char-name { color: var(--menu-text); }
+.app-header .lvl-badge { color: var(--menu-text-muted); }
+.app-header .status-pill { background: #f8fafc; border-color: #dbeafe; }
+.app-header .stat-val { color: var(--menu-text); }
+.app-header .premium-btn,
+.app-header .gift-noti-btn,
+.app-header .gear-settings-btn {
+  width: 32px; height: 32px; padding: 0; border: none; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--menu-icon-soft); color: var(--menu-icon); box-shadow: none;
+}
+.app-header .premium-btn.is-member { background: #fbcfe8; }
+.menu-svg { width: 18px; height: 18px; display: block; }
+
+/* ---------- แถบเมนูล่าง ---------- */
+.app-bottom-nav.scrollable-tabs {
+  background: var(--menu-bg) !important;
+  border: 1px solid var(--menu-border) !important;
+  box-shadow: 0 8px 28px rgba(236, 72, 153, 0.15) !important;
+}
+.scrollable-tabs .nav-tab { color: var(--menu-text); }
+.scrollable-tabs .nav-tab .nav-icon {
+  color: var(--menu-icon);
+  width: 30px; height: 24px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.scrollable-tabs .nav-tab .nav-icon .menu-svg { width: 19px; height: 19px; }
+.scrollable-tabs .nav-tab .nav-label { color: var(--menu-text); font-weight: 600; }
+.scrollable-tabs .nav-tab.active { color: var(--menu-text); }
+.scrollable-tabs .nav-tab.active .nav-icon { background: var(--menu-icon-soft); }
+.scrollable-tabs .nav-tab.active .nav-label { font-weight: 800; }
+
+/* ---------- แถบหัวของแต่ละหน้า ---------- */
+.screen-header {
+  background: var(--menu-bg);
+  border: 1px solid var(--menu-border);
+  border-radius: 16px;
+  padding: 6px 8px;
+}
+.screen-header .screen-title { color: var(--menu-text); }
+.screen-header .screen-back-btn,
+.screen-header .screen-close-btn { color: var(--menu-icon); background: var(--menu-icon-soft); }
+
+/* ---------- แท็บในหน้า (แบบประเมิน / AI) ---------- */
+.mood-ai-tabs { background: var(--menu-bg); border: 1px solid var(--menu-border); }
+.mood-ai-tab { color: var(--menu-text); }
+.mood-ai-tab.active { background: var(--menu-icon-soft); color: var(--menu-text); }
+
+/* ---------- รายการเมนูในหน้าตั้งค่า / เมนูเพิ่มเติม ---------- */
+.menu-item-row { background: var(--menu-bg) !important; border-color: var(--menu-border) !important; }
+.menu-item-row .menu-item-label { color: var(--menu-text) !important; }
+.menu-item-row .menu-item-arrow { color: var(--menu-icon); }
+
+/* ปุ่ม "ไม่โอเค" ในแถบหัว: ใช้โทนเดียวกัน */
+.app-header .sf-head-btn { background: var(--menu-icon-soft); color: var(--menu-text); }

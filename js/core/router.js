@@ -24,6 +24,13 @@ function getRequiredExp(level) {
 }
 
 function checkLevelUp() {
+  // ตอนเป็นไข่ ยังไม่เลเวลอัปจาก EXP: ต้องทำเควสให้ครบก่อน (js/pets/pet-stages.js)
+  if (state.level === 0) {
+    saveGameState();
+    syncUI();
+    return false;
+  }
+  const startLevel = state.level;
   let reqExp = getRequiredExp(state.level);
   let leveledUp = false;
   
@@ -42,6 +49,7 @@ function checkLevelUp() {
     if (typeof renderDynamicPets === "function") renderDynamicPets();
   }
   
+  if (leveledUp && typeof petStageAnnounce === "function") petStageAnnounce(startLevel, state.level);
   saveGameState();
   syncUI();
   return leveledUp;
