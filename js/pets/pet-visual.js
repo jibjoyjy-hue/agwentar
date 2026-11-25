@@ -31,7 +31,7 @@ function getPetVisual(sizePx = 90) {
 
   // น้องตัวมาตรฐาน: ลำตัวทรงเดียวกันทุกตัว ชุดจึงพอดีทุกตัว (pets_std.js)
   let stdKey = (state.petId || "aimee").toLowerCase(); if (stdKey === "gwentar") stdKey = "bear";
-  if (window.hasStandardPet && hasStandardPet(stdKey) && (stdKey === "aimee" || stdKey === "bear")) {
+  if (window.hasStandardPet && hasStandardPet(stdKey) && stdKey === "aimee") {
     const outfit = ""; // ปิดระบบชุดเต็มตัวแล้ว เหลือแต่เครื่องประดับ
     return `<span class="pet-body-img pet-outfit-stack" style="position:relative; display:inline-block; width:${finalSize}px; height:${finalSize}px; line-height:0;">${getStandardPetSvg(stdKey, finalSize, outfit)}</span>`;
   }
@@ -53,7 +53,7 @@ function getBarePetVisual(finalSize) {
   if (petLower === "gwentar") petLower = "bear";
   const croppedPets = ["aimee", "blob", "bunny", "cat", "puppy", "penguin", "bear", "panda", "fox", "chick", "otter", "hamster", "dino", "pig", "capybara", "parrot", "giraffe", "elephant"];
   if (croppedPets.includes(petLower)) {
-    return `<img src="assets/${petLower}.png?v=10" class="pet-body-img" style="width:${finalSize}px; height:${finalSize}px;" alt="${state.petName}">`;
+    return `<img src="assets/${petLower}.png?v=11" class="pet-body-img" style="width:${finalSize}px; height:${finalSize}px;" alt="${state.petName}">`;
   } else {
     return `<div class="pet-body-main" style="font-size:${finalSize - 6}px;">${state.petEmoji}</div>`;
   }

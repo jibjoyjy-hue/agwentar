@@ -74,7 +74,7 @@
   function wear(u, id, petKey) {
     const B = BODY[petKey], S = SPEC[id];
     if (!B || !S) return null;
-    const img = `<image href="assets/${petKey}.png?v=10" x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>`;
+    const img = `<image href="assets/${petKey}.png?v=11" x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>`;
     const span = B.bottom - B.hip, foot = B.bottom - Math.max(3, 0.35 * span);
     const cx = (B.tL + B.tR) / 2, wcx = (B.wL + B.wR) / 2, tw = B.wR - B.wL, chestW = B.tR - B.tL;
     const sr = sleeveRange(S.sleeve);

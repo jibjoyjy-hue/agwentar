@@ -5,6 +5,7 @@ const PET_TEMPLATES = [
   { id: "Puppy", name: "Puppy", emoji: "🐶" },
   { id: "Penguin", name: "Penguin", emoji: "🐧" },
   { id: "Panda", name: "Panda", emoji: "🐼" },
+  { id: "Bear", name: "Bear", emoji: "🐻" },
   { id: "Fox", name: "Fox", emoji: "🦊" },
   { id: "Chick", name: "Chick", emoji: "🐥" },
   { id: "Otter", name: "Otter", emoji: "🦦" },
@@ -55,9 +56,9 @@ function renderSelectPetGrid() {
     const isActive = state.petEmoji === p.emoji || state.petId === p.id;
     const petLower = p.id.toLowerCase();
     const stdPetKey = petLower === "gwentar" ? "bear" : petLower;
-    const avatarHtml = (window.hasStandardPet && (stdPetKey === "aimee" || stdPetKey === "bear"))
+    const avatarHtml = (window.hasStandardPet && stdPetKey === "aimee")
       ? `<span style="display:inline-block; width:34px; height:34px;">${getStandardPetSvg(stdPetKey, 34, "")}</span>` // น้องตัวมาตรฐาน (หมีเป็น 2 มิติ)
-      : `<img src="assets/${petLower}.png?v=10" style="width: 34px; height: 34px; object-fit: contain;" onerror="this.outerHTML='${p.emoji}'">`;
+      : `<img src="assets/${petLower}.png?v=11" style="width: 34px; height: 34px; object-fit: contain;" onerror="this.outerHTML='${p.emoji}'">`;
     
     let badgeHtml = "";
     if (state.petChosen) {
