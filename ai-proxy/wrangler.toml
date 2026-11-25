@@ -4,13 +4,15 @@ compatibility_date = "2026-11-01"
 
 # จำกัดจำนวนข้อความต่อวัน: สร้าง KV แล้วใส่ id ที่ได้ แล้วลบเครื่องหมาย # ออก
 #   npx wrangler kv namespace create RATE
-# [[kv_namespaces]]
-# binding = "RATE"
-# id = "<ใส่ id ที่ได้>"
 
 # พรีเมียม: สร้าง KV แล้วใส่ id ที่ได้ แล้วลบเครื่องหมาย # ออก
 #   npx wrangler kv namespace create PREMIUM
 #   npx wrangler secret put ADMIN_TOKEN      (ตั้งรหัสยาว ๆ ไว้ใช้ในหน้าแอดมิน)
-# [[kv_namespaces]]
-# binding = "PREMIUM"
-# id = "<ใส่ id ที่ได้>"
+
+[[kv_namespaces]]
+binding = "RATE"
+id = "4cc15c2ed7d046d78e43a4ab2893f95a"
+
+[[kv_namespaces]]
+binding = "PREMIUM"
+id = "c417377c685e4f35bd895f97446d5562"
