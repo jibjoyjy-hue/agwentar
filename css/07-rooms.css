@@ -41,16 +41,16 @@
   z-index: 15;
 }
 #screen-1 {
-  background: url('../assets/livingroom.png') no-repeat center/cover !important;
+  background: url('../assets/livingroom.jpg') no-repeat center/cover !important;
 }
 #screen-2 {
-  background: url('../assets/select_pet_bg.png') no-repeat center/cover !important;
+  background: url('../assets/select_pet_bg.jpg') no-repeat center/cover !important;
 }
 #screen-5 .room-visual-area {
-  background: url('../assets/bedroom.png') no-repeat center/cover !important;
+  background: url('../assets/bedroom.jpg') no-repeat center/cover !important;
 }
 #screen-6 {
-  background: url('../assets/dining.png') no-repeat center/cover !important;
+  background: url('../assets/dining.jpg') no-repeat center/cover !important;
 }
 #screen-6.active {
   display: flex;
@@ -59,16 +59,16 @@
   height: 100%;
 }
 #screen-7 .room-visual-area {
-  background: url('../assets/bathroom.png') no-repeat center/cover !important;
+  background: url('../assets/bathroom.jpg') no-repeat center/cover !important;
 }
 #screen-8 .room-visual-area {
-  background: url('../assets/garden.png') no-repeat center/cover !important;
+  background: url('../assets/garden.jpg') no-repeat center/cover !important;
 }
 #screen-9 .room-visual-area {
-  background: url('../assets/bright_dressup.png') no-repeat center/cover !important;
+  background: url('../assets/bright_dressup.jpg') no-repeat center/cover !important;
 }
 #screen-10 .room-visual-area {
-  background: url('../assets/toyroom.png') no-repeat center/cover !important;
+  background: url('../assets/toyroom.jpg') no-repeat center/cover !important;
 }
 .sleeping-pet {
   font-size: 70px;

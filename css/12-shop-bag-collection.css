@@ -247,7 +247,7 @@
 
 .bond-illustration-area {
   height: 200px;
-  background: url('../assets/bond_bg.png') no-repeat center/cover;
+  background: url('../assets/bond_bg.jpg') no-repeat center/cover;
   border-radius: 20px;
   display: flex;
   flex-direction: column;

@@ -124,7 +124,7 @@
 }
 .vent-visual-footer {
   height: 140px;
-  background: url('../assets/vent_bg.png') no-repeat center/cover;
+  background: url('../assets/vent_bg.jpg') no-repeat center/cover;
   border-radius: 20px;
   position: relative;
   overflow: hidden;

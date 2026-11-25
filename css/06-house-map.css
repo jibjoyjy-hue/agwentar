@@ -2,7 +2,7 @@
 /* SCREEN 4: Pet House (Map / Floating Bubbles) */
 .house-map-container {
   flex-grow: 1;
-  background: url('../assets/playground.png') no-repeat center/cover;
+  background: url('../assets/playground.jpg') no-repeat center/cover;
   border-radius: 20px;
   position: relative;
   overflow: hidden;
