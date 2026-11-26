@@ -1,6 +1,6 @@
 // egg-hatch.js: ฟักไข่ด้วยการแตะและลากไข่ (แทนการทำเควส)
 //   แตะไข่ 1 ครั้ง = +1 ความอุ่น, ลากไข่ทุก ๆ 60px = +1 ความอุ่น
-//   ครบ EGG_HATCH_POINTS แล้วไข่แตก ออกมาเป็นเบบี๋ (เลเวล 1)
+//   ครบ EGG_HATCH_POINTS แล้วไข่แตก ออกมาเป็นเบบี๋ (เลเวล 1) โดยสุ่มว่าจะเป็นสัตว์ตัวไหน
 //   ไข่มีรอยร้าวเพิ่มขึ้นเรื่อย ๆ และมีแถบความคืบหน้าใต้ไข่
 const EGG_HATCH_POINTS = 40;
 const EGG_DRAG_STEP_PX = 80;
@@ -71,7 +71,27 @@ function eggAddWarmth(points, container, x, y) {
   else if (typeof updatePetBubbleText === "function" && state.eggWarmth % 5 === 0) updatePetBubbleText();
 }
 
+const EGG_PET_NAMES_TH = {
+  Bunny: "กระต่าย", Cat: "แมว", Puppy: "ลูกหมา", Penguin: "เพนกวิน", Panda: "แพนด้า",
+  Bear: "หมี", Dino: "ไดโนเสาร์", Pig: "หมู", Capybara: "คาปิบารา", Giraffe: "ยีราฟ",
+};
+
+// สุ่มสัตว์จากรายชื่อในหน้าเลือกสัตว์ (PET_TEMPLATES) ชื่อที่ผู้ใช้ตั้งเองจะไม่ถูกเปลี่ยน
+function eggPickRandomPet() {
+  const list = typeof PET_TEMPLATES !== "undefined" && PET_TEMPLATES.length ? PET_TEMPLATES : [{ id: "Bunny", name: "Bunny", emoji: "🐰" }];
+  const pick = list[Math.floor(Math.random() * list.length)];
+  const defaultNames = ["", "gwentar", "blob", ...list.map(p => p.name.toLowerCase())];
+  const keepName = typeof isOriginalMode === "function" && isOriginalMode();
+  if (!keepName && defaultNames.includes(String(state.petName || "").toLowerCase())) state.petName = pick.name;
+  state.petId = pick.id;
+  state.petEmoji = pick.emoji;
+  state.petChosen = true;
+  return pick;
+}
+
 function eggHatch(x, y) {
+  const pick = eggPickRandomPet();
+  const kind = EGG_PET_NAMES_TH[pick.id] || pick.name;
   state.level = 1;
   state.exp = 0;
   state.eggWarmth = 0;
@@ -83,7 +103,7 @@ function eggHatch(x, y) {
   if (typeof renderDynamicPets === "function") renderDynamicPets();
   if (typeof updatePetBubbleText === "function") updatePetBubbleText();
   if (typeof syncUI === "function") syncUI();
-  setTimeout(() => alert(`🥚✨ ป๊อป! ไข่ฟักแล้ว! น้อง ${state.petName} ออกมาเป็นเบบี๋แล้วค่ะ 🍼\nดูแลน้องต่อไป แล้วน้องจะค่อย ๆ โตขึ้นตามเลเวลนะ`), 350);
+  setTimeout(() => alert(`🥚✨ ป๊อป! ไข่ฟักแล้ว!\nได้น้อง${kind} ${pick.emoji} ชื่อ ${state.petName} ออกมาเป็นเบบี๋แล้วค่ะ 🍼\nดูแลน้องต่อไป แล้วน้องจะค่อย ๆ โตขึ้นตามเลเวลนะ`), 350);
 }
 
 // ฟังการแตะ/ลาก ในช่วง capture เพื่อให้ทำงานคู่กับการลากสัตว์เลี้ยงเดิม (posture-effects.js)

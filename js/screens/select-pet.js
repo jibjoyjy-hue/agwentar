@@ -80,6 +80,10 @@ function renderSelectPetGrid() {
       const petId = card.getAttribute("data-pet");
       const petName = card.getAttribute("data-name");
       const petEmoji = card.getAttribute("data-emoji");
+      if ((state.level || 0) === 0) {
+        alert("🥚 ตอนนี้น้องยังอยู่ในไข่ ในไข่จะเป็นสัตว์อะไรต้องรอลุ้นตอนฟักนะ! แตะหรือลากไข่ที่หน้าโฮมเพื่อให้ไข่ฟักได้เลย ✨");
+        return;
+      }
       const isCurrentlyActive = state.petEmoji === petEmoji || state.petId === petId;
 
       if (isCurrentlyActive) {

@@ -287,12 +287,12 @@ function processPetNameWithLevelCode(inputName) {
   // Initialize calendar
   renderCalendar();
 
-  // Start app at Screen 2 if level is 0 to select companion, else Screen 1
+  // เริ่มเกมเป็นไข่ได้เลย ไม่ต้องเลือกสัตว์ก่อน ตอนไข่ฟักจะสุ่มสัตว์ให้ (js/pets/egg-hatch.js)
   if (state.level === 0 && !state.petChosen) {
-    nav("screen-2");
-  } else {
-    nav("screen-1");
+    state.petChosen = true;
+    saveGameState();
   }
+  nav("screen-1");
 
   document.getElementById("confirmPetBtn").addEventListener("click", () => {
     if (!state.petChosen) {
