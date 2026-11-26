@@ -45,13 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   document.getElementById("petHomeTap").addEventListener("click", (e) => {
     spawnTapHearts(e);
-    if (state.level === 0) {
-      state.exp += 10;
-      if (!checkLevelUp()) {
-        alert("🥚 ไข่สั่นดุ๊กดิ๊ก! เล่นอีกนิดขยับอีกหน่อยใกล้จะฟักแล้วน้า (+10 EXP) ✨");
-      }
-      return;
-    }
+    if (state.level === 0) return; // ตอนเป็นไข่ การแตะ/ลากไข่นับใน egg-hatch.js
     
     // Show a cute state-aware interactive message in whiny child-like style usingหนู/ปะป๊ามะม๊า
     let bubbles = [];

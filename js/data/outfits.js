@@ -353,7 +353,7 @@
   function limbLayer(u, id, petKey) {
     const f = PET_FIT[petKey], C = COVER[id];
     if (!f || !C) return "";
-    const img = `<image href="assets/${petKey}.png?v=11" x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>`;
+    const img = `<image href="assets/${petKey}.png?v=12" x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>`;
     const x0 = f.cx - f.w / 2 - 4, w = f.w + 8;
     const top = f.neck + 1.5, span = f.bottom - f.neck;
     const hip = f.neck + 0.66 * span, foot = f.bottom - 0.1 * span;

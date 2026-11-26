@@ -61,7 +61,8 @@ function saveGameState() {
       psyTickets: state.psyTickets || [],
       // ความยินยอมผู้ปกครอง (js/features/consent.js)
       consent: state.consent || null,
-      eggQuestsDone: state.eggQuestsDone || 0
+      eggQuestsDone: state.eggQuestsDone || 0,
+      eggWarmth: state.eggWarmth || 0
     };
     localStorage.setItem(SAVE_KEY, JSON.stringify(dataToSave));
   } catch (e) {

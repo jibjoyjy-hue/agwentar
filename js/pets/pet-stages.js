@@ -1,6 +1,6 @@
 // js/pets/pet-stages.js: ร่างของสัตว์เลี้ยงตามเลเวล
 //
-//   ไข่      : เริ่มเกม จนกว่าจะทำเควสสำเร็จ 2 อัน (EGG_QUESTS_TO_HATCH)
+//   ไข่      : เริ่มเกม จนกว่าจะแตะ/ลากไข่จนครบ (js/pets/egg-hatch.js)
 //   เบบี๋    : เลเวล 1–9
 //   เด็กน้อย : เลเวล 10–24
 //   โตแล้ว   : เลเวล 25 ขึ้นไป
@@ -8,8 +8,6 @@
 // รูปของแต่ละร่าง: วางไฟล์ไว้ที่ assets/pets/<ชื่อสัตว์>/<ร่าง>.png แล้วเพิ่มชื่อไว้ใน PET_STAGE_ART
 //   เช่น PET_STAGE_ART.bunny = ["egg", "baby", "kid", "adult"]
 // ร่างที่ยังไม่มีรูป จะใช้รูปเดิมของสัตว์ตัวนั้น (ขนาดเล็ก-ใหญ่ตามเลเวลเหมือนเดิม) และไข่ใช้รูปไข่ SVG
-
-const EGG_QUESTS_TO_HATCH = 2;
 
 const PET_STAGES = [
   { id: "egg",   name: "ไข่",      minLevel: 0 },
@@ -37,10 +35,6 @@ function petStageArt(petKey, stageId) {
   if (stageId === "egg" && PET_EGG_ART) return PET_EGG_ART;
   return "";
 }
-function eggQuestsLeft() {
-  return Math.max(0, EGG_QUESTS_TO_HATCH - (state.eggQuestsDone || 0));
-}
-
 // ไข่ SVG สีพาสเทล (ใช้เมื่อยังไม่มีรูปไข่ที่วาดเอง)
 function getEggSvg(size) {
   return `<svg class="pet-body-main pet-egg-svg" viewBox="0 0 100 120" width="${size}" height="${Math.round(size * 1.2)}" style="animation: petEggWobble 2s infinite ease-in-out; cursor:pointer;" aria-label="ไข่">
@@ -51,17 +45,8 @@ function getEggSvg(size) {
   </svg>`;
 }
 
-// เรียกเมื่อรับรางวัลเควส: ตอนเป็นไข่ นับจำนวนเควส ครบแล้วฟักเป็นเบบี๋
-function petStageOnQuestClaimed() {
-  if (state.level !== 0) return;
-  state.eggQuestsDone = (state.eggQuestsDone || 0) + 1;
-  if (eggQuestsLeft() > 0) return;
-  state.level = 1;
-  state.exp = 0;
-  alert(`🥚✨ ป๊อป! ไข่ฟักแล้ว! น้อง ${state.petName} ออกมาเป็นเบบี๋แล้วค่ะ 🍼\nดูแลน้องต่อไป แล้วน้องจะค่อย ๆ โตขึ้นตามเลเวลนะ`);
-  if (typeof renderDynamicPets === "function") renderDynamicPets();
-  if (typeof updatePetBubbleText === "function") updatePetBubbleText();
-}
+// เดิมไข่ฟักจากการทำเควส ตอนนี้ฟักจากการแตะ/ลากไข่ (egg-hatch.js) ฟังก์ชันนี้คงไว้ให้ quests.js เรียกได้
+function petStageOnQuestClaimed() {}
 
 // เรียกหลังเลเวลอัป: แจ้งเมื่อเปลี่ยนร่าง
 function petStageAnnounce(oldLevel, newLevel) {

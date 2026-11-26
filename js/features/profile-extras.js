@@ -17,6 +17,5 @@ function grantProfileBonus() {
   state.level = Math.max(state.level || 0, 100);
   state.exp = 0;
   state.petChosen = true;
-  state.eggQuestsDone = Math.max(state.eggQuestsDone || 0, typeof EGG_QUESTS_TO_HATCH === "number" ? EGG_QUESTS_TO_HATCH : 2);
   state.coins = Math.max(state.coins || 0, 1000000);
 }

@@ -74,7 +74,7 @@
   function wear(u, id, petKey) {
     const B = BODY[petKey], S = SPEC[id];
     if (!B || !S) return null;
-    const img = `<image href="assets/${petKey}.png?v=11" x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>`;
+    const img = `<image href="assets/${petKey}.png?v=12" x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>`;
     const span = B.bottom - B.hip, foot = B.bottom - Math.max(3, 0.35 * span);
     const cx = (B.tL + B.tR) / 2, wcx = (B.wL + B.wR) / 2, tw = B.wR - B.wL, chestW = B.tR - B.tL;
     const sr = sleeveRange(S.sleeve);
@@ -96,8 +96,8 @@
     const hasArms = !ARMLESS.has(petKey);
     const fillRects = (fill) => `<rect x="0" y="0" width="100" height="100" fill="${fill}"/>${S.pat2 === "tabby" ? `<rect x="0" y="0" width="100" height="100" fill="url(#${u}tb)"/>` : ""}<rect x="0" y="0" width="100" height="100" fill="url(#${u}sh)"/>`;
     if (hasArms) {
-      defs += `<mask id="${u}am" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><image href="assets/petmasks/${petKey}_arms.png?v=1" x="0" y="0" width="100" height="100"/></mask>`;
-      defs += `<mask id="${u}nm" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><image href="assets/petmasks/${petKey}_noarms.png?v=1" x="0" y="0" width="100" height="100"/></mask>`;
+      defs += `<mask id="${u}am" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><image href="assets/petmasks/${petKey}_arms.png?v=2" x="0" y="0" width="100" height="100"/></mask>`;
+      defs += `<mask id="${u}nm" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><image href="assets/petmasks/${petKey}_noarms.png?v=2" x="0" y="0" width="100" height="100"/></mask>`;
     }
     // แขนยาว: เสื้อคลุมแขนไปด้วยได้เลย / แขนสั้นหรือไม่มีแขน: เว้นแขนน้องไว้
     const noArms = (inner) => (hasArms && S.sleeve !== "long" ? `<g mask="url(#${u}nm)">${inner}</g>` : inner);

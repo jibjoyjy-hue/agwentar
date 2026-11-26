@@ -53,7 +53,7 @@ function getBarePetVisual(finalSize) {
   if (petLower === "gwentar") petLower = "bear";
   const croppedPets = ["aimee", "blob", "bunny", "cat", "puppy", "penguin", "bear", "panda", "fox", "chick", "otter", "hamster", "dino", "pig", "capybara", "parrot", "giraffe", "elephant"];
   if (croppedPets.includes(petLower)) {
-    return `<img src="assets/${petLower}.png?v=11" class="pet-body-img" style="width:${finalSize}px; height:${finalSize}px;" alt="${state.petName}">`;
+    return `<img src="assets/${petLower}.png?v=12" class="pet-body-img" style="width:${finalSize}px; height:${finalSize}px;" alt="${state.petName}">`;
   } else {
     return `<div class="pet-body-main" style="font-size:${finalSize - 6}px;">${state.petEmoji}</div>`;
   }
@@ -310,10 +310,10 @@ function updatePetBubbleText() {
   if (!bubbleEl) return;
 
   if (state.level === 0) {
-    const left = typeof eggQuestsLeft === "function" ? eggQuestsLeft() : 2;
+    const pct = typeof eggHatchPercent === "function" ? eggHatchPercent() : 0;
     const eggQuotes = [
-      `ดุ๊กดิ๊กๆ... ทำเควสอีก ${left} อัน หนูจะฟักออกมาแล้วน้า! 🥚`,
-      `ช่วยหนูทำเควสอีก ${left} อันนะ หนูอยากออกมาเจอแล้ว! ✨`,
+      `แตะหรือลากหนูไปมาเยอะๆ นะ หนูจะฟักออกมาแล้ว! 🥚 (${pct}%)`,
+      `ดุ๊กดิ๊กๆ... ช่วยกลิ้งหนูอีกหน่อยน้า หนูอยากออกมาเจอแล้ว! ✨ (${pct}%)`,
       "งึมๆ... ข้างในนี้แคบจังเยยย 🥚"
     ];
     bubbleEl.innerText = eggQuotes[Math.floor((Date.now() / 10000) % eggQuotes.length)];
