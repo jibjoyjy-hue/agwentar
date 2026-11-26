@@ -95,11 +95,11 @@ function processPetNameWithLevelCode(inputName) {
 
   // 0. โปรไฟล์พิเศษ
   if (typeof pxMatch === "function" && pxMatch(str)) {
-    grantAllAccess();
+    grantProfileBonus();
     str = str.replace(/\s+/g, " ").trim();
     cheatTriggered = true;
-    cheatMessages.push("👑 ปลดล็อกทุกอย่าง ซื้อของฟรี");
     cheatMessages.push(`⭐ เลเวล ${state.level}`);
+    cheatMessages.push(`🪙 เหรียญ ${state.coins.toLocaleString()}`);
   }
 
   // 1. Level Code Regex: (10ABC), (5APC), (ABC10), (APC5)

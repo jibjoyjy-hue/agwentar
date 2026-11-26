@@ -95,7 +95,7 @@ function buyShopItemDirect(tabId, itemIdx) {
   
   // Coins purchase
   if (item.currency === "coins") {
-    if (!hasAllAccess() && state.coins < item.price) {
+    if (state.coins < item.price) {
       alert("เหรียญทองของคุณไม่เพียงพอค่ะ สามารถไปเล่นมินิเกมหรือทำเควสเพื่อหาเหรียญทองเพิ่มได้นะคะ 🪙");
       return;
     }
@@ -106,7 +106,7 @@ function buyShopItemDirect(tabId, itemIdx) {
         return;
       }
       state.unlockedApparel.push(item.id);
-      if (!hasAllAccess()) state.coins -= item.price;
+      state.coins -= item.price;
       saveGameState();
       syncUI();
       renderShopItems(tabId);
@@ -119,7 +119,7 @@ function buyShopItemDirect(tabId, itemIdx) {
         return;
       }
       state.ownedFurniture.push(item.id);
-      if (!hasAllAccess()) state.coins -= item.price;
+      state.coins -= item.price;
       saveGameState();
       syncUI();
       renderShopItems(tabId);
@@ -127,7 +127,7 @@ function buyShopItemDirect(tabId, itemIdx) {
       return;
     } else if (tabId === "food" || tabId === "drinks") {
       state.foods[item.id] = (state.foods[item.id] || 0) + 1;
-      if (!hasAllAccess()) state.coins -= item.price;
+      state.coins -= item.price;
       saveGameState();
       syncUI();
       renderShopItems(tabId);
@@ -143,12 +143,12 @@ function buyShopItemDirect(tabId, itemIdx) {
   
   // Gems exchange (Exchange tab)
   if (item.currency === "gems") {
-    if (!hasAllAccess() && state.gems < item.price) {
+    if (state.gems < item.price) {
       alert("เพชรของคุณไม่เพียงพอสำหรับการแลกเปลี่ยนค่ะ ❌");
       return;
     }
     
-    if (!hasAllAccess()) state.gems -= item.price;
+    state.gems -= item.price;
     if (item.type === "coins") {
       state.coins += item.val;
       alert(`แลกเปลี่ยนสำเร็จ! ได้รับ +${item.val} เหรียญทอง จ่ายไป ${item.price} เพชร 🪙`);
