@@ -1,4 +1,6 @@
 // js/screens/select-pet.js: หน้าเลือกสัตว์เลี้ยง
+// ซ่อนตัวที่ยังเป็นรูปแบบเก่า (Fox, Chick, Otter, Hamster, Parrot, Elephant) ไว้ก่อน รูปยังอยู่ใน assets
+// คนที่เลือกตัวเหล่านี้ไว้แล้วยังเล่นต่อได้ตามเดิม
 const PET_TEMPLATES = [
   { id: "Bunny", name: "Bunny", emoji: "🐰" },
   { id: "Cat", name: "Cat", emoji: "🐱" },
@@ -6,16 +8,10 @@ const PET_TEMPLATES = [
   { id: "Penguin", name: "Penguin", emoji: "🐧" },
   { id: "Panda", name: "Panda", emoji: "🐼" },
   { id: "Bear", name: "Bear", emoji: "🐻" },
-  { id: "Fox", name: "Fox", emoji: "🦊" },
-  { id: "Chick", name: "Chick", emoji: "🐥" },
-  { id: "Otter", name: "Otter", emoji: "🦦" },
-  { id: "Hamster", name: "Hamster", emoji: "🐹" },
   { id: "Dino", name: "Dino", emoji: "🦖" },
   { id: "Pig", name: "Pig", emoji: "🐷" },
   { id: "Capybara", name: "Capybara", emoji: "🦫" },
-  { id: "Parrot", name: "Parrot", emoji: "🦜" },
-  { id: "Giraffe", name: "Giraffe", emoji: "🦒" },
-  { id: "Elephant", name: "Elephant", emoji: "🐘" }
+  { id: "Giraffe", name: "Giraffe", emoji: "🦒" }
 ];
 
 function renderSelectPetGrid() {

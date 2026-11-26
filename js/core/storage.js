@@ -90,15 +90,11 @@ function loadGameState() {
       }
       // Migration: fallback for petId in older saves
       if (!state.petId) {
-        if (state.petEmoji === "🐻") {
-          state.petId = "Bunny";
-        } else {
-          const match = (typeof PET_TEMPLATES !== "undefined") ? PET_TEMPLATES.find(p => p.emoji === state.petEmoji) : null;
-          state.petId = match ? match.id : "Bunny";
-        }
+        const match = (typeof PET_TEMPLATES !== "undefined") ? PET_TEMPLATES.find(p => p.emoji === state.petEmoji) : null;
+        state.petId = match ? match.id : "Bunny";
       }
-      // เอาหมีออกจากเกมแล้ว: เซฟเก่าที่เป็นหมีเปลี่ยนเป็นกระต่าย (ชื่อน้องยังเหมือนเดิม)
-      if (["aimee", "bear", "gwentar"].includes(String(state.petId || "").toLowerCase()) || state.petEmoji === "🐻") {
+      // เซฟเก่าที่เป็นตัวที่เลิกใช้แล้ว (aimee, gwentar) เปลี่ยนเป็นกระต่าย (ชื่อน้องยังเหมือนเดิม) — หมีกลับมาเลือกได้แล้ว จึงไม่เปลี่ยน
+      if (["aimee", "gwentar"].includes(String(state.petId || "").toLowerCase())) {
         state.petId = "Bunny";
         state.petEmoji = "🐰";
       }
