@@ -55,19 +55,19 @@ body {
 /* จอแนวนอนขนาดใหญ่ (คอมพิวเตอร์ / iPad แนวนอน): เต็มจอ
    พื้นหลังห้องเต็มจอ ส่วนเนื้อหาและปุ่มอยู่กลางจอ กว้างไม่เกิน 1000px เพื่อให้อ่านง่าย */
 @media (orientation: landscape) and (min-width: 900px) and (min-height: 500px) {
-  :root { --app-w: 100vw; --app-h: 100vh; --app-h: 100dvh; --content-max: 1000px; }
-  body { background: var(--bg-app-gradient); }
-  .preview-layout { max-width: none; }
-  .phone-frame { border-radius: 0; box-shadow: none; }
-  .app-header {
+  html:not(.layout-mobile) { --app-w: 100vw; --app-h: 100vh; --app-h: 100dvh; --content-max: 1000px; }
+  html:not(.layout-mobile) body { background: var(--bg-app-gradient); }
+  html:not(.layout-mobile) .preview-layout { max-width: none; }
+  html:not(.layout-mobile) .phone-frame { border-radius: 0; box-shadow: none; }
+  html:not(.layout-mobile) .app-header {
     padding-left: max(14px, calc((100% - var(--content-max)) / 2));
     padding-right: max(14px, calc((100% - var(--content-max)) / 2));
   }
-  .screen {
+  html:not(.layout-mobile) .screen {
     padding-left: max(14px, calc((100% - var(--content-max)) / 2));
     padding-right: max(14px, calc((100% - var(--content-max)) / 2));
   }
-  .app-bottom-nav.scrollable-tabs {
+  html:not(.layout-mobile) .app-bottom-nav.scrollable-tabs {
     left: 50%;
     width: auto;
     max-width: min(96%, var(--content-max));

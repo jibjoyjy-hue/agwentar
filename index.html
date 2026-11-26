@@ -25,8 +25,10 @@
   <link rel="stylesheet" href="css/14-bottom-nav.css?v=61">
   <link rel="stylesheet" href="css/15-misc.css?v=61">
   <link rel="stylesheet" href="css/16-premium.css?v=61">
-  <link rel="stylesheet" href="css/17-responsive.css?v=64">
+  <link rel="stylesheet" href="css/17-responsive.css?v=65">
   <link rel="stylesheet" href="css/18-menu-theme.css?v=1">
+  <link rel="stylesheet" href="css/19-layout-mode.css?v=1">
+  <script>/* ใช้โหมดหน้าจอที่เลือกไว้ก่อนวาดหน้า กันหน้ากระพริบ */try{var m=localStorage.getItem("gwentar_layout_mode");if(m==="mobile"||m==="desktop")document.documentElement.classList.add("layout-"+m);if(m==="desktop"&&Math.min(screen.width,screen.height)<900&&screen.width<1100){var v=document.querySelector('meta[name="viewport"]');if(v)v.setAttribute("content","width=1100, initial-scale="+(screen.width/1100).toFixed(3)+", viewport-fit=cover");}}catch(e){}</script>
 </head>
 <body>
 
@@ -985,6 +987,15 @@
                 <input type="range" class="settings-slider" min="0" max="100" value="60" id="musicSlider">
               </div>
               
+              <div style="margin: 4px 0 12px 0; width: 100%;">
+                <span class="setting-label" style="display: block; margin-bottom: 8px; font-weight: 800; font-size: 13px;">โหมดหน้าจอ</span>
+                <div class="layout-mode-seg" role="group" aria-label="โหมดหน้าจอ">
+                  <button type="button" data-layout="auto" onclick="setLayoutMode('auto')"><span class="lm-ico">✨</span>อัตโนมัติ</button>
+                  <button type="button" data-layout="mobile" onclick="setLayoutMode('mobile')"><span class="lm-ico">📱</span>มือถือ</button>
+                  <button type="button" data-layout="desktop" onclick="setLayoutMode('desktop')"><span class="lm-ico">💻</span>คอม</button>
+                </div>
+              </div>
+
               <div class="setting-item-row">
                 <span class="setting-label">ภาษา</span>
                 <select class="settings-select" id="langSelect">
@@ -1365,6 +1376,7 @@
   <script src="js/features/safety.js?v=62"></script>
   <script src="js/features/consent.js?v=2"></script>
   <script src="js/features/menu-icons.js?v=2"></script>
+  <script src="js/features/layout-mode.js?v=1"></script>
   <script src="js/pets/pet-stages.js?v=3"></script>
   <script src="js/core/ai.js?v=61"></script>
   <script src="js/core/state.js?v=61"></script>

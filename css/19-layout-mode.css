@@ -1,0 +1,45 @@
+/* 19-layout-mode.css: โหมดหน้าจอที่ผู้ใช้เลือกเอง (อัตโนมัติ / มือถือ / คอม)
+   อัตโนมัติ = ตาม 17-responsive.css
+   html.layout-mobile  = คอลัมน์แคบแบบโทรศัพท์ แม้เปิดบนคอม
+   html.layout-desktop = เต็มจอแบบคอม (บนมือถือจะตั้ง viewport กว้างขึ้นให้เหมือนเปิดบนคอม) */
+
+/* ---------- โหมดมือถือ ---------- */
+@media (min-width: 600px) {
+  html.layout-mobile {
+    --app-h: calc(100vh - 32px);
+    --app-h: calc(100dvh - 32px);
+    --app-w: min(calc(100vw - 32px), 430px);
+  }
+  html.layout-mobile body { background: radial-gradient(circle at 20% 10%, #fae8ff, #ede9fe 45%, #e0e7ff); }
+  html.layout-mobile .phone-frame { border-radius: 28px; box-shadow: 0 24px 60px -20px rgba(76, 29, 149, 0.35); }
+}
+
+/* ---------- โหมดคอม ---------- */
+  html.layout-desktop { --app-w: 100vw; --app-h: 100vh; --app-h: 100dvh; --content-max: 1000px; }
+  html.layout-desktop body { background: var(--bg-app-gradient); }
+  html.layout-desktop .preview-layout { max-width: none; }
+  html.layout-desktop .phone-frame { border-radius: 0; box-shadow: none; }
+  html.layout-desktop .app-header {
+    padding-left: max(14px, calc((100% - var(--content-max)) / 2));
+    padding-right: max(14px, calc((100% - var(--content-max)) / 2));
+  }
+  html.layout-desktop .screen {
+    padding-left: max(14px, calc((100% - var(--content-max)) / 2));
+    padding-right: max(14px, calc((100% - var(--content-max)) / 2));
+  }
+  html.layout-desktop .app-bottom-nav.scrollable-tabs {
+    left: 50%;
+    width: auto;
+    max-width: min(96%, var(--content-max));
+    transform: translateX(-50%);
+  }
+
+/* ---------- ปุ่มเลือกโหมดในหน้าตั้งค่า ---------- */
+.layout-mode-seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; }
+.layout-mode-seg button {
+  border: 1.5px solid var(--border-color, #e9d5ff); background: #fff; color: var(--menu-text, #1e40af);
+  border-radius: 14px; padding: 10px 4px; font: inherit; font-size: 12px; font-weight: 800; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.layout-mode-seg button .lm-ico { font-size: 20px; line-height: 1; }
+.layout-mode-seg button.active { border-color: var(--menu-icon, #ec4899); background: #fdf2f8; box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.18); }
