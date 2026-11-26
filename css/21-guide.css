@@ -1,0 +1,16 @@
+/* 21-guide.css: หน้าต่างคู่มือการใช้ (ใช้กรอบเดียวกับหน้าต่างพรีเมียม) */
+.guide-card { max-width: 380px; }
+.guide-list { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 14px; }
+.guide-item { border-radius: 14px; background: rgba(167, 139, 250, .1); overflow: hidden; }
+.guide-item summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; font-weight: 800; font-size: 14px; color: var(--menu-text, #1e40af);
+}
+.guide-item summary::-webkit-details-marker { display: none; }
+.guide-item summary::after { content: "▾"; margin-left: auto; color: var(--menu-icon, #ec4899); transition: transform .2s; }
+.guide-item[open] summary::after { transform: rotate(180deg); }
+.guide-ico { font-size: 20px; line-height: 1; }
+.guide-body { padding: 0 14px 12px 14px; font-size: 13px; line-height: 1.55; }
+.guide-body p { margin: 0 0 6px; }
+.guide-body ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+.app-header .guide-btn { font-weight: 800; }

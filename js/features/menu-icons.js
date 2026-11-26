@@ -14,6 +14,7 @@ const MENU_ICON_PATHS = {
   music: '<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
   gear: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
   egg: '<path d="M12 3c3.5 0 6.5 5 6.5 10a6.5 6.5 0 01-13 0C5.5 8 8.5 3 12 3z"/>',
+  help: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 015 .5c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/>',
   crown: '<path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5L3 8z"/>',
   gift: '<rect x="3" y="9" width="18" height="4" rx="1"/><path d="M5 13v8h14v-8"/><path d="M12 9v12"/><path d="M12 9C10 5 6.5 5 7 7.5S12 9 12 9zM12 9c2-4 5.5-4 5-1.5S12 9 12 9z"/>',
 };
@@ -37,6 +38,7 @@ function applyMenuIcons() {
     if (icon && box && !box.querySelector("svg")) box.innerHTML = menuSvg(icon);
   });
   const set = (sel, name) => { const b = document.querySelector(sel); if (b && !b.querySelector("svg")) b.innerHTML = menuSvg(name); };
+  set("#appHeader .guide-btn", "help");
   set("#appHeader .premium-btn", "crown");
   set("#appHeader .gift-noti-btn", "gift");
   set("#appHeader .gear-settings-btn", "gear");

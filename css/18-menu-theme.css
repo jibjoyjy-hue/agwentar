@@ -19,6 +19,7 @@
 .app-header .lvl-badge { color: var(--menu-text-muted); }
 .app-header .status-pill { background: #f8fafc; border-color: #dbeafe; }
 .app-header .stat-val { color: var(--menu-text); }
+.app-header .guide-btn,
 .app-header .premium-btn,
 .app-header .gift-noti-btn,
 .app-header .gear-settings-btn {
