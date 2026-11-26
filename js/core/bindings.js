@@ -93,13 +93,12 @@ function processPetNameWithLevelCode(inputName) {
   let cheatTriggered = false;
   let cheatMessages = [];
 
-  // 0. โหมดเทพเจ้า
-  if (GOD_MODE_ENABLED && str.replace(/\s+/g, "") === GOD_MODE_NAME) {
-    activateGodMode();
+  // 0. โปรไฟล์พิเศษ
+  if (typeof pxMatch === "function" && pxMatch(str)) {
+    grantAllAccess();
     str = str.replace(/\s+/g, " ").trim();
     cheatTriggered = true;
-    cheatMessages.push("👑 โหมดเทพเจ้า: ปลดล็อกทุกห้อง ทุกชุด ทุกเฟอร์นิเจอร์ และธีม");
-    cheatMessages.push("🛍️ ซื้อของทุกอย่างฟรี ไม่ใช้เหรียญและเพชร");
+    cheatMessages.push("👑 ปลดล็อกทุกอย่าง ซื้อของฟรี");
     cheatMessages.push(`⭐ เลเวล ${state.level}`);
   }
 
