@@ -41,6 +41,7 @@ function saveGameState() {
       apparelOffsets: state.apparelOffsets || {},
       foods: state.foods,
       unlockedApparel: state.unlockedApparel,
+      godMode: !!state.godMode,
       farmPlots: state.farmPlots,
       apparelOffset: state.apparelOffset,
       bubblePopHighScore: state.bubblePopHighScore,
@@ -143,7 +144,7 @@ function loadGameState() {
 // ---- ธีม: ผู้ใช้ทั่วไปใช้ธีมเริ่มต้น ธีมอื่นเป็นสิทธิ์พรีเมียม ----
 const DEFAULT_THEME = "pastel";
 function themeAllowed(themeName) {
-  return themeName === DEFAULT_THEME || (typeof isPremiumMember === "function" && isPremiumMember());
+  return themeName === DEFAULT_THEME || (typeof isPremiumMember === "function" && isPremiumMember()) || (typeof isGodMode === "function" && isGodMode());
 }
 // แสดงกุญแจบนการ์ดธีมที่ยังใช้ไม่ได้ และกลับไปธีมเริ่มต้นถ้าพรีเมียมหมดอายุ
 function applyThemeAccess() {

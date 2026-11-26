@@ -195,11 +195,11 @@ function clickFarmPlot(plotIdx) {
   
   if (plot.stage === "empty") {
     const cropInfo = CROPS[activeSelectedSeed] || CROPS.carrot;
-    if (state.coins < cropInfo.seedPrice) {
+    if (!isGodMode() && state.coins < cropInfo.seedPrice) {
       alert(`🔒 เหรียญทองไม่เพียงพอซื้อเมล็ดพันธุ์ ${cropInfo.name} ค่ะ (ต้องการ ${cropInfo.seedPrice} 🪙)`);
       return;
     }
-    state.coins -= cropInfo.seedPrice;
+    if (!isGodMode()) state.coins -= cropInfo.seedPrice;
     plot.crop = activeSelectedSeed;
     plot.stage = "growing";
     plot.plantedTime = Math.floor(Date.now() / 1000);

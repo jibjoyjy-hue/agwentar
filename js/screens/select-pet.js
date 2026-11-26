@@ -92,15 +92,16 @@ function renderSelectPetGrid() {
 
       // If pet has already been chosen once, switching costs 10,000 coins!
       if (state.petChosen) {
-        if (state.coins < 10000) {
+        const godFree = isGodMode();
+        if (!godFree && state.coins < 10000) {
           alert(`🔒 เหรียญทองของปะป๊ามะม๊ายังไม่พอเปลี่ยนตัวละครใหม่เลยน้า...\n\n💰 การสลับร่างคู่หูใหม่ต้องใช้ 10,000 เหรียญทอง 🪙\n(ตอนนี้ปะป๊ามะม๊ามีอยู่ ${state.coins.toLocaleString()} เหรียญ)\n\n✨ ไปช่วยหนูทำเควส ปลูกผัก หรือเล่นมินิเกมสะสมเหรียญเพิ่มกันเถอะนะคะ! 💕`);
           return;
         }
 
-        const confirmSwitch = confirm(`🪙 ปะป๊ามะม๊าต้องการจ่าย 10,000 เหรียญทองเพื่อเปลี่ยนคู่หูคนใหม่เป็นน้อง "${petName}" ใช่ไหมคะ?\n\n(เหรียญทองของปะป๊ามะม๊าจะเหลือ: ${(state.coins - 10000).toLocaleString()} 🪙)`);
+        const confirmSwitch = godFree ? confirm(`👑 เปลี่ยนคู่หูเป็นน้อง "${petName}" ฟรี (โหมดเทพเจ้า) ใช่ไหมคะ?`) : confirm(`🪙 ปะป๊ามะม๊าต้องการจ่าย 10,000 เหรียญทองเพื่อเปลี่ยนคู่หูคนใหม่เป็นน้อง "${petName}" ใช่ไหมคะ?\n\n(เหรียญทองของปะป๊ามะม๊าจะเหลือ: ${(state.coins - 10000).toLocaleString()} 🪙)`);
         if (!confirmSwitch) return;
 
-        state.coins -= 10000;
+        if (!godFree) state.coins -= 10000;
         state.petId = petId;
         if (!isOriginalMode()) {
           state.petName = petName;
