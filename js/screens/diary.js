@@ -227,6 +227,10 @@ function saveDiaryEntry() {
   journalInput.value = "";
 }
 
+function diaryEscape(t) {
+  return String(t).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
 function renderMoodAnalytics() {
   const container = document.getElementById("moodAnalyticsContainer");
   if (!container) return;
@@ -282,7 +286,7 @@ function renderMoodAnalytics() {
           </div>
           <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);">${dateFormatted} ${entry.time || ""}</span>
         </div>
-        ${entry.text ? `<p style="margin: 0; font-size: 10.5px; color: var(--text-secondary); line-height: 1.4; word-break: break-word;">${entry.text}</p>` : `<span style="font-size: 10px; color: var(--text-muted); font-style: italic;">ไม่ได้บันทึกรายละเอียดข้อความ</span>`}
+        ${entry.text ? `<p style="margin: 0; font-size: 10.5px; color: var(--text-secondary); line-height: 1.4; word-break: break-word;">${diaryEscape(entry.text)}</p>` : `<span style="font-size: 10px; color: var(--text-muted); font-style: italic;">ไม่ได้บันทึกรายละเอียดข้อความ</span>`}
       </div>
     `;
   }).join("");

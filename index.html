@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="css/19-layout-mode.css?v=1">
   <link rel="stylesheet" href="css/20-egg-hatch.css?v=1">
   <link rel="stylesheet" href="css/21-guide.css?v=1">
+  <link rel="stylesheet" href="css/22-backup-mood.css?v=1">
   <script>/* ใช้โหมดหน้าจอที่เลือกไว้ก่อนวาดหน้า กันหน้ากระพริบ */try{var m=localStorage.getItem("gwentar_layout_mode");if(m==="mobile"||m==="desktop")document.documentElement.classList.add("layout-"+m);if(m==="desktop"&&Math.min(screen.width,screen.height)<900&&screen.width<1100){var v=document.querySelector('meta[name="viewport"]');if(v)v.setAttribute("content","width=1100, initial-scale="+(screen.width/1100).toFixed(3)+", viewport-fit=cover");}}catch(e){}</script>
 </head>
 <body>
@@ -649,6 +650,7 @@
               <button class="btn-gradient" id="btnSaveDiary" onclick="saveDiaryEntry()" style="width: 120px; padding: 6px 0; font-size: 11px; border-radius: 20px; align-self: flex-end; margin-top: 5px; cursor: pointer;">บันทึกอารมณ์ ✍️</button>
             </div>
             
+            <div id="moodChartContainer"></div>
             <div id="moodAnalyticsContainer" style="margin-top: 10px;"></div>
 
             <div class="vent-visual-footer" style="margin-top: 15px;">
@@ -999,6 +1001,17 @@
                 </div>
               </div>
 
+              <div style="margin: 4px 0 12px 0; width: 100%;">
+                <span class="setting-label" style="display: block; margin-bottom: 4px; font-weight: 800; font-size: 13px;">💾 สำรองข้อมูล</span>
+                <div class="backup-hint">ข้อมูลอยู่ในเบราว์เซอร์นี้เท่านั้น สำรองไว้กันหายเวลาล้างข้อมูลเว็บหรือเปลี่ยนเครื่อง</div>
+                <div class="backup-btns">
+                  <button type="button" onclick="backupDownload()">📥 บันทึกไฟล์สำรอง</button>
+                  <button type="button" onclick="backupCopyCode()">📋 คัดลอกรหัสสำรอง</button>
+                  <button type="button" class="backup-restore" onclick="openBackupModal()">♻️ กู้ข้อมูลจากที่สำรองไว้</button>
+                </div>
+                <div class="backup-note" id="backupNote"></div>
+              </div>
+
               <div class="setting-item-row">
                 <span class="setting-label">ภาษา</span>
                 <select class="settings-select" id="langSelect">
@@ -1262,6 +1275,20 @@
     </div><!-- End Mobile Screen Emulator -->
     
   <!-- Bedtime Storybook Modal (นิทานฮีลใจ & อ่านหนังสือก่อนนอน) -->
+  <div id="backupModal" class="premium-modal" style="display: none;" onclick="if (event.target === this) closeBackupModal()">
+    <div class="premium-card" role="dialog" aria-label="กู้ข้อมูล">
+      <button type="button" class="premium-close" onclick="closeBackupModal()" aria-label="ปิด">✕</button>
+      <div class="premium-hero"><div class="premium-crown">♻️</div><div class="premium-title">กู้ข้อมูล</div>
+        <div class="premium-sub">ข้อมูลในเครื่องนี้ตอนนี้จะถูกแทนที่</div></div>
+      <label class="backup-file-label"><span class="backup-modal-btn" style="display:block">📂 เลือกไฟล์สำรอง (.json)</span>
+        <input type="file" id="backupFileInput" accept=".json,application/json,text/plain" onchange="backupRestoreFromFile(this)"></label>
+      <div class="backup-or">หรือ วางรหัสสำรอง (ขึ้นต้นด้วย GWB1:)</div>
+      <textarea id="backupCodeInput" placeholder="GWB1:..."></textarea>
+      <button type="button" class="premium-cta" style="margin-top:8px" onclick="backupRestoreFromCode()">กู้ข้อมูลจากรหัส</button>
+      <div id="backupModalMsg" role="status"></div>
+    </div>
+  </div>
+
   <div id="guideModal" class="premium-modal" style="display: none;" onclick="if (event.target === this) closeGuide()">
     <div class="premium-card guide-card" role="dialog" aria-label="คู่มือการใช้">
       <button type="button" class="premium-close" onclick="closeGuide()" aria-label="ปิด">✕</button>
@@ -1388,7 +1415,7 @@
   <script src="js/features/menu-icons.js?v=3"></script>
   <script src="js/features/layout-mode.js?v=1"></script>
   <script src="js/features/profile-extras.js?v=3"></script>
-  <script src="js/features/guide.js?v=2"></script>
+  <script src="js/features/guide.js?v=3"></script>
   <script src="js/pets/pet-stages.js?v=4"></script>
   <script src="js/core/ai.js?v=61"></script>
   <script src="js/core/state.js?v=61"></script>
@@ -1418,7 +1445,9 @@
   <script src="js/games/reveal-emotion.js?v=61"></script>
   <script src="js/screens/quests.js?v=62"></script>
   <script src="js/screens/healing-music.js?v=61"></script>
-  <script src="js/screens/diary.js?v=61"></script>
+  <script src="js/screens/diary.js?v=62"></script>
+  <script src="js/features/mood-chart.js?v=1"></script>
+  <script src="js/features/backup.js?v=1"></script>
   <script src="js/games/coin-catcher.js?v=61"></script>
   <script src="js/screens/settings-music.js?v=61"></script>
   <script src="js/games/cake-stack.js?v=61"></script>

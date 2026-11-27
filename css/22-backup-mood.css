@@ -1,0 +1,39 @@
+/* 22-backup-mood.css: ปุ่มสำรองข้อมูล และกราฟอารมณ์ */
+.backup-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+.backup-btns button, .backup-modal-btn {
+  border: 1.5px solid var(--border-color, #e9d5ff); background: #fff; color: var(--menu-text, #1e40af);
+  border-radius: 14px; padding: 10px 6px; font: inherit; font-size: 12px; font-weight: 800; cursor: pointer;
+}
+.backup-btns .backup-restore { grid-column: 1 / -1; border-color: var(--menu-icon, #ec4899); color: #be185d; background: #fdf2f8; }
+.backup-note { display: none; margin-top: 8px; font-size: 11px; font-weight: 700; color: #047857; }
+.backup-hint { font-size: 11px; opacity: .75; margin: 2px 0 8px; }
+#backupCodeInput { width: 100%; height: 80px; border-radius: 12px; border: 1.5px solid var(--border-color, #e9d5ff); padding: 8px; font-size: 11px; font-family: monospace; resize: vertical; box-sizing: border-box; }
+.backup-or { text-align: center; font-size: 11px; opacity: .6; margin: 10px 0; }
+.backup-file-label { display: block; text-align: center; }
+.backup-file-label input { display: none; }
+#backupModalMsg { min-height: 16px; font-size: 12px; font-weight: 700; margin-top: 8px; text-align: center; }
+
+.mc-card { background: rgba(255, 255, 255, .55); border: 1px solid var(--border-color); border-radius: 16px; padding: 12px; margin-top: 12px; }
+.mc-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.mc-head h4 { margin: 0; font-size: 12px; font-weight: 800; color: var(--text-primary); }
+.mc-segs { display: flex; gap: 4px; }
+.mc-seg { border: 1.5px solid var(--border-color, #e9d5ff); background: #fff; color: var(--menu-text, #1e40af); border-radius: 99px; padding: 3px 10px; font: inherit; font-size: 11px; font-weight: 800; cursor: pointer; }
+.mc-seg.active { border-color: var(--menu-icon, #ec4899); background: #fdf2f8; color: #be185d; }
+.mc-days { display: grid; gap: 4px; }
+.mc-days-7 { grid-template-columns: repeat(7, 1fr); }
+.mc-days-30 { grid-template-columns: repeat(10, 1fr); }
+.mc-day { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: #fff; border-radius: 10px; padding: 5px 0; min-height: 30px; }
+.mc-day.empty { background: rgba(255, 255, 255, .45); }
+.mc-day.empty .mc-emoji { color: var(--text-muted); opacity: .6; }
+.mc-emoji { font-size: 17px; line-height: 1; }
+.mc-days-30 .mc-emoji { font-size: 14px; }
+.mc-dlabel { font-size: 9px; font-weight: 700; color: var(--text-muted); }
+.mc-summary { font-size: 11px; font-weight: 700; color: var(--text-secondary); margin: 10px 0 6px; }
+.mc-bars { display: flex; flex-direction: column; gap: 6px; }
+.mc-row { display: grid; grid-template-columns: 86px 1fr 22px; align-items: center; gap: 8px; }
+.mc-name { font-size: 11px; font-weight: 700; color: var(--text-primary); white-space: nowrap; }
+.mc-track { height: 10px; background: rgba(0, 0, 0, .05); border-radius: 4px; overflow: hidden; }
+.mc-bar { display: block; height: 100%; background: #f472b6; border-radius: 4px; }
+.mc-count { font-size: 11px; font-weight: 800; color: var(--text-primary); text-align: right; }
+.mc-empty { font-size: 11px; color: var(--text-muted); text-align: center; padding: 6px 0; }
+.mc-note { font-size: 10px; color: var(--text-muted); margin-top: 10px; text-align: center; }
