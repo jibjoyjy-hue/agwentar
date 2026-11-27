@@ -1,8 +1,8 @@
 // สมาชิกพรีเมียม (รายปี)
 // สมัคร: แอดไลน์แอดมิน → โอนเงิน/ส่งสลิป → แอดมินส่งโค้ด → กรอกโค้ดในเกม (เมนู "แลกโค้ด" หรือหน้าพรีเมียม)
 // สิทธิ์หลัก: พบจิตแพทย์ฟรีปีละ 2 ครั้ง เลือกโรงพยาบาลแล้วรับตั๋วนัดได้
-// ราคายังไม่กำหนด: ใส่ตัวเลขที่ PREMIUM_PRICE_PER_YEAR เมื่อพร้อม (เช่น 299)
-const PREMIUM_PRICE_PER_YEAR = null; // ← ราคา (บาท/ปี)
+// ราคาสมาชิกรายปี (บาท) ตั้งเมื่อ 27 พ.ย. 2569
+const PREMIUM_PRICE_PER_YEAR = 700; // ← ราคา (บาท/ปี)
 const PREMIUM_FREE_VISITS_PER_YEAR = 2;
 const PREMIUM_LINE_URL = "https://line.me/ti/p/XI8CFsVN3h"; // ลิงก์แอดไลน์แอดมิน (จาก QR)
 const PREMIUM_LINE_QR = "assets/premium/line_qr.jpg";
